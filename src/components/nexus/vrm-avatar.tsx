@@ -49,9 +49,9 @@ export interface DefaultAvatar {
 }
 
 const DEFAULT_AVATARS: DefaultAvatar[] = [
+  { name: "VRM1 Sample", url: "https://pixiv.github.io/three-vrm/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm" },
   { name: "Holo", url: "https://uploads.opensourceavatars.com/vrm/female_anime_01.vrm" },
   { name: "Kai", url: "https://uploads.opensourceavatars.com/vrm/male_anime_01.vrm" },
-  { name: "Miku-style", url: "https://uploads.opensourceavatars.com/vrm/cyber_girl_01.vrm" },
 ];
 
 // ── Smooth interpolation helper ─────────────────────────────

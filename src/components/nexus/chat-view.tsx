@@ -28,6 +28,7 @@ import {
   CodeResultCard, KnowledgeCard,
 } from "./gen-ui";
 import { VoiceButton, TTSPlayback } from "./voice-ui";
+import { VRMHubModal } from "./vrm-hub";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -36,7 +37,7 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   Send, Loader2, Sparkles, Shield, Zap, PanelRightOpen,
   Square, X, FileCode, BarChart3, Image as ImageIcon, FileText, Code2,
-  Eye, Volume2, VolumeX,
+  Eye, Volume2, VolumeX, User,
 } from "lucide-react";
 import type { ChatMessage, BuildStep, AgentActivity, VizEvent, Artifact } from "@/types/nexus";
 
@@ -386,7 +387,9 @@ export function ChatView() {
     conversations, activeConversationId, addConversation,
     addMessage, provider, model,
     agentStatus, setAgentStatus, addActivity, clearActivity,
-    avatarExpression, avatarEnabled, agentMode, setAgentMode,
+    avatarExpression, avatarEnabled, avatarModelUrl, setAvatarModelUrl,
+    vrmHubOpen, setVrmHubOpen,
+    agentMode, setAgentMode,
     agentActivity, buildSteps, clearBuildSteps,
     backendConnected,
     vizEvents, clearVizEvents,
@@ -662,7 +665,7 @@ export function ChatView() {
             expression={avatarExpression}
             thinking={isWorking}
             speaking={streamingContent.length > 0}
-            modelUrl={undefined} /* Will use hologram until VRM model loaded */
+            modelUrl={avatarModelUrl ?? undefined}
           />
           {/* Avatar status overlay */}
           <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
@@ -672,7 +675,17 @@ export function ChatView() {
                 {isWorking ? "En reflexion..." : backendConnected ? "Pret" : "Deconnecte"}
               </span>
             </div>
-            <span className="text-[9px] text-muted-foreground/40">Glissez pour tourner</span>
+            {/* VRM Hub button */}
+            <button
+              onClick={() => setVrmHubOpen(true)}
+              className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-background/60 backdrop-blur-sm border border-border/15 hover:border-primary/30 hover:bg-primary/5 transition-colors"
+              title="Changer d'avatar"
+            >
+              <User size={8} className="text-muted-foreground" />
+              <span className="text-[8px] text-muted-foreground/70">
+                {avatarModelUrl ? "Changer" : "Choisir avatar"}
+              </span>
+            </button>
           </div>
         </div>
       )}
@@ -900,6 +913,14 @@ export function ChatView() {
           )}
         </ResizablePanelGroup>
       </div>
+
+      {/* VRM Hub Modal */}
+      <VRMHubModal
+        open={vrmHubOpen}
+        onClose={() => setVrmHubOpen(false)}
+        onSelect={(url) => setAvatarModelUrl(url)}
+        currentModelUrl={avatarModelUrl ?? undefined}
+      />
     </div>
   );
 }

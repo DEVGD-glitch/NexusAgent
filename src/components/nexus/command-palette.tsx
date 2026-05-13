@@ -20,7 +20,7 @@ import {
   MessageSquare, Settings, Brain, BookOpen, Users,
   Shield, Zap, Terminal, Globe, Code2,
   Mic, Database, Sparkles, Clock, Wrench, Eye, EyeOff,
-  Trash2,
+  Trash2, User,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -45,6 +45,7 @@ export function CommandPalette() {
     { id: "mode-build", label: "Mode Build (acces complet)", icon: Zap, action: () => { useNexusStore.getState().setAgentMode("build"); setCommandOpen(false); } },
     { id: "mode-plan", label: "Mode Plan (lecture seule)", icon: Shield, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
     { id: "toggle-avatar", label: "Activer/desactiver l'avatar 3D", icon: Users, action: () => { useNexusStore.getState().toggleAvatar(); setCommandOpen(false); } },
+    { id: "vrm-hub", label: "Changer d'avatar VRM", icon: User, action: () => { useNexusStore.getState().setVrmHubOpen(true); setCommandOpen(false); } },
     { id: "ask-memory", label: "Poser une question a la memoire", icon: Brain, action: () => { setCommandOpen(false); /* focus input with /memory prefix */ } },
     { id: "web-search", label: "Rechercher sur le web", icon: Globe, action: () => { setCommandOpen(false); } },
     { id: "run-code", label: "Executer du code", icon: Terminal, action: () => { setCommandOpen(false); } },

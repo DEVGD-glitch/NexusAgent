@@ -41,6 +41,8 @@ interface NexusState {
   // ── Avatar ────────────────────────────────────────────────
   avatarEnabled: boolean;
   avatarExpression: AvatarExpression;
+  avatarModelUrl: string | null;
+  vrmHubOpen: boolean;
 
   // ── Connection ────────────────────────────────────────────
   backendConnected: boolean;
@@ -99,6 +101,8 @@ interface NexusState {
 
   toggleAvatar: () => void;
   setAvatarExpression: (e: AvatarExpression) => void;
+  setAvatarModelUrl: (url: string | null) => void;
+  setVrmHubOpen: (open: boolean) => void;
   setBackendConnected: (c: boolean) => void;
 
   // Viz
@@ -148,6 +152,8 @@ export const useNexusStore = create<NexusState>((set) => ({
   agents: [],
   avatarEnabled: true,
   avatarExpression: "neutral",
+  avatarModelUrl: null,
+  vrmHubOpen: false,
   backendConnected: false,
 
   vizEvents: [],
@@ -233,6 +239,8 @@ export const useNexusStore = create<NexusState>((set) => ({
 
   toggleAvatar: () => set((s) => ({ avatarEnabled: !s.avatarEnabled })),
   setAvatarExpression: (e) => set({ avatarExpression: e }),
+  setAvatarModelUrl: (url) => set({ avatarModelUrl: url }),
+  setVrmHubOpen: (open) => set({ vrmHubOpen: open }),
   setBackendConnected: (c) => set({ backendConnected: c }),
 
   // Viz
