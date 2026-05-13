@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://yuv.ai/blog/hermes-agent",
+    "name": "Hermes Agent: Self-Improving AI with Persistent Memory | YUV.AI Blog",
+    "snippet": "Hermes Agent is a self-improving AI agent with cross-session memory and autonomous skill creation capabilities. Created by Nous Research, it ...",
+    "host_name": "yuv.ai",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.mindstudio.ai/blog/hermes-agent-5-pillar-architecture-memory-skills-soul-crons",
+    "name": "Hermes Agent's 5-Pillar Architecture: How It Learns, Schedules, and",
+    "snippet": "Hermes Agent is built on five pillars: memory, skills, soul, crons, and a self-improving loop. Here's how each one works and why the ...",
+    "host_name": "www.mindstudio.ai",
+    "rank": 1,
+    "date": "May 9, 2026",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/NousResearch/hermes-agent-self-evolution/blob/main/PLAN.md",
+    "name": "hermes-agent-self-evolution/PLAN.md at main - GitHub",
+    "snippet": "A standalone optimization pipeline that systematically improves Hermes Agent's performance by evolving skills, prompts, tool descriptions, and agent ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://mranand.substack.com/p/inside-hermes-agent-how-a-self-improving",
+    "name": "Inside Hermes Agent: How a Self-Improving AI Agent Actually Works",
+    "snippet": "The learning loop runs on its own, and because the memory architecture is cache-aware, it does not keep growing your token bill as the agent ...",
+    "host_name": "mranand.substack.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@anup.karanjkar08/how-to-run-hermes-agent-on-a-5-vps-the-self-evolving-agent-that-ate-last-weeks-trending-chart-cbe94a82d094",
+    "name": "“How to Run Hermes Agent on a $5 VPS” — The Self-Evolving",
+    "snippet": "Practically translated: every time the agent succeeds at a task, it has the option to crystallize the strategy that worked into a permanent ...",
+    "host_name": "medium.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/AISEOInsider/comments/1s7ffmr/hermes_self_evolving_ai_agent_keeps_learning_from",
+    "name": "Hermes Self Evolving AI Agent Keeps Learning From Your Work",
+    "snippet": "Hermes improves automatically over time by storing persistent memory and generating reusable skill documents after completing workflows. Does ...",
+    "host_name": "www.reddit.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.linkedin.com/posts/anusha-yaramala20_inside-hermes-agent-how-a-self-improving-activity-7457603367796625408-P9lJ",
+    "name": "Hermes Agent Self-Improving AI Architecture | Anusha Y posted on",
+    "snippet": "4-layer memory system Skills built from experience, refined over time Every 15 tasks, it self-evaluates — analyzing its own wins and ...",
+    "host_name": "www.linkedin.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=qUqcLNcP5Tc",
+    "name": "Hermes Agent: Self-Improving Strategy Explained - YouTube",
+    "snippet": "only agent with a built-in learning loop — it creates skills from experience, improves them during use, nudges itself to persist knowledge ...",
+    "host_name": "www.youtube.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://x.com/vintrotweets/status/2036463758625632281",
+    "name": "killer breakdown",
+    "snippet": "Recently @NousResearch launched Hermes Agent and it is killing OpenClaw, this article explores the memory system, continuous learning and ...",
+    "host_name": "x.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.mindstudio.ai/blog/hermes-agent-five-pillars-memory-skills-soul-crons",
+    "name": "Hermes Agent Five Pillars: Memory, Skills, Soul, Crons, and Self",
+    "snippet": "The Hermes Agent Framework: A Quick Overview. Hermes Agent is an architecture for personal AI that prioritizes continuity, autonomy, and growth.",
+    "host_name": "www.mindstudio.ai",
+    "rank": 9,
+    "date": "May 9, 2026",
+    "favicon": ""
+  }
+]

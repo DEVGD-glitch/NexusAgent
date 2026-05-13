@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/openai/swarm",
+    "name": "GitHub - openai/swarm: Educational framework exploring ergonomic",
+    "snippet": "However, Swarm is an educational resource for developers curious to learn about multi-agent orchestration. Swarm runs (almost) entirely on the client and, much ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://swarms.ai",
+    "name": "Swarms AI - Enterprise Multi-Agent Framework",
+    "snippet": "Swarms is the enterprise-grade, production-ready multi-agent orchestration framework created by kyegomez. Build, deploy, and scale autonomous AI agent ...",
+    "host_name": "swarms.ai",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.graphbit.ai/resources/blogs/top-9-open-source-ai-agent-framework-2025",
+    "name": "Top 9 Open-source AI Agent Frameworks for 2025 - Graphbit",
+    "snippet": "AI Model Orchestration: Developers can build advanced systems with multiple AI agents and execute tasks in parallel or sequentially using the ...",
+    "host_name": "www.graphbit.ai",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://galileo.ai/blog/openai-swarm-framework-multi-agents",
+    "name": "OpenAI Swarm Framework Guide for Reliable Multi-Agents - Galileo AI",
+    "snippet": "OpenAI Swarm framework is a lightweight framework for building and orchestrating multi-agent AI systems that maintain clarity and control ...",
+    "host_name": "galileo.ai",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/LLMDevs/comments/1nxlsrq/whats_the_best_agent_framework_in_2025",
+    "name": "What's the best agent framework in 2025? : r/LLMDevs - Reddit",
+    "snippet": "Supports multi-agent collaboration and communication. Is production-ready or at least stable. Plays nicely with LLMs (OpenAI, Claude, open- ...",
+    "host_name": "www.reddit.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://swarm-ai.org/bridges/openclaw",
+    "name": "OpenClaw - SWARM — Open-Source Multi-Agent AI Safety",
+    "snippet": "OpenClaw provides secure multi-agent orchestration. SWARM-OpenClaw enables: REST API for scenario execution; Job queue for async simulation runs; Skill ...",
+    "host_name": "swarm-ai.org",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/spillwave-solutions/agent-framework-wars-2025-your-strategic-guide-to-choosing-the-right-ai-agent-stack-2b762a97457a",
+    "name": "Agent Framework Wars 2025: Your Strategic Guide to Choosing the",
+    "snippet": "The AI agent wars are heating up in 2025 — and your framework choice could make or break your product. With Google launching Agent Garden, ...",
+    "host_name": "medium.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://ignite.microsoft.com/en-US/sessions/BRK197",
+    "name": "AI powered automation & multi-agent orchestration in Microsoft",
+    "snippet": "Sean declares 2025 “the year of the agent,” emphasizing Microsoft's vision that intelligent agents represent the next phase for integrating ...",
+    "host_name": "ignite.microsoft.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://deepchecks.com/best-ai-agent-frameworks",
+    "name": "Best 10 AI Agent Frameworks for 2025 - Deepchecks",
+    "snippet": "Discover the top AI agent frameworks for 2025 and how they help teams automate workflows, enhance decision-making, and scale intelligent ...",
+    "host_name": "deepchecks.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pub.towardsai.net/the-4-best-open-source-multi-agent-ai-frameworks-2026-9da389f9407a",
+    "name": "The 4 Best Open Source Multi-Agent AI Frameworks 2026",
+    "snippet": "Evaluating the top 4 open-source multi-agent AI frameworks for 2026 based on scalability, governance, and future-proof interoperability with ...",
+    "host_name": "pub.towardsai.net",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

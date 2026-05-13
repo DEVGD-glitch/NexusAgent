@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://openclaw.ai",
+    "name": "OpenClaw — Personal AI Assistant",
+    "snippet": "The AI that actually does things. Clears your inbox, sends emails, manages your calendar, checks you in for flights. All from WhatsApp, Telegram, or any chat ...",
+    "host_name": "openclaw.ai",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/VoltAgent/awesome-openclaw-skills",
+    "name": "VoltAgent/awesome-openclaw-skills - GitHub",
+    "snippet": "OpenClaw is a locally-running AI assistant that operates directly on your machine. Skills extend its capabilities, allowing it to interact with external ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@reza.ra/openclaw-the-ai-agent-that-burns-through-your-api-budget-and-how-to-fix-it-050fc57552c9",
+    "name": "OpenClaw: The AI Agent That Burns Through Your API Budget (And",
+    "snippet": "ClawHub is the marketplace where users share their 5,700+ skills. In early 2026, security vendor Koi found that 341 of these skills were ...",
+    "host_name": "medium.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/AI_Agents/comments/1skb4uf/openclaw_skills_are_way_deeper_than_i_thought",
+    "name": "Openclaw skills are way deeper than I thought, some of these are",
+    "snippet": "Openclaw browser automation skills. Most innovative uses of AI agents today. Challenges in developing autonomous AI agents. Open App.",
+    "host_name": "www.reddit.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://blog.algomaster.io/p/how-to-build-an-autonomous-ai-agent-like-openclaw",
+    "name": "How to build an autonomous AI agent like OpenClaw (from scratch)",
+    "snippet": "It can use Skills (either built by you or the community), which are simply bundles of instructions, scripts, and resources that help an AI ...",
+    "host_name": "blog.algomaster.io",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://skywork.ai/skypage/en/clawhub-openclaw-skill-marketplace/2048635996459888640",
+    "name": "The Ultimate Guide to ClawHub OpenClaw Skill Marketplace",
+    "snippet": "Explore ClawHub OpenClaw Marketplace: 15k+ AI skills, security insights, enterprise options, and a step‑by‑step guide for autonomous agent ...",
+    "host_name": "skywork.ai",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.linkedin.com/posts/obaid_if-you-want-to-go-down-a-rabbit-hole-this-activity-7423208481224237057-M2vF",
+    "name": "Unlock OpenClaw's Potential: Secure Digital Worker Setup - LinkedIn",
+    "snippet": "OpenClaw is a Swiss Army knife — WhatsApp, Slack, email, 5,700+ community-built skills in ClawHub. The data backs this up: → Claude Code ...",
+    "host_name": "www.linkedin.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://hellopm.co/openclaw-for-product-managers",
+    "name": "OpenClaw for Product Managers: The Complete Guide to - HelloPM",
+    "snippet": "Instead of building tools on top of LLMs, it enables the LLM to expand as an autonomous agent. The LLM itself writes integration code, connects ...",
+    "host_name": "hellopm.co",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.facebook.com/groups/marketingngrowth/posts/939212011896886",
+    "name": "Openclaw security risks and hardening guide - Facebook",
+    "snippet": "A curated collection of ready-to-use capabilities you can plug directly into OpenClaw agents. What's inside: → Skills for automation, research, ...",
+    "host_name": "www.facebook.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://aws.amazon.com/marketplace/pp/prodview-sjoooryhbp2ug",
+    "name": "AWS Marketplace: OpenClaw AI Agent Platform - Amazon.com",
+    "snippet": "OpenClaw is a one click AI agent platform for intelligent browser automation on AWS. Deploy autonomous AI agents powered by Claude or OpenAI to control web ...",
+    "host_name": "aws.amazon.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

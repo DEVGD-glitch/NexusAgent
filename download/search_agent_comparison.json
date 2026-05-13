@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.getmaxim.ai/articles/top-5-ai-agent-frameworks-in-2025-a-practical-guide-for-ai-builders",
+    "name": "Best AI Agent Frameworks 2025: LangGraph, CrewAI, OpenAI",
+    "snippet": "This guide breaks down the top five AI agent frameworks in 2025, how they differ, where each shines, and how to wire them into a production ...",
+    "host_name": "www.getmaxim.ai",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://arsum.com/blog/posts/ai-agent-frameworks",
+    "name": "Best AI Agent Frameworks in 2026: LangGraph, CrewAI, AutoGen",
+    "snippet": "Compare LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, and more by architecture, pricing, production risk, and when each fits.",
+    "host_name": "arsum.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/LangChain/comments/1rnc2u9/comprehensive_comparison_of_every_ai_agent",
+    "name": "Comprehensive comparison of every AI agent framework in 2026",
+    "snippet": "LangGraph vs CrewAI vs AutoGen comparison. Best AI agent frameworks ... I wrote an AI Agent with LangGraph that works better than I expected.",
+    "host_name": "www.reddit.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://langwatch.ai/blog/best-ai-agent-frameworks-in-2025-comparing-langgraph-dspy-crewai-agno-and-more",
+    "name": "Best AI Agent Frameworks in 2025: Comparing LangGraph, DSPy",
+    "snippet": "Explore a detailed, developer-tested comparison of top AI agent frameworks in 2025, including LangGraph, DSPy, Agno and more.",
+    "host_name": "langwatch.ai",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@Modexa/autogpt-and-beyond-6-agents-to-try-in-2025-0c8c979ff89f",
+    "name": "AutoGPT and Beyond: 6 Agents to Try in 2025 | by Modexa | Medium",
+    "snippet": "From AutoGPT to CrewAI, smolagents, OpenDevin, Microsoft's Agent Framework, and LangGraph — six autonomous AI agents worth using in 2025 ...",
+    "host_name": "medium.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=agZMp2PMydQ",
+    "name": "Top AI Agent Tools in 2025 - LangChain, CrewAI, AutoGPT and More",
+    "snippet": "AI Agents are transforming automation, business workflows, and personal productivity. In this video, we explore the top AI Agent tools in ...",
+    "host_name": "www.youtube.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.linkedin.com/posts/shivnathtathe_aiagents-langgraph-crewai-activity-7427358333579440128-gtBg",
+    "name": "Top 4 AI Agent Frameworks for 2025-26: LangGraph, CrewAI",
+    "snippet": "Top 4 AI Agent Frameworks for 2025-26: LangGraph, CrewAI, AutoGen, MetaGPT ... Jonathan Rapisarda, M.B.A.. Co-Founder - Agentic Systems Architect, ...",
+    "host_name": "www.linkedin.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://aascentinfo.solutions/best-7-frameworks-for-building-ai-agents-in-2025",
+    "name": "7 Best Frameworks for AI Agent Development in 2025",
+    "snippet": "As of 2025, the top 7 AI agent frameworks are LangChain, LangGraph, CrewAI, Semantic Kernel, AutoGen, Smolagents, and AutoGPT. But each of ...",
+    "host_name": "aascentinfo.solutions",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.ampcome.com/post/top-7-ai-agent-frameworks-in-2025",
+    "name": "7 Best AI Agent Frameworks Compared (2026): LangGraph, CrewAI",
+    "snippet": "Compare the 7 best AI agent frameworks of 2026 — LangGraph, CrewAI, Microsoft Agent Framework, Google ADK and more. Find the right fit for ...",
+    "host_name": "www.ampcome.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.ionio.ai/blog/the-state-of-ai-agent-platforms-in-2025-comparative-analysis",
+    "name": "The State of AI Agent Platforms in 2025: Comparative Analysis - Ionio",
+    "snippet": "AI agent frameworks in 2025 offer diverse capabilities from LangGraph's stateful orchestration to LlamaIndex's data indexing and CrewAI's collaborative agents.",
+    "host_name": "www.ionio.ai",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

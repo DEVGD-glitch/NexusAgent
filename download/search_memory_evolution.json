@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://arxiv.org/html/2410.15665v4",
+    "name": "Long Term Memory : The Foundation of AI Self-Evolution - arXiv",
+    "snippet": "We propose that models must be equipped with Long-Term Memory (LTM), which stores and manages processed real-world interaction data.",
+    "host_name": "arxiv.org",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=c_q2Xwf04rc",
+    "name": "The Evolution of Agentic Memory (2025 Guide) - YouTube",
+    "snippet": "Memory is the cornerstone capability that transforms static Large Language Models (LLMs) into adaptive AI agents capable of long-horizon ...",
+    "host_name": "www.youtube.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/towardsdev/memory-in-the-age-of-ai-agents-the-definitive-framework-for-building-intelligent-self-evolving-dac2a47e3473",
+    "name": "Memory in the Age of AI Agents: The Definitive Framework  - Medium",
+    "snippet": "This analysis explores how token-level, parametric, and latent memory architectures enable LLM agents to learn, adapt, and evolve — transforming ...",
+    "host_name": "medium.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/masamasa59/ai-agent-papers/blob/main/capability-papers/memory.md",
+    "name": "ai-agent-papers/capability-papers/memory.md at main - GitHub",
+    "snippet": "These papers discuss an agent's memory function and its self-evolution. Papers. [May 2023] \"Memorybank: Enhancing large language models with long-term memory\" [ ...",
+    "host_name": "github.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://skillsllm.com/skill/awesome-agent-evolution",
+    "name": "awesome-agent-evolution - AI Agents | SkillsLLM",
+    "snippet": "awesome-agent-evolution - A curated list of AI Agent evolution, memory systems, multi-agent architectures, and self-improvement projects.",
+    "host_name": "skillsllm.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.emergentmind.com/topics/self-evolving-ai-agent",
+    "name": "Self-Evolving AI Agents - Emergent Mind",
+    "snippet": "Self-evolving AI agents are autonomous systems that continuously modify their internal models, memory, and toolsets through closed-loop, ...",
+    "host_name": "www.emergentmind.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/microsoft/autogen/discussions/7454",
+    "name": "Lessons from 10 generations of an autonomous LLM agent  - GitHub",
+    "snippet": "We ran an experiment: 10 generations of an autonomous AI agent (Claude-based), where each generation works in cycles, maintains persistent ...",
+    "host_name": "github.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://arxiv.org/html/2604.13085v1",
+    "name": "Adaptive Memory Crystallization for Autonomous AI Agent Learning",
+    "snippet": "Abstract. Autonomous AI agents operating in dynamic environments face a persistent challenge: acquiring new capabilities without erasing ...",
+    "host_name": "arxiv.org",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://evoailabs.medium.com/self-evolving-agents-from-ideas-to-breakthroughs-9214412600b8",
+    "name": "Self-Evolving Agents: From Ideas to Breakthroughs | by evoailabs",
+    "snippet": "A report from McKinsey highlights that by 2025, agentic AI will be capable of not just assisting human workers but also autonomously executing ...",
+    "host_name": "evoailabs.medium.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gist.github.com/tanaikech/da47643a4b59578092f0129a9eb0c9c5",
+    "name": "A Framework for Persistent Autonomous Agent Self-Evolution · GitHub",
+    "snippet": "In the realm of autonomous agents, enabling long-term memory and self-correction has been a focal point of recent research. Notable frameworks such as Reflexion ...",
+    "host_name": "gist.github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

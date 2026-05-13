@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/uezo/aiavatarkit",
+    "name": "uezo/aiavatarkit: Building AI-based conversational avatars  - GitHub",
+    "snippet": "Live anywhere: AIAvatarKit is a general-purpose Speech-to-Speech framework with multimodal input/output support. It can serve as the backend ...",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/uezo/chatdollkit",
+    "name": "ChatdollKit enables you to make your 3D model into a chatbot - GitHub",
+    "snippet": "iOS App: OshaberiAI A Virtual Agent App made with ChatdollKit: a perfect fusion of character creation by AI prompt engineering, customizable 3D VRM models, ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/langchain-ai/voice-agents-tracing",
+    "name": "langchain-ai/voice-agents-tracing - GitHub",
+    "snippet": "Demonstrates the same LangSmith instrumentation pattern inside a Pipecat pipeline. · The Pipecat span processor captures STT prompts, LLM calls, TTS synthesis, ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=vLibOCfXooQ",
+    "name": "How To Build The Best Voice Agent in Real-Time (with Voice & Avatar)",
+    "snippet": "... #ai #Tenagent #voice #aiagent #chatbot #llm The day that ... github.com/TEN-framework/TEN-Agent - https://agent.theten.ai ...",
+    "host_name": "www.youtube.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/zoan37/ChatVRM",
+    "name": "zoan37/ChatVRM: Chat with VRM avatar via LLM - GitHub",
+    "snippet": "ChatVRM is a demo application that allows you to easily talk with a 3D character in your browser. By importing VRM files, you can adjust the voice to match the ...",
+    "host_name": "github.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=2Oo147BhjKs",
+    "name": "Real-Time AI Avatar with Voice & 3D Animation - YouTube",
+    "snippet": "... Voice-first automation control Clone the repo: https://github ... How to Build a 3D Chatbot with ChatGPT & ElevenLabs. Wawa Sensei ...",
+    "host_name": "www.youtube.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/igna-s/Realtime_Avatar_AI_Companion",
+    "name": "igna-s/Realtime_Avatar_AI_Companion: Real-time AI  - GitHub",
+    "snippet": "Voice Interaction Engage in seamless conversations. The assistant listens to your voice, transcribes it to text, and generates a spoken response.",
+    "host_name": "github.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/wsxqaza12/LLMAvatarTalk-An-Interactive-AI-Assistant",
+    "name": "wsxqaza12/LLMAvatarTalk-An-Interactive-AI-Assistant - GitHub",
+    "snippet": "Harness the power of NVIDIA technologies and LangChain to create dynamic avatars from live speech, integrating RIVA ASR and TTS with Audio2Face for ...",
+    "host_name": "github.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/darkkaze/ai-librarian-avatar",
+    "name": "darkkaze/ai-librarian-avatar: Interactive 3D VRM avatar  - GitHub",
+    "snippet": "Interactive 3D VRM avatar powered by LangGraph and Claude AI - A conversational librarian assistant with voice interaction, lip-sync, and expressive ...",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/uhub/awesome-chatgpt",
+    "name": "uhub/awesome-chatgpt - GitHub",
+    "snippet": "A curated list of awesome ChatGPT frameworks, libraries and software. f/prompts.chat - f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts ...",
+    "host_name": "github.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://hermes-agent.nousresearch.com",
+    "name": "Hermes Agent — The Agent That Grows With You | Nous Research",
+    "snippet": "An open-source agent that grows with you — learns your projects, builds its own skills, and reaches you wherever you are. By Nous Research.",
+    "host_name": "hermes-agent.nousresearch.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/nousresearch/hermes-agent",
+    "name": "NousResearch/hermes-agent: The agent that grows with you - GitHub",
+    "snippet": "The self-improving AI agent built by Nous Research. It's the only agent with a built-in learning loop — it creates skills from experience, ...",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "May 11, 2026",
+    "favicon": ""
+  },
+  {
+    "url": "https://hermes-agent.org",
+    "name": "Hermes Agent — Open-Source AI Agent with Persistent Memory",
+    "snippet": "Everything You Need in One Agent. Hermes Agent combines persistent memory, automated skill creation, and multi-platform reach into a single open-source package.",
+    "host_name": "hermes-agent.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@sathishkraju/i-switched-from-openclaw-to-hermes-agent-heres-what-nobody-told-me-5f33a746b6ca",
+    "name": "I Switched from OpenClaw to Hermes Agent. Here's What Nobody",
+    "snippet": "Hermes Agent is an open-source AI agent framework built around a single architectural principle: the agent should get better at your specific ...",
+    "host_name": "medium.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://discuss.huggingface.co/t/hermes-agent-persistent-memory-and-emergent-skills-in-an-open-source-ai-agent-framework/175173",
+    "name": "Hermes Agent: Persistent Memory and Emergent Skills in an Open",
+    "snippet": "Hermes Agent is an open-source AI agent framework developed by Nous Research under the MIT license. Since its public release in late ...",
+    "host_name": "discuss.huggingface.co",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/hermesagent/comments/1t6gf4j/megathread_hermes_agent_use_cases_what_the",
+    "name": "Hermes Agent Use Cases — What the Community is Building (May",
+    "snippet": "The unofficial community for Hermes Agent - the open-source AI assistant by Nous Research! Built to help you get stuff done. ✨ Features: • Chat ...",
+    "host_name": "www.reddit.com",
+    "rank": 5,
+    "date": "May 7, 2026",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=YBp_PXBbe80",
+    "name": "Hermes Agent NEW Desktop App - The 24/7 Self-Evolving AI Agent!",
+    "snippet": "Hermes Agent is one of the most advanced open-source AI agents right now, and in this video I showcase the brand new Hermes Desktop App that ...",
+    "host_name": "www.youtube.com",
+    "rank": 6,
+    "date": "May 9, 2026",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.mindstudio.ai/blog/hermes-agent-vs-openclaw-comparison",
+    "name": "Hermes Agent vs OpenClaw: Which Open-Source AI  - MindStudio",
+    "snippet": "Hermes Agent and OpenClaw are both open-source AI agents with persistent memory and tool integrations. Here's how they compare for real ...",
+    "host_name": "www.mindstudio.ai",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.tencentcloud.com/techpedia/144032",
+    "name": "The Best Open Source AI Agents in 2026: A Developer's Honest",
+    "snippet": "Hermes Agent. GitHub stars: 60,000+ in under 2 months | First release: 2025. Hermes Agent is the newest major entry in this comparison, and arguably ...",
+    "host_name": "www.tencentcloud.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://help.apiyi.com/en/hermes-agent-introduction-beginner-guide-en.html",
+    "name": "What is Hermes Agent? Understand this self-evolving open-source",
+    "snippet": "Hermes Agent is an open-source, \"self-evolving\" AI agent framework released by Nous Research in 2026. Its core superpower? It learns from every ...",
+    "host_name": "help.apiyi.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]
