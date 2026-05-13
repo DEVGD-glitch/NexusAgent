@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS — Chat View (Central Hub, like Cursor/Windsurf)
-// Everything happens here: chat, agent activity, build viz
+// NEXUS — Chat View (THE Central Hub)
+// Like Cursor/Windsurf: ONE conversation, everything in chat
+// Generative UI: memory cards, code results, web results, build steps
+// all render AS PART OF the conversation
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
@@ -10,24 +12,28 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useNexusStore } from "@/lib/nexus-store";
 import { nexusApi } from "@/lib/nexus-api";
-import { NexusAvatar } from "./avatar";
-import { ActivityFeed } from "./activity-feed";
-import { BuildVisualization } from "./build-viz";
+import { VRMAvatar } from "./vrm-avatar";
+import {
+  AgentActivityCard, BuildStepsCard, MemoryCard, WebResultCard,
+  CodeResultCard, KnowledgeCard,
+} from "./gen-ui";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
-  Send, Loader2, Sparkles, PanelRightOpen, Shield, Zap, Bot,
-  File, Pencil, Terminal, Check, Code2, Package, Wrench, X,
+  Send, Loader2, Sparkles, Shield, Zap, PanelRightOpen,
 } from "lucide-react";
-import type { ChatMessage, BuildStep } from "@/types/nexus";
+import type { ChatMessage, BuildStep, AgentActivity } from "@/types/nexus";
 
-// ── Chat Bubble ─────────────────────────────────────────────
+// ── Chat Bubble (with Generative UI support) ────────────────
 
-function ChatBubble({ message, avatarExpression, avatarThinking }: {
-  message: ChatMessage; avatarExpression: string; avatarThinking: boolean;
+function ChatBubble({ message, isLast, avatarExpression, avatarThinking }: {
+  message: ChatMessage;
+  isLast: boolean;
+  avatarExpression: string;
+  avatarThinking: boolean;
 }) {
   const isUser = message.role === "user";
 
@@ -39,14 +45,14 @@ function ChatBubble({ message, avatarExpression, avatarThinking }: {
       className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}
     >
       {!isUser && (
-        <div className="shrink-0 mt-1">
-          <NexusAvatar expression={avatarExpression as any} thinking={avatarThinking} size={32} />
+        <div className="shrink-0 mt-1 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
+          <Zap size={12} className="text-white" />
         </div>
       )}
-      <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+      <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
         isUser
           ? "bg-primary text-primary-foreground rounded-tr-sm"
-          : "bg-muted/60 text-foreground rounded-tl-sm border border-border/20"
+          : "bg-muted/40 text-foreground rounded-tl-sm border border-border/15"
       }`}>
         {isUser ? (
           <p>{message.content}</p>
@@ -82,6 +88,21 @@ function ChatBubble({ message, avatarExpression, avatarThinking }: {
             </ReactMarkdown>
           </div>
         )}
+
+        {/* Generative UI: embedded activity for this message */}
+        {message.activities && message.activities.length > 0 && (
+          <div className="mt-3 space-y-2">
+            {message.activities.map((a) => {
+              // Render different cards based on activity type
+              if (a.type === "agent_thinking" || a.type === "agent_action" || a.type === "task_step") {
+                return <AgentActivityCard key={a.id} activities={message.activities!.filter(x =>
+                  ["agent_thinking", "agent_action", "task_step", "tool_call", "task_done"].includes(x.type)
+                )} />;
+              }
+              return null;
+            })}
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -96,7 +117,7 @@ export function ChatView() {
     agentStatus, setAgentStatus, addActivity, clearActivity,
     avatarExpression, avatarEnabled, agentMode, setAgentMode,
     agentActivity, buildSteps, clearBuildSteps,
-    contextOpen, openContext,
+    backendConnected,
   } = useNexusStore();
 
   const [input, setInput] = useState("");
@@ -114,7 +135,7 @@ export function ChatView() {
       const id = addConversation();
       addMessage(id, {
         role: "assistant",
-        content: "Bonjour ! Je suis **NEXUS**, votre agent IA souverain.\n\nJe peux chercher, coder, memoriser, construire — tout depuis cette conversation.\n\nComment puis-je vous aider ?",
+        content: "Bonjour ! Je suis **NEXUS**, votre agent IA souverain.\n\nJe peux chercher sur le web, executer du code, memoriser, construire — tout depuis cette conversation.\n\nDites-moi ce dont vous avez besoin.",
       });
     }
   }, []);
@@ -241,106 +262,125 @@ export function ChatView() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Messages Area */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto">
-        <div className="px-6 py-6 space-y-5 max-w-3xl mx-auto">
-          {messages.map((msg, i) => (
-            <ChatBubble
-              key={msg.id}
-              message={msg}
-              avatarExpression={i === messages.length - 1 ? avatarExpression : "neutral"}
-              avatarThinking={i === messages.length - 1 && isWorking}
-            />
-          ))}
+    <div className="flex h-full">
+      {/* Avatar Zone (left) — only if enabled */}
+      {avatarEnabled && (
+        <div className="w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden">
+          <VRMAvatar
+            expression={avatarExpression}
+            thinking={isWorking}
+            speaking={streamingContent.length > 0}
+            modelUrl={undefined} /* Will use hologram until VRM model loaded */
+          />
+          {/* Avatar status overlay */}
+          <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm border border-border/20">
+              <div className={`w-2 h-2 rounded-full ${isWorking ? "bg-cyan-500 animate-pulse" : backendConnected ? "bg-emerald-500" : "bg-red-400"}`} />
+              <span className="text-[10px] text-foreground/60">
+                {isWorking ? "En reflexion..." : backendConnected ? "Pret" : "Deconnecte"}
+              </span>
+            </div>
+            <span className="text-[9px] text-muted-foreground/40">Glissez pour tourner</span>
+          </div>
+        </div>
+      )}
 
-          {/* Streaming content */}
-          {streamingContent && (
-            <div className="flex gap-3">
-              <div className="shrink-0 mt-1">
-                <NexusAvatar expression="thinking" thinking={true} size={32} />
-              </div>
-              <div className="max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed bg-muted/60 border border-border/20">
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{streamingContent}</ReactMarkdown>
+      {/* Chat Zone (center/right) */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Messages */}
+        <div ref={scrollRef} className="flex-1 overflow-y-auto">
+          <div className="px-6 py-6 space-y-4 max-w-3xl mx-auto">
+            {messages.map((msg, i) => (
+              <ChatBubble
+                key={msg.id}
+                message={msg}
+                isLast={i === messages.length - 1}
+                avatarExpression={i === messages.length - 1 ? avatarExpression : "neutral"}
+                avatarThinking={i === messages.length - 1 && isWorking}
+              />
+            ))}
+
+            {/* Streaming content */}
+            {streamingContent && (
+              <div className="flex gap-3">
+                <div className="shrink-0 mt-1 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
+                  <Zap size={12} className="text-white" />
                 </div>
-                <span className="inline-block w-1.5 h-4 bg-primary/70 animate-pulse rounded-sm ml-0.5" />
+                <div className="max-w-[85%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed bg-muted/40 border border-border/15">
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{streamingContent}</ReactMarkdown>
+                  </div>
+                  <span className="inline-block w-1.5 h-4 bg-primary/70 animate-pulse rounded-sm ml-0.5" />
+                </div>
+              </div>
+            )}
+
+            {/* Generative UI: Build steps in chat */}
+            {buildSteps.length > 0 && <BuildStepsCard steps={buildSteps} />}
+
+            {/* Generative UI: Agent activity in chat */}
+            {isWorking && agentActivity.length > 0 && (
+              <AgentActivityCard activities={agentActivity.slice(-8)} />
+            )}
+          </div>
+        </div>
+
+        {/* Input Area */}
+        <div className="px-6 py-3 border-t border-border/15 shrink-0">
+          <div className="flex gap-2 max-w-3xl mx-auto items-end">
+            <div className="flex-1 relative">
+              <Textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Parlez a NEXUS... (Enter = envoyer)"
+                className="min-h-[44px] max-h-[140px] resize-none text-sm bg-muted/15 border-border/25 focus-visible:border-primary/50 focus-visible:ring-primary/20 pr-24"
+                rows={1}
+                disabled={isWorking}
+              />
+              <div className="absolute right-2 bottom-1.5 flex items-center gap-1">
+                <Button
+                  onClick={handleRunTask}
+                  disabled={isWorking || !input.trim()}
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-[11px] gap-1 text-amber-500 hover:text-amber-400"
+                  title="Executer comme tache agent"
+                >
+                  <Sparkles size={12} />
+                  <span className="hidden sm:inline">Agent</span>
+                </Button>
+                <Button
+                  onClick={handleSend}
+                  disabled={isWorking || !input.trim()}
+                  size="sm"
+                  className="h-7 w-7 p-0 rounded-lg"
+                  title="Envoyer"
+                >
+                  {isWorking ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />}
+                </Button>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Build Visualization */}
-          {buildSteps.length > 0 && <BuildVisualization steps={buildSteps} />}
-
-          {/* Activity Feed (inline, compact) */}
-          {isWorking && agentActivity.length > 0 && (
-            <ActivityFeed activities={agentActivity.slice(-8)} />
-          )}
-        </div>
-      </div>
-
-      {/* Input Area */}
-      <div className="px-6 py-3 border-t border-border/20 shrink-0">
-        <div className="flex gap-2 max-w-3xl mx-auto items-end">
-          <div className="flex-1 relative">
-            <Textarea
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Envoyez un message... (Enter = envoyer, Shift+Enter = saut de ligne)"
-              className="min-h-[44px] max-h-[140px] resize-none text-sm bg-muted/20 border-border/30 focus-visible:border-primary/50 focus-visible:ring-primary/20 pr-24"
-              rows={1}
-              disabled={isWorking}
-            />
-            {/* Inline action buttons inside textarea */}
-            <div className="absolute right-2 bottom-1.5 flex items-center gap-1">
-              <Button
-                onClick={handleRunTask}
-                disabled={isWorking || !input.trim()}
-                variant="ghost"
-                size="sm"
-                className="h-7 px-2 text-xs gap-1 text-amber-500 hover:text-amber-400"
-                title="Executer comme tache agent (Build mode)"
+          {/* Status bar */}
+          <div className="flex items-center justify-between max-w-3xl mx-auto mt-1.5 px-1">
+            <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+              <button
+                onClick={() => setAgentMode(agentMode === "plan" ? "build" : "plan")}
+                className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
+                  agentMode === "build" ? "text-amber-500 hover:bg-amber-500/10" : "text-blue-500 hover:bg-blue-500/10"
+                }`}
               >
-                <Sparkles size={13} />
-                <span className="hidden sm:inline">Agent</span>
-              </Button>
-              <Button
-                onClick={handleSend}
-                disabled={isWorking || !input.trim()}
-                size="sm"
-                className="h-7 w-7 p-0 rounded-lg"
-                title="Envoyer"
-              >
-                {isWorking ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-              </Button>
+                {agentMode === "build" ? <Zap size={9} /> : <Shield size={9} />}
+                {agentMode === "build" ? "Build" : "Plan"}
+              </button>
+              <span className="text-muted-foreground/30">|</span>
+              <span className="font-mono">{provider}/{model}</span>
             </div>
+            <span className="text-[9px] text-muted-foreground/40">⌘K commandes · ⌘, parametres</span>
           </div>
-        </div>
-
-        {/* Status bar */}
-        <div className="flex items-center justify-between max-w-3xl mx-auto mt-1.5 px-1">
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-            <button
-              onClick={() => setAgentMode(agentMode === "plan" ? "build" : "plan")}
-              className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
-                agentMode === "build" ? "text-amber-500 hover:bg-amber-500/10" : "text-blue-500 hover:bg-blue-500/10"
-              }`}
-            >
-              {agentMode === "build" ? <Zap size={10} /> : <Shield size={10} />}
-              {agentMode === "build" ? "Build" : "Plan"}
-            </button>
-            <span className="text-muted-foreground/40">|</span>
-            <span className="font-mono">{provider}/{model}</span>
-          </div>
-          <button
-            onClick={() => openContext()}
-            className={`text-[11px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 ${contextOpen ? "text-primary" : ""}`}
-          >
-            <PanelRightOpen size={12} />
-            {contextOpen ? "Fermer" : "Details"}
-          </button>
         </div>
       </div>
     </div>
