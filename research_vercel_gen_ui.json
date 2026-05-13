@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://ai-sdk.dev/docs/ai-sdk-ui/generative-user-interfaces",
+    "name": "Generative User Interfaces - AI SDK UI",
+    "snippet": "This approach allows you to dynamically render UI components based on the model's responses, creating a more interactive and context-aware chat experience.",
+    "host_name": "ai-sdk.dev",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://community.vercel.com/t/react-example-ai-recipe-assistant-with-usechat-streamtext-tool-and-generative-ui/36065",
+    "name": "AI recipe assistant with useChat, streamText, tool(), and Generative UI",
+    "snippet": "Generative UI : Dynamically renders recipe cards, ingredient checklists, and step-by-step guides based on tool call results. Workflow. User ...",
+    "host_name": "community.vercel.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://vercel.com/academy/ai-sdk/multi-step-and-generative-ui",
+    "name": "Multi-Step & Generative UI | Vercel Academy",
+    "snippet": "In this lesson, you'll enable multi-step conversations where the AI can chain multiple tool calls together, and generative UI where tool results render as ...",
+    "host_name": "vercel.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=D48I3Nd0E5U",
+    "name": "Vercel AI SDK Overview Tutorial | Generative UI, Streaming, Agentic",
+    "snippet": "In this video, I'll be walking you through my generative AI project and diving deep into the code! We'll explore how I'm using the Vercel AI ...",
+    "host_name": "www.youtube.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://community.vercel.com/t/generative-ui-without-generating-text/6062",
+    "name": "Generative UI without generating text - AI SDK - Vercel Community",
+    "snippet": "I am currently trying to follow the example from the documents regarding tool-calling and generative UI. I would like to call the UI only without any ...",
+    "host_name": "community.vercel.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/vercel/ai/discussions/1568",
+    "name": "Inconsistency in generative UI streaming on Vercel Server  - GitHub",
+    "snippet": "The Renderer function is another { render } from 'ai/rsc daisy chained to have dynamic generative UI response in accordance to the initial LLM ...",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@akshaychame2/the-complete-guide-to-generative-ui-frameworks-in-2026-fde71c4fa8cc",
+    "name": "The Complete Guide to Generative UI Frameworks in 2026 - Medium",
+    "snippet": "Vercel AI SDK. The TypeScript toolkit for AI-powered applications. The Vercel AI SDK is the leading TypeScript toolkit with over 20 million ...",
+    "host_name": "medium.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.geldata.com/blog/generative-ui-with-vercel-ai-sdk-and-edgedb",
+    "name": "Generative UI with Vercel AI SDK and EdgeDB | Gel Blog",
+    "snippet": "The SDK enables you to define actions, tools, and UI components to interact with the AI model and render the UI based on the model's responses.",
+    "host_name": "www.geldata.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=roflJbbGn3g",
+    "name": "Let AI Render Your React Components! Vercel AI SDK UI Tutorial!",
+    "snippet": "Hello guys! In this video, we will look at the Vercel AI SDK UI. It is a React / Vue / Svelte SDK to implement AI features in your apps.",
+    "host_name": "www.youtube.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://blog.logrocket.com/unified-ai-interfaces-vercel-sdk",
+    "name": "How to build unified AI interfaces using the Vercel AI SDK",
+    "snippet": "Learn how to use the Vercel AI SDK to build modern, multimodal frontend apps with streaming, function calling, image analysis, voice output, ...",
+    "host_name": "blog.logrocket.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

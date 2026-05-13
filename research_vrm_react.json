@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://wawasensei.dev/tuto/vrm-avatar-with-threejs-react-three-fiber-and-mediapipe",
+    "name": "How to Create a VTuber Studio with Three.js, React & VRM",
+    "snippet": "In this tutorial, you'll learn what how to use VRMs with React Three Fiber and use Mediapipe to control an avatar with our webcam.",
+    "host_name": "wawasensei.dev",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/pixiv/three-vrm",
+    "name": "pixiv/three-vrm: Use VRM on Three.js - GitHub",
+    "snippet": "To use three-vrm with WebGPURenderer, specify the WebGPU-compatible MToonNodeMaterial for the materialType option of MToonMaterialLoaderPlugin.",
+    "host_name": "github.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.w3.org/2019/09/Meetup/YutakaObuchi_VRM.pdf",
+    "name": "[PDF] Implementation of VRM on Three.js - W3C",
+    "snippet": "Today I'm gonna talk about... - Overview of VRM, A format for 3D avatar. - VRM Implementation on Web, especially materials. - Performance / ...",
+    "host_name": "www.w3.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=pGMKIyALcK0",
+    "name": "Build a 3D Portfolio with React Three Fiber - Avatar animations",
+    "snippet": "Let's build a 3D portfolio with Three JS and React Three Fiber in the style of David Heckhoff. In this first chapter, we will: - create your ...",
+    "host_name": "www.youtube.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://dev.to/saitoeku3/how-to-display-3d-humanoid-avatar-with-react-5db2",
+    "name": "How to display 3D humanoid avatar with React - DEV Community",
+    "snippet": "@pixiv/three-vrm is a JavaScript library to use VRM on Three.js. This enables to render VRM on web applications like VRoid Hub. VRoid Hub ...",
+    "host_name": "dev.to",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pixiv.github.io/three-vrm/docs/modules/three-vrm.html",
+    "name": "pixiv/three-vrm - GitHub Pages",
+    "snippet": "To use three-vrm with WebGPURenderer, specify the WebGPU-compatible MToonNodeMaterial for the materialType option of MToonMaterialLoaderPlugin.",
+    "host_name": "pixiv.github.io",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=6MP48RFhe2Y",
+    "name": "How to Create a VTuber Studio with Three.js, React & VRM - YouTube",
+    "snippet": "Share your videos with friends, family, and the world.",
+    "host_name": "www.youtube.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.npmjs.com/package/@pixiv/three-vrm-animation?activeTab=code",
+    "name": "pixiv/three-vrm-animation - NPM",
+    "snippet": "The implementation of VRM Animation. Latest version: 3.5.2, last published: 21 days ago. Start using @pixiv/three-vrm-animation in your ...",
+    "host_name": "www.npmjs.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@subhanhafiz12/integrating-3d-scenes-in-the-web-using-react-three-fiber-c5829f45acfa",
+    "name": "Integrating 3D Scenes in the Web using React Three Fiber - Medium",
+    "snippet": "In this tutorial, we'll explore how to up the cool quotient of our websites by integrating 3D scenes into them using React Three Fiber (R3F).",
+    "host_name": "medium.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://note.com/chartier_lab/n/nf8adbdd5438d",
+    "name": "ReactでVRMを使うための準備｜chartier, Ph.D. - しゃる - note",
+    "snippet": "\"React Three Fiberは，Reactのコンポーネントでthree.jsの3次元空間を組み立てて，3Dオブジェクトが操作できるライブラリ\"です．ReactでThree.jsを扱うこと ...",
+    "host_name": "note.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

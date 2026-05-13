@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://v0.app",
+    "name": "v0 by Vercel - Build Agents, Apps, and Websites with AI",
+    "snippet": "Your collaborative AI assistant to design, iterate, and scale full-stack applications for the web.",
+    "host_name": "v0.app",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://vercel.com/blog/announcing-v0-generative-ui",
+    "name": "Announcing v0: Generative UI - Vercel",
+    "snippet": "We call it Generative UI—combining the best practices of frontend development with the potential of generative AI. The interest in v0 has ...",
+    "host_name": "vercel.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://vercel.com/blog/v0-app",
+    "name": "v0.dev -> v0.app - Vercel",
+    "snippet": "v0.dev is now v0.app, the AI builder for everyone: founders, designers, developers, marketers, sales, finance, and more.",
+    "host_name": "vercel.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=61st-JJSvYA",
+    "name": "Vercel v0 AI: Instant UI Design, Iterate and Publish - YouTube",
+    "snippet": "Transform your UI Development with AI! In this video, we explore the power of V0 by Vercel, a groundbreaking tool that allows you to create, ...",
+    "host_name": "www.youtube.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.baytechconsulting.com/blog/ai-ui-generator-how-businesses-can-leverage-vercels-v0-dev",
+    "name": "AI UI Generator How Businesses Can Leverage Vercel's v0.dev",
+    "snippet": "v0.dev is a Generative UI tool built by Vercel, the company behind Next.js. It allows users to generate code for user interfaces through natural-language ...",
+    "host_name": "www.baytechconsulting.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.mindstudio.ai/blog/what-is-vercel-v0",
+    "name": "What Is Vercel v0? AI-Powered UI Generation Explained | MindStudio",
+    "snippet": "Vercel v0 generates React components and UI layouts from text prompts. Here's what it is, what it's good at, and where it fits in a dev workflow ...",
+    "host_name": "www.mindstudio.ai",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.seeles.ai/resources/blogs/v0-dev-ai-ui-generation-guide",
+    "name": "v0.dev: AI-Powered UI Generation and Creative Development",
+    "snippet": "v0.dev is an AI-powered UI generation platform developed by Vercel that transforms natural language prompts into production-ready React ...",
+    "host_name": "www.seeles.ai",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://medium.com/@officewajidali/v0-dev-revolutionizing-front-end-development-with-ai-17347f4f1d88",
+    "name": "How v0.dev by Vercel Revolutionizes AI-Powered UI Development",
+    "snippet": "Imagine building a stunning, responsive UI without writing a single line of code — just by describing what you want in plain English.",
+    "host_name": "medium.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/nextjs/comments/1htonnx/where_is_the_v0dev_generative_ui_builder",
+    "name": "Where is the v0.dev Generative UI builder? : r/nextjs - Reddit",
+    "snippet": "You can still generate UI (eg ask for create me a form) with v0. It just can now also write backend code, animations, and other things.",
+    "host_name": "www.reddit.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://refine.dev/blog/vercel-v0",
+    "name": "Vercel v0 - AI-Powered UI Generator - Refine",
+    "snippet": "Let's explore Vercel v0, an AI-powered UI generator that helps developers quickly scaffold UI elements.",
+    "host_name": "refine.dev",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

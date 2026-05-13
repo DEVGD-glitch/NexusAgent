@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://github.com/pixiv/three-vrm",
+    "name": "pixiv/three-vrm: Use VRM on Three.js - GitHub",
+    "snippet": "To use three-vrm with WebGPURenderer, specify the WebGPU-compatible MToonNodeMaterial for the materialType option of MToonMaterialLoaderPlugin.",
+    "host_name": "github.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://pixiv.github.io/three-vrm/docs",
+    "name": "@pixiv/three-vrm - GitHub Pages",
+    "snippet": "Setup renderer, camera, scene ... // Create a GLTFLoader - The loader for loading VRM models ... See the Three.js document if you are not familiar with Three.js ...",
+    "host_name": "pixiv.github.io",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/pixiv/three-vrm/releases",
+    "name": "Releases · pixiv/three-vrm - GitHub",
+    "snippet": "Use VRM on Three.js ... Please take care if you use models with customized rimLightingMixFactor , or if your app allows users to load and render arbitrary models.",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.1.0/lib",
+    "name": "@pixiv/three-vrm CDN by jsDelivr - A free, fast, and reliable Open",
+    "snippet": "pixiv/three-vrm CDN by jsDelivr - A free, fast, and reliable Open Source CDN for npm and GitHub.",
+    "host_name": "cdn.jsdelivr.net",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://app.unpkg.com/@pixiv/three-vrm/files/lib",
+    "name": "pixiv/three-vrm - UNPKG",
+    "snippet": "VRM file loader for three.js. github.com/pixiv/three-vrm · pixiv/three-vrm ... text/javascript, 988 kB. three-vrm.min.cjs. text/javascript, 154 kB. three-vrm ...",
+    "host_name": "app.unpkg.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.jsdelivr.com/package/npm/@pixiv/three-vrm-core",
+    "name": "pixiv/three-vrm-core - A CDN for npm and GitHub - jsDelivr",
+    "snippet": "A free, fast, and reliable CDN for @pixiv/three-vrm-core. The implementation of core features of VRM, for @pixiv/three-vrm.",
+    "host_name": "www.jsdelivr.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.npmjs.com/package/@pixiv/three-vrm-animation?activeTab=code",
+    "name": "pixiv/three-vrm-animation - NPM",
+    "snippet": "The implementation of VRM Animation. Latest version: 3.5.2, last published: 21 days ago. Start using @pixiv/three-vrm-animation in your ...",
+    "host_name": "www.npmjs.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://app.soos.io/research/packages/NPM/@pixiv/three-vrm",
+    "name": "NPM's @pixiv/three-vrm - SOOS",
+    "snippet": "@pixiv/three-vrm is a NPM package created on March 12, 2026. The package can be summarized as: VRM file loader for three.js. NPM's @pixiv/three-vrm package ...",
+    "host_name": "app.soos.io",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=257aXLYnKoE",
+    "name": "Daniils Petrovs - Three-VRM: live 3D avatars in the browser - YouTube",
+    "snippet": "Most web developers already know how to build interactive experiences using plain HTML and CSS with some JS. Some had the chance to do ...",
+    "host_name": "www.youtube.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.w3.org/2019/09/Meetup/YutakaObuchi_VRM.pdf",
+    "name": "[PDF] Implementation of VRM on Three.js - W3C",
+    "snippet": "Today I'm gonna talk about... - Overview of VRM, A format for 3D avatar. - VRM Implementation on Web, especially materials. - Performance / ...",
+    "host_name": "www.w3.org",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://medium.com/@akshaychame2/the-complete-guide-to-generative-ui-frameworks-in-2026-fde71c4fa8cc",
+    "name": "The Complete Guide to Generative UI Frameworks in 2026 - Medium",
+    "snippet": "Instead of AI systems returning plain text that users must parse and act upon, Generative UI enables AI agents to create rich, interactive ...",
+    "host_name": "medium.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://ai.plainenglish.io/ui-for-ai-agents-design-build-guide-2026-cb9a325a1d17",
+    "name": "UI for AI Agents: Design & Build Guide (2026) | by Eira Wexford",
+    "snippet": "Generative UI means software interfaces are no longer hard-coded; they are drawn in real-time based on the user's intent, context, and history.",
+    "host_name": "ai.plainenglish.io",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.copilotkit.ai/blog/the-developer-s-guide-to-generative-ui-in-2026",
+    "name": "The Developer's Guide to Generative UI in 2026 | Blog - CopilotKit",
+    "snippet": "Generative UI is the idea that allows agents to influence the interface at runtime, so the UI can change as context changes. This is usually ...",
+    "host_name": "www.copilotkit.ai",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://appinventiv.com/blog/ai-ui-replacing-apps-and-buttons",
+    "name": "AI Agent-Driven UIs: Replacing App Menus and Buttons - Appinventiv",
+    "snippet": "Explore how AI agent-driven UIs are transforming app design by replacing traditional menus and buttons with intuitive, dynamic interfaces ...",
+    "host_name": "appinventiv.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://developers.googleblog.com/a2ui-v0-9-generative-ui",
+    "name": "A2UI v0.9: The New Standard for Portable, Framework-Agnostic",
+    "snippet": "Generative UI allows AI agents to generate tailored UI widgets in real-time, matching the interface to the user's specific interaction.",
+    "host_name": "developers.googleblog.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.linkedin.com/pulse/generative-ui-moving-beyond-buttons-designing-ai-interfaces-mvntc",
+    "name": "Moving Beyond Buttons. Designing for Generative AI Interfaces.",
+    "snippet": "The interface is no longer a finished artifact. It is becoming a runtime response to the context and intent. This shift has a name: Generative ...",
+    "host_name": "www.linkedin.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/AI_Agents/comments/1ljv9wl/after_building_20_generative_ui_agents_heres_what",
+    "name": "After building 20+ Generative UI agents, here's what I learned - Reddit",
+    "snippet": "If you're building generative interfaces or structured UI from AI output — I'd love feedback, ideas, or contributors!",
+    "host_name": "www.reddit.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://raw.studio/blog/the-end-of-the-user-interface-how-ai-agents-are-rewriting-ux",
+    "name": "The End of the User Interface? How AI Agents Are Rewriting UX",
+    "snippet": "In this article, we'll examine why the classic UI model is fading, how AI agents are forging new interaction methods, and what this means for ...",
+    "host_name": "raw.studio",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/CopilotKit/generative-ui",
+    "name": "Generative UI examples for: AG-UI, A2UI/Open-JSON-UI, and MCP",
+    "snippet": "Generative UI is a pattern in which parts of the user interface are generated, selected, or controlled by an AI agent at runtime rather than being fully ...",
+    "host_name": "github.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://uxplanet.org/the-end-of-the-user-interface-31a787c3ae94",
+    "name": "The End of the User Interface?. The AI Agent Revolution  - UX Planet",
+    "snippet": "The need to design buttons, menus, and ... Second, and more crucially, Generative AI can create dynamic, adaptive interfaces in real time.",
+    "host_name": "uxplanet.org",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://openai.com/index/introducing-codex",
+    "name": "Introducing Codex - OpenAI",
+    "snippet": "Codex can perform tasks for you such as writing features, answering questions about your codebase, fixing bugs, and proposing pull requests for review.",
+    "host_name": "openai.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://developers.openai.com/codex/cli/features",
+    "name": "Codex CLI Features - OpenAI Developers",
+    "snippet": "Codex launches into a full-screen terminal UI that can read your repository, make edits, and run commands as you iterate together. Use it whenever you want a ...",
+    "host_name": "developers.openai.com",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/openai/codex",
+    "name": "openai/codex: Lightweight coding agent that runs in your terminal",
+    "snippet": "Codex CLI is a coding agent from OpenAI that runs locally on your computer. ... If you want Codex in your code editor (VS Code, Cursor, Windsurf), install in your ...",
+    "host_name": "github.com",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://developers.openai.com/blog/openai-for-developers-2025",
+    "name": "OpenAI for Developers in 2025",
+    "snippet": "The open-source Codex CLI (GitHub) brought agent-style coding directly into local environments, enabling developers to run Codex over real ...",
+    "host_name": "developers.openai.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://aiagentindex.mit.edu/2025/codex",
+    "name": "Codex — 2025 AI Agent Index",
+    "snippet": "Short description of agent: \"Codex CLI is a coding agent that you can run locally from your terminal and that can read, modify, and run code on your machine ...",
+    "host_name": "aiagentindex.mit.edu",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.reddit.com/r/codex/comments/1qu4z4n/cli_vs_gui_for_coding_agents_thoughts_on_the_new",
+    "name": "CLI vs GUI for Coding Agents - thoughts on the new Codex App",
+    "snippet": "I think CLI/TUI is still the best execution environment for AI agents, but not necessarily the most efficient human-AI interface. For vibe ...",
+    "host_name": "www.reddit.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=GmwccYD-40o",
+    "name": "How To Use Openai Codex: A Complete 2025 Workflow - YouTube",
+    "snippet": "... agents, developer tools, and workflows. Comment with your stack and ... Openai Codex. #OpenaiCodex #CodingAgents #AIForDevelopers #VSCode #CLI #",
+    "host_name": "www.youtube.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://developers.openai.com/codex/cli",
+    "name": "Codex CLI - OpenAI Developers",
+    "snippet": "Codex CLI is OpenAI's coding agent that you can run locally from your terminal. It can read, change, and run code on your machine in the selected directory.",
+    "host_name": "developers.openai.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://alirezarezvani.medium.com/codex-cli-hits-ga-a-practical-setup-safety-playbook-for-engineering-teams-2025-aa478ecf3c5c",
+    "name": "On Codex CLI Hits GA: A Practical Setup & Safety Playbook for",
+    "snippet": "On Codex CLI Hits GA: A Practical Setup & Safety Playbook for Engineering Teams (2025) OpenAI's terminal-first coding agent terminal-first ...",
+    "host_name": "alirezarezvani.medium.com",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.augmentcode.com/learn/openai-codex-cli-enterprise",
+    "name": "OpenAI Codex CLI ships v0.116.0 with enterprise features",
+    "snippet": "Terminal-based AI agents are becoming the default interface for developers who spend most of their day in a shell. Codex CLI fits that workflow ...",
+    "host_name": "www.augmentcode.com",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]

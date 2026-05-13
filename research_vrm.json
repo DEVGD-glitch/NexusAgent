@@ -1,0 +1,92 @@
+[
+  {
+    "url": "https://www.reddit.com/r/vtubertech/comments/1rmd7wj/anyone_interested_a_desktop_avatar_app_for_vrm",
+    "name": "Anyone interested a desktop avatar app for VRM models, that can",
+    "snippet": "Anyone interested a desktop avatar app for VRM models, that can play animations (VRMA) and has a HTTP API so external apps can control it?",
+    "host_name": "www.reddit.com",
+    "rank": 0,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://vrm.dev/en/showcase",
+    "name": "What applications can use VRM files?",
+    "snippet": "With VRoid Hub, users can post their own 3D models to make their characters come alive thanks to a vast range of animations available on the character's profile ...",
+    "host_name": "vrm.dev",
+    "rank": 1,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://gitnux.org/best/vrm-software",
+    "name": "Top 10 Best Vrm Software of 2026 - Gitnux",
+    "snippet": "VMagicMirror is a free, open-source desktop application that uses a standard webcam to track and animate VRM avatars in real-time, capturing ...",
+    "host_name": "gitnux.org",
+    "rank": 2,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://avatar.viverse.com/avatar/what-is-vrm",
+    "name": "VRM Avatar Maker, Download Free VRM Models | VIVERSE",
+    "snippet": "VRM models is the standardized 3D file format for VR avatars. Download free VRM avatars or create your own VRM characters using the VRM avatar maker.",
+    "host_name": "avatar.viverse.com",
+    "rank": 3,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://store.steampowered.com/app/1895630/VRM_Posing_Desktop",
+    "name": "VRM Posing Desktop on Steam",
+    "snippet": "This is a highly functional posing tool for Vtubers, 3D modelers, and illustrators to use.Make your VRM character take various poses using poses you created or ...",
+    "host_name": "store.steampowered.com",
+    "rank": 4,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://github.com/blck-snwmn/vrm-desktop",
+    "name": "blck-snwmn/vrm-desktop - GitHub",
+    "snippet": "A PoC (Proof of Concept) application for displaying VRM models and playing VRMA animations in a web browser. - blck-snwmn/vrm-desktop.",
+    "host_name": "github.com",
+    "rank": 5,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.opensourceavatars.com",
+    "name": "Open Source Avatars - Free 3D VRM Avatars for VR, Gaming",
+    "snippet": "Download 300+ free, high-quality 3D VRM avatars for VR, gaming, VTubing, and metaverse. CC0 licensed open-source avatars for any project.",
+    "host_name": "www.opensourceavatars.com",
+    "rank": 6,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://www.youtube.com/watch?v=hjNbVj5zTG0",
+    "name": "make your 3d vtuber model come to life with vrm posing desktop!",
+    "snippet": "... vrm posing desktop: https://store.steampowered.com/app/1895630/VRM_Posing_Desktop/ obs: https ... website!! https://www.trashcangoddess ...",
+    "host_name": "www.youtube.com",
+    "rank": 7,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://kudos.tv/blogs/stream-blog/the-best-vtuber-software?srsltid=AfmBOoruzD5drJewzpudUEEaGqN-QU5ucUgkMV5xieA5N-CxPBYhCR9n",
+    "name": "Best VTuber Software in 2026: Free & Paid Tools for 2D and 3D",
+    "snippet": "VSeeFace is a free face-tracking application for 3D VTuber avatars. It's the 3D equivalent of VTube Studio — you load a VRM model (created in VRoid Studio, ...",
+    "host_name": "kudos.tv",
+    "rank": 8,
+    "date": "",
+    "favicon": ""
+  },
+  {
+    "url": "https://vrm.dev/en/vrm/vrm_features",
+    "name": "Features and contents of VRM",
+    "snippet": "\"VRM\" proposes a platform-independent 3D avatar file format. Portability​. ❗ Textures and materials are in separate files, and absolute paths are included ...",
+    "host_name": "vrm.dev",
+    "rank": 9,
+    "date": "",
+    "favicon": ""
+  }
+]
