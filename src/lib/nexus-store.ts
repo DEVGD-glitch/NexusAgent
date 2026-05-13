@@ -1,46 +1,56 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Web — Global Store (Zustand)
+// NEXUS — Global Store (Zustand) — Chat-Centric Architecture
 // ═══════════════════════════════════════════════════════════════
 
 import { create } from "zustand";
-import type { PanelId, AgentMode, AvatarExpression, ChatMessage, AgentActivity, BuildStep, AgentInstance, Conversation } from "@/types/nexus";
+import type {
+  ViewId, AgentMode, AgentStatus, AvatarExpression,
+  ChatMessage, AgentActivity, BuildStep, AgentInstance,
+  Conversation, ContextTab,
+} from "@/types/nexus";
 
 function uid(): string {
   return crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
 }
 
 interface NexusState {
-  // ── Navigation ────────────────────────────────────────────
-  activePanel: PanelId;
-  sidebarCollapsed: boolean;
+  // ── Navigation (simplified) ───────────────────────────────
+  activeView: ViewId;
+  contextOpen: boolean;
+  contextTab: ContextTab;
+  settingsOpen: boolean;
+  commandOpen: boolean;
 
   // ── Conversations ─────────────────────────────────────────
   conversations: Conversation[];
   activeConversationId: string | null;
 
-  // ── LLM ───────────────────────────────────────────────────
+  // ── LLM (default: free ZhipuAI) ──────────────────────────
   provider: string;
   model: string;
 
   // ── Agent State ───────────────────────────────────────────
   agentMode: AgentMode;
-  agentStatus: "idle" | "thinking" | "working";
+  agentStatus: AgentStatus;
   agentActivity: AgentActivity[];
   buildSteps: BuildStep[];
   agents: AgentInstance[];
-  activeAgentId: string | null;
 
   // ── Avatar ────────────────────────────────────────────────
   avatarEnabled: boolean;
   avatarExpression: AvatarExpression;
 
-  // ── UI ────────────────────────────────────────────────────
-  darkMode: boolean;
+  // ── Connection ────────────────────────────────────────────
   backendConnected: boolean;
 
   // ── Actions ───────────────────────────────────────────────
-  setActivePanel: (p: PanelId) => void;
-  toggleSidebar: () => void;
+  setActiveView: (v: ViewId) => void;
+  toggleContext: () => void;
+  setContextTab: (t: ContextTab) => void;
+  openContext: (t?: ContextTab) => void;
+  closeContext: () => void;
+  setSettingsOpen: (o: boolean) => void;
+  setCommandOpen: (o: boolean) => void;
 
   addConversation: () => string;
   setActiveConversation: (id: string) => void;
@@ -50,7 +60,7 @@ interface NexusState {
   setModel: (m: string) => void;
 
   setAgentMode: (m: AgentMode) => void;
-  setAgentStatus: (s: "idle" | "thinking" | "working") => void;
+  setAgentStatus: (s: AgentStatus) => void;
   addActivity: (a: Omit<AgentActivity, "id" | "timestamp">) => void;
   clearActivity: () => void;
   addBuildStep: (s: Omit<BuildStep, "id" | "timestamp">) => void;
@@ -59,37 +69,40 @@ interface NexusState {
 
   addAgent: (a: AgentInstance) => void;
   updateAgentStatus: (id: string, status: AgentInstance["status"], progress?: number) => void;
-  setActiveAgent: (id: string | null) => void;
 
   toggleAvatar: () => void;
   setAvatarExpression: (e: AvatarExpression) => void;
-
-  setDarkMode: (d: boolean) => void;
   setBackendConnected: (c: boolean) => void;
 }
 
 export const useNexusStore = create<NexusState>((set) => ({
   // ── Initial State ─────────────────────────────────────────
-  activePanel: "chat",
-  sidebarCollapsed: false,
+  activeView: "chat",
+  contextOpen: false,
+  contextTab: "activity",
+  settingsOpen: false,
+  commandOpen: false,
   conversations: [],
   activeConversationId: null,
-  provider: "gemini",
-  model: "gemini-2.5-flash",
+  provider: "zhipuai",
+  model: "glm-4-flash",
   agentMode: "plan",
   agentStatus: "idle",
   agentActivity: [],
   buildSteps: [],
   agents: [],
-  activeAgentId: null,
   avatarEnabled: true,
   avatarExpression: "neutral",
-  darkMode: true,
   backendConnected: false,
 
   // ── Actions ───────────────────────────────────────────────
-  setActivePanel: (p) => set({ activePanel: p }),
-  toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+  setActiveView: (v) => set({ activeView: v }),
+  toggleContext: () => set((s) => ({ contextOpen: !s.contextOpen })),
+  setContextTab: (t) => set({ contextTab: t, contextOpen: true }),
+  openContext: (t) => set({ contextOpen: true, ...(t ? { contextTab: t } : {}) }),
+  closeContext: () => set({ contextOpen: false }),
+  setSettingsOpen: (o) => set({ settingsOpen: o }),
+  setCommandOpen: (o) => set({ commandOpen: o }),
 
   addConversation: () => {
     const id = uid();
@@ -143,11 +156,8 @@ export const useNexusStore = create<NexusState>((set) => ({
         a.id === id ? { ...a, status, ...(progress !== undefined ? { progress } : {}) } : a
       ),
     })),
-  setActiveAgent: (id) => set({ activeAgentId: id }),
 
   toggleAvatar: () => set((s) => ({ avatarEnabled: !s.avatarEnabled })),
   setAvatarExpression: (e) => set({ avatarExpression: e }),
-
-  setDarkMode: (d) => set({ darkMode: d }),
   setBackendConnected: (c) => set({ backendConnected: c }),
 }));

@@ -1,12 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Web — WebSocket Hook for Real-time Agent Events
+// NEXUS — WebSocket Hook (Real-time Agent Events)
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
 import { useNexusStore } from "@/lib/nexus-store";
-import type { AvatarExpression, BuildStep } from "@/types/nexus";
+import type { AvatarExpression } from "@/types/nexus";
 
 const WS_URL = process.env.NEXT_PUBLIC_NEXUS_WS || "ws://127.0.0.1:8081/ws";
 
@@ -21,7 +21,6 @@ export function useNexusWebSocket() {
   const reconnectRef = useRef<ReturnType<typeof setTimeout>>();
   const storeRef = useRef(useNexusStore.getState());
 
-  // Keep store ref updated
   useEffect(() => {
     storeRef.current = useNexusStore.getState();
   });
@@ -55,36 +54,24 @@ export function useNexusWebSocket() {
         store.setAvatarExpression("joy");
         store.addActivity({ type: "file_create", content: String(data.content || ""), details: String(data.path || "") });
         store.addBuildStep({
-          type: "file_create",
-          label: `Creation: ${data.path || "fichier"}`,
-          detail: String(data.content || ""),
-          status: "building",
-          progress: 0,
-          language: String(data.language || ""),
+          type: "file_create", label: `Creation: ${data.path || "fichier"}`,
+          detail: String(data.content || ""), status: "building", progress: 0, language: String(data.language || ""),
         });
         break;
 
       case "file_edit":
         store.addActivity({ type: "file_edit", content: String(data.content || ""), details: String(data.path || "") });
         store.addBuildStep({
-          type: "file_edit",
-          label: `Modification: ${data.path || "fichier"}`,
-          detail: String(data.content || ""),
-          status: "building",
-          progress: 0,
-          language: String(data.language || ""),
+          type: "file_edit", label: `Modification: ${data.path || "fichier"}`,
+          detail: String(data.content || ""), status: "building", progress: 0, language: String(data.language || ""),
         });
         break;
 
       case "code_building":
         store.addBuildStep({
-          type: "code_line",
-          label: String(data.label || "Construction..."),
-          detail: String(data.detail || ""),
-          status: "building",
-          progress: Number(data.progress || 0),
-          language: String(data.language || ""),
-          content: String(data.code || ""),
+          type: "code_line", label: String(data.label || "Construction..."),
+          detail: String(data.detail || ""), status: "building",
+          progress: Number(data.progress || 0), language: String(data.language || ""), content: String(data.code || ""),
         });
         break;
 
@@ -121,17 +108,10 @@ export function useNexusWebSocket() {
     try {
       const ws = new WebSocket(WS_URL);
 
-      ws.onopen = () => {
-        storeRef.current.setBackendConnected(true);
-      };
+      ws.onopen = () => { storeRef.current.setBackendConnected(true); };
 
       ws.onmessage = (event) => {
-        try {
-          const wsEvent: WSEvent = JSON.parse(event.data);
-          handleEvent(wsEvent);
-        } catch {
-          // ignore malformed messages
-        }
+        try { handleEvent(JSON.parse(event.data)); } catch { /* ignore */ }
       };
 
       ws.onclose = () => {
@@ -139,9 +119,7 @@ export function useNexusWebSocket() {
         reconnectRef.current = setTimeout(connect, 3000);
       };
 
-      ws.onerror = () => {
-        ws.close();
-      };
+      ws.onerror = () => { ws.close(); };
 
       wsRef.current = ws;
     } catch {

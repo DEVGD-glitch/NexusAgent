@@ -1,25 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Web — Type Definitions
+// NEXUS — Type Definitions (Chat-Centric Architecture)
 // ═══════════════════════════════════════════════════════════════
 
-export type PanelId = "chat" | "agents" | "code" | "memory" | "knowledge" | "tools" | "security" | "settings";
+// ── Views ──────────────────────────────────────────────────────
+export type ViewId = "chat" | "code";
 
-export type AgentMode = "plan" | "build";
-
-export type AgentStatus = "idle" | "thinking" | "working" | "completed" | "failed";
-
-export type AvatarExpression = "neutral" | "joy" | "thinking" | "surprise" | "relaxed" | "sad" | "angry";
-
-// ── Chat ──────────────────────────────────────────────────────
-
+// ── Chat ───────────────────────────────────────────────────────
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
   timestamp: number;
-  provider?: string;
-  model?: string;
-  tokens?: number;
+  /** Embedded tool calls / agent activities inside the message */
+  activities?: AgentActivity[];
 }
 
 export interface Conversation {
@@ -30,8 +23,7 @@ export interface Conversation {
   updatedAt: number;
 }
 
-// ── Agent Activity (real-time) ────────────────────────────────
-
+// ── Agent Activity (inline in chat, not separate panel) ────────
 export type ActivityType =
   | "agent_thinking"
   | "agent_action"
@@ -56,8 +48,7 @@ export interface AgentActivity {
   progress?: number;
 }
 
-// ── Brick-by-Brick Building ───────────────────────────────────
-
+// ── Build Steps (shown contextually in chat) ───────────────────
 export type BuildStatus = "pending" | "building" | "completed" | "error";
 
 export interface BuildStep {
@@ -72,7 +63,55 @@ export interface BuildStep {
   language?: string;
 }
 
-// ── Agent Instances ───────────────────────────────────────────
+// ── Agent Mode ─────────────────────────────────────────────────
+export type AgentMode = "plan" | "build";
+export type AgentStatus = "idle" | "thinking" | "working";
+
+// ── Avatar ─────────────────────────────────────────────────────
+export type AvatarExpression = "neutral" | "joy" | "thinking" | "surprise" | "relaxed" | "sad" | "angry";
+
+// ── Context Panel (right sidebar) ──────────────────────────────
+export type ContextTab = "activity" | "memory" | "knowledge" | "agents";
+
+// ── LLM Providers ──────────────────────────────────────────────
+export interface ProviderInfo {
+  id: string;
+  name: string;
+  tier: "free" | "paid" | "local";
+  models: string[];
+  requiresKey: boolean;
+}
+
+// ── API Response Types ─────────────────────────────────────────
+export interface CodeResult {
+  stdout: string;
+  stderr: string;
+  exit_code: number;
+  timed_out: boolean;
+  execution_time_ms: number;
+}
+
+export interface SystemStatus {
+  agent: string;
+  version: string;
+  status: string;
+  environment: string;
+  providers_configured: string[];
+  uptime_seconds: number;
+}
+
+export interface MemoryEntry {
+  id: string;
+  text: string;
+  metadata: Record<string, unknown>;
+  distance: number;
+}
+
+export interface KnowledgeEntity {
+  name: string;
+  type: string;
+  properties: Record<string, unknown>;
+}
 
 export interface AgentInstance {
   id: string;
@@ -85,72 +124,11 @@ export interface AgentInstance {
   completedAt?: number;
 }
 
-// ── LLM Providers ─────────────────────────────────────────────
-
-export interface ProviderInfo {
+// ── Command Palette Actions ────────────────────────────────────
+export interface CommandAction {
   id: string;
-  name: string;
-  available: boolean;
-  requiresKey: boolean;
-  defaultModel: string;
-  models: string[];
-  lastError?: string;
-  tier: "free" | "paid" | "local";
-}
-
-// ── Memory ────────────────────────────────────────────────────
-
-export interface MemoryEntry {
-  id: string;
-  text: string;
-  metadata: Record<string, unknown>;
-  distance: number;
-}
-
-export interface MemoryNamespace {
-  name: string;
-  count: number;
-}
-
-// ── Knowledge ─────────────────────────────────────────────────
-
-export interface KnowledgeEntity {
-  name: string;
-  type: string;
-  properties: Record<string, unknown>;
-}
-
-export interface KnowledgeRelation {
-  source: string;
-  target: string;
-  relation: string;
-}
-
-// ── Code Execution ────────────────────────────────────────────
-
-export interface CodeResult {
-  stdout: string;
-  stderr: string;
-  exit_code: number;
-  timed_out: boolean;
-  execution_time_ms: number;
-}
-
-// ── System Status ─────────────────────────────────────────────
-
-export interface SystemStatus {
-  agent: string;
-  version: string;
-  status: string;
-  environment: string;
-  providers_configured: string[];
-  uptime_seconds: number;
-}
-
-// ── WebSocket Events ──────────────────────────────────────────
-
-export interface WSEvent {
-  type: ActivityType;
-  data: Record<string, unknown>;
-  timestamp: number;
+  label: string;
+  shortcut?: string;
+  icon?: string;
+  action: () => void;
 }

@@ -1,47 +1,42 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Web — Main Page (Agent-First Workspace)
+// NEXUS — Main Page (Chat-Centric Layout)
+// Like Cursor/Windsurf: ActivityBar + Chat + ContextPanel
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
 
 import { useNexusStore } from "@/lib/nexus-store";
 import { useNexusWebSocket } from "@/hooks/use-nexus-ws";
-import { NexusSidebar } from "@/components/nexus/sidebar";
-import { ChatPanel } from "@/components/nexus/chat-panel";
-import { AgentsPanel } from "@/components/nexus/agents-panel";
-import { CodePanel } from "@/components/nexus/code-panel";
-import { MemoryPanel } from "@/components/nexus/memory-panel";
-import { KnowledgePanel } from "@/components/nexus/knowledge-panel";
-import { ToolsPanel } from "@/components/nexus/tools-panel";
-import { SecurityPanel } from "@/components/nexus/security-panel";
-import { SettingsPanel } from "@/components/nexus/settings-panel";
-import type { PanelId } from "@/types/nexus";
-
-const PANELS: Record<PanelId, React.ComponentType> = {
-  chat: ChatPanel,
-  agents: AgentsPanel,
-  code: CodePanel,
-  memory: MemoryPanel,
-  knowledge: KnowledgePanel,
-  tools: ToolsPanel,
-  security: SecurityPanel,
-  settings: SettingsPanel,
-};
+import { ActivityBar } from "@/components/nexus/activity-bar";
+import { ChatView } from "@/components/nexus/chat-view";
+import { CodeWorkspace } from "@/components/nexus/code-workspace";
+import { ContextPanel } from "@/components/nexus/context-panel";
+import { CommandPalette } from "@/components/nexus/command-palette";
+import { SettingsDialog } from "@/components/nexus/settings-dialog";
 
 export default function NexusApp() {
-  const { activePanel } = useNexusStore();
+  const { activeView } = useNexusStore();
 
-  // Initialize WebSocket connection for real-time events
+  // WebSocket for real-time agent events
   useNexusWebSocket();
-
-  const Panel = PANELS[activePanel] || ChatPanel;
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background">
-      <NexusSidebar />
+      {/* Activity Bar (minimal left) */}
+      <ActivityBar />
+
+      {/* Main Content Area */}
       <main className="flex-1 min-w-0 overflow-hidden">
-        <Panel />
+        {activeView === "chat" && <ChatView />}
+        {activeView === "code" && <CodeWorkspace />}
       </main>
+
+      {/* Context Panel (slide-in right) */}
+      <ContextPanel />
+
+      {/* Overlays */}
+      <CommandPalette />
+      <SettingsDialog />
     </div>
   );
 }

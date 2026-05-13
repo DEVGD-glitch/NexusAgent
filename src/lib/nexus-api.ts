@@ -1,16 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS Web — API Client
+// NEXUS — API Client (Chat-Centric)
 // ═══════════════════════════════════════════════════════════════
 
 import type {
-  ChatMessage,
-  MemoryEntry,
-  KnowledgeEntity,
-  CodeResult,
-  SystemStatus,
+  ChatMessage, MemoryEntry, KnowledgeEntity,
+  CodeResult, SystemStatus,
 } from "@/types/nexus";
 
-const NEXUS_BACKEND = process.env.NEXT_PUBLIC_NEXUS_BACKEND || "http://127.0.0.1:8081";
 const API_BASE = "/api/nexus";
 
 async function post<T>(path: string, body?: unknown): Promise<T> {
@@ -69,9 +65,6 @@ export const nexusApi = {
     get<{ namespaces: Record<string, { count: number }> }>("/memory/stats"),
 
   // ── Knowledge ─────────────────────────────────────────────
-  knowledgeQuery: (entityName: string, depth = 1) =>
-    get<{ entity: KnowledgeEntity | null; relationships: unknown[]; neighbors: unknown[] }>("/knowledge/query", { entity_name: entityName, depth }),
-
   knowledgeSearch: (query: string, entityType?: string, limit = 20) =>
     get<KnowledgeEntity[]>("/knowledge/search", { query, entity_type: entityType, limit }),
 
@@ -85,13 +78,6 @@ export const nexusApi = {
   // ── Code ──────────────────────────────────────────────────
   executeCode: (code: string, language = "python", timeout = 30, sandboxed = true) =>
     post<CodeResult>("/code/execute", { code, language, timeout, sandboxed }),
-
-  // ── File Tools ────────────────────────────────────────────
-  readFile: (path: string) =>
-    get<{ content: string; size_bytes: number }>("/tools/read_file", { path }),
-
-  listFiles: (directory = ".", pattern = "*") =>
-    get<{ directory: string; files: { name: string; path: string; is_dir: boolean; size: number }[] }>("/tools/list_files", { directory, pattern }),
 
   // ── Web Search ────────────────────────────────────────────
   webSearch: (query: string, numResults = 5) =>
@@ -110,5 +96,3 @@ export const nexusApi = {
   genericTool: (toolName: string, params: Record<string, unknown> = {}) =>
     post<unknown>(`/tools/${toolName}`, params),
 };
-
-export { NEXUS_BACKEND };
