@@ -7,6 +7,8 @@ import type {
   ViewId, AgentMode, AgentStatus, AvatarExpression,
   ChatMessage, AgentActivity, BuildStep, AgentInstance,
   Conversation, ContextTab,
+  VizEvent, FileTreeNode, Artifact, VoiceState, VoiceConfig, Viseme,
+  CrystallizedSkill, AgentCapabilities, AgentSession, ApprovalRequest,
 } from "@/types/nexus";
 
 function uid(): string {
@@ -43,6 +45,31 @@ interface NexusState {
   // ── Connection ────────────────────────────────────────────
   backendConnected: boolean;
 
+  // ── Visualization ──
+  vizEvents: VizEvent[];
+  activeBuildId: string | null;
+  fileTree: FileTreeNode[];
+
+  // ── Artifacts ──
+  artifacts: Artifact[];
+  activeArtifactId: string | null;
+
+  // ── Voice ──
+  voiceState: VoiceState;
+  voiceConfig: VoiceConfig;
+  currentTranscription: string;
+  currentVisemes: Viseme[];
+
+  // ── Skills ──
+  crystallizedSkills: CrystallizedSkill[];
+  capabilities: AgentCapabilities | null;
+
+  // ── Multi-Agent ──
+  agentSessions: AgentSession[];
+
+  // ── HITL ──
+  pendingApprovals: ApprovalRequest[];
+
   // ── Actions ───────────────────────────────────────────────
   setActiveView: (v: ViewId) => void;
   toggleContext: () => void;
@@ -73,6 +100,34 @@ interface NexusState {
   toggleAvatar: () => void;
   setAvatarExpression: (e: AvatarExpression) => void;
   setBackendConnected: (c: boolean) => void;
+
+  // Viz
+  addVizEvent: (e: VizEvent) => void;
+  clearVizEvents: () => void;
+  setActiveBuildId: (id: string | null) => void;
+  setFileTree: (tree: FileTreeNode[]) => void;
+
+  // Artifacts
+  addArtifact: (a: Artifact) => void;
+  setActiveArtifact: (id: string | null) => void;
+
+  // Voice
+  setVoiceState: (s: VoiceState) => void;
+  setVoiceConfig: (c: VoiceConfig) => void;
+  setCurrentTranscription: (t: string) => void;
+  setCurrentVisemes: (v: Viseme[]) => void;
+
+  // Skills
+  setCrystallizedSkills: (s: CrystallizedSkill[]) => void;
+  setCapabilities: (c: AgentCapabilities | null) => void;
+
+  // Multi-Agent
+  setAgentSessions: (s: AgentSession[]) => void;
+  updateAgentSession: (id: string, update: Partial<AgentSession>) => void;
+
+  // HITL
+  addApprovalRequest: (r: ApprovalRequest) => void;
+  removeApprovalRequest: (id: string) => void;
 }
 
 export const useNexusStore = create<NexusState>((set) => ({
@@ -94,6 +149,25 @@ export const useNexusStore = create<NexusState>((set) => ({
   avatarEnabled: true,
   avatarExpression: "neutral",
   backendConnected: false,
+
+  vizEvents: [],
+  activeBuildId: null,
+  fileTree: [],
+
+  artifacts: [],
+  activeArtifactId: null,
+
+  voiceState: "idle",
+  voiceConfig: { engine: "edge", voice: "fr-FR-DeniseNeural", language: "fr" },
+  currentTranscription: "",
+  currentVisemes: [],
+
+  crystallizedSkills: [],
+  capabilities: null,
+
+  agentSessions: [],
+
+  pendingApprovals: [],
 
   // ── Actions ───────────────────────────────────────────────
   setActiveView: (v) => set({ activeView: v }),
@@ -160,4 +234,38 @@ export const useNexusStore = create<NexusState>((set) => ({
   toggleAvatar: () => set((s) => ({ avatarEnabled: !s.avatarEnabled })),
   setAvatarExpression: (e) => set({ avatarExpression: e }),
   setBackendConnected: (c) => set({ backendConnected: c }),
+
+  // Viz
+  addVizEvent: (e) => set((s) => ({ vizEvents: [...s.vizEvents, e] })),
+  clearVizEvents: () => set({ vizEvents: [] }),
+  setActiveBuildId: (id) => set({ activeBuildId: id }),
+  setFileTree: (tree) => set({ fileTree: tree }),
+
+  // Artifacts
+  addArtifact: (a) => set((s) => ({ artifacts: [...s.artifacts, a] })),
+  setActiveArtifact: (id) => set({ activeArtifactId: id }),
+
+  // Voice
+  setVoiceState: (s) => set({ voiceState: s }),
+  setVoiceConfig: (c) => set({ voiceConfig: c }),
+  setCurrentTranscription: (t) => set({ currentTranscription: t }),
+  setCurrentVisemes: (v) => set({ currentVisemes: v }),
+
+  // Skills
+  setCrystallizedSkills: (s) => set({ crystallizedSkills: s }),
+  setCapabilities: (c) => set({ capabilities: c }),
+
+  // Multi-Agent
+  setAgentSessions: (s) => set({ agentSessions: s }),
+  updateAgentSession: (id, update) =>
+    set((s) => ({
+      agentSessions: s.agentSessions.map((a) =>
+        a.id === id ? { ...a, ...update } : a
+      ),
+    })),
+
+  // HITL
+  addApprovalRequest: (r) => set((s) => ({ pendingApprovals: [...s.pendingApprovals, r] })),
+  removeApprovalRequest: (id) =>
+    set((s) => ({ pendingApprovals: s.pendingApprovals.filter((r) => r.id !== id) })),
 }));

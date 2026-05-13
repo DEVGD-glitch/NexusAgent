@@ -1,12 +1,19 @@
 // ═══════════════════════════════════════════════════════════════
 // NEXUS — WebSocket Hook (Real-time Agent Events)
+// Handles all V3 event types including viz, artifacts, voice,
+// multi-agent, HITL approvals, streaming tokens, capabilities
 // ═══════════════════════════════════════════════════════════════
 
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
 import { useNexusStore } from "@/lib/nexus-store";
-import type { AvatarExpression } from "@/types/nexus";
+import type {
+  AvatarExpression,
+  VizEvent,
+  ApprovalRequest,
+  AgentCapabilities,
+} from "@/types/nexus";
 
 const WS_URL = process.env.NEXT_PUBLIC_NEXUS_WS || "ws://127.0.0.1:8081/ws";
 
@@ -16,10 +23,16 @@ interface WSEvent {
   timestamp: number;
 }
 
+function uid(): string {
+  return crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
+}
+
 export function useNexusWebSocket() {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectRef = useRef<ReturnType<typeof setTimeout>>();
   const storeRef = useRef(useNexusStore.getState());
+  // Ref for accumulating streaming tokens keyed by message/assistant turn
+  const streamingRef = useRef<Map<string, string>>(new Map());
 
   useEffect(() => {
     storeRef.current = useNexusStore.getState();
@@ -30,6 +43,7 @@ export function useNexusWebSocket() {
     const { type, data } = event;
 
     switch (type) {
+      // ── Core Agent Events ──────────────────────────────────────
       case "agent_thinking":
         store.setAgentStatus("thinking");
         store.setAvatarExpression("thinking");
@@ -97,7 +111,125 @@ export function useNexusWebSocket() {
         store.setAvatarExpression(String(data.expression || "neutral") as AvatarExpression);
         break;
 
-      case "stream_token":
+      // ── Streaming Tokens (previously ignored) ──────────────────
+      case "stream_token": {
+        const tokenId = String(data.message_id || data.id || "current");
+        const token = String(data.token || data.content || "");
+        if (token) {
+          const current = streamingRef.current.get(tokenId) || "";
+          const updated = current + token;
+          streamingRef.current.set(tokenId, updated);
+          // We don't call addMessage per token — too expensive.
+          // Instead we use a lightweight update via the store's streaming mechanism.
+          // The ChatView reads this through the streamingContent state.
+          store.addActivity({ type: "stream_token", content: token });
+        }
+        break;
+      }
+
+      // ── Visualization Events ───────────────────────────────────
+      case "viz_event":
+        store.addVizEvent(data as unknown as VizEvent);
+        break;
+
+      // ── Artifact Updates ───────────────────────────────────────
+      case "artifact_update":
+        store.addArtifact({
+          id: uid(),
+          type: String(data.type || "html") as "html" | "chart" | "image" | "document" | "code" | "iframe",
+          title: String(data.title || "Artifact"),
+          content: String(data.content || ""),
+          createdAt: Date.now(),
+        });
+        break;
+
+      // ── Voice Audio ────────────────────────────────────────────
+      case "voice_audio": {
+        // Play audio if TTS enabled
+        const voiceState = store.voiceState;
+        if (voiceState !== "recording" && voiceState !== "transcribing") {
+          try {
+            const audioBase64 = String(data.audio || data.content || "");
+            if (audioBase64) {
+              const audioBytes = atob(audioBase64);
+              const audioArray = new Uint8Array(audioBytes.length);
+              for (let i = 0; i < audioBytes.length; i++) {
+                audioArray[i] = audioBytes.charCodeAt(i);
+              }
+              const blob = new Blob([audioArray], { type: String(data.mime_type || "audio/mp3") });
+              const url = URL.createObjectURL(blob);
+              const audio = new Audio(url);
+              store.setVoiceState("playing");
+              audio.onended = () => {
+                store.setVoiceState("idle");
+                URL.revokeObjectURL(url);
+              };
+              audio.onerror = () => {
+                store.setVoiceState("idle");
+                URL.revokeObjectURL(url);
+              };
+              audio.play().catch(() => {
+                store.setVoiceState("idle");
+                URL.revokeObjectURL(url);
+              });
+            }
+          } catch {
+            // Audio playback failed
+          }
+        }
+        break;
+      }
+
+      // ── Avatar Visemes ─────────────────────────────────────────
+      case "avatar_visemes":
+        store.setCurrentVisemes(
+          Array.isArray(data.visemes)
+            ? data.visemes as { viseme: string; start: number; end: number }[]
+            : []
+        );
+        break;
+
+      // ── Multi-Agent ────────────────────────────────────────────
+      case "agent_spawned": {
+        const sessions = [...store.agentSessions];
+        sessions.push({
+          id: String(data.id || uid()),
+          name: String(data.name || "Agent"),
+          type: String(data.agent_type || data.type || "general"),
+          status: "running",
+          task: String(data.task || ""),
+          progress: 0,
+          startedAt: Date.now(),
+        });
+        store.setAgentSessions(sessions);
+        break;
+      }
+
+      case "agent_completed": {
+        const agentId = String(data.id || data.agent_id || "");
+        if (agentId) {
+          store.updateAgentSession(agentId, {
+            status: data.error ? "failed" : "completed",
+            progress: 100,
+            completedAt: Date.now(),
+            ...(data.result ? { task: String(data.result).slice(0, 200) } : {}),
+          });
+        }
+        break;
+      }
+
+      // ── HITL Approval Requests ─────────────────────────────────
+      case "approval_request":
+        store.addApprovalRequest(data as unknown as ApprovalRequest);
+        break;
+
+      // ── Capabilities Update ────────────────────────────────────
+      case "capabilities_update":
+        store.setCapabilities(data as unknown as AgentCapabilities);
+        break;
+
+      default:
+        // Unknown event type — ignore
         break;
     }
   }, []);

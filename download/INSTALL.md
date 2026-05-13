@@ -1,18 +1,70 @@
-# NEXUS Agent V2 — Installation & Démarrage
+# NEXUS Agent V3 — Installation & Démarrage
 
-## Architecture
+## Architecture V3
 
 ```
-┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-│  Navigateur      │     │  Next.js 16      │     │  Backend Python  │
-│  ou Tauri v2     │────▶│  Frontend        │────▶│  FastAPI         │
-│  (port 3000)     │     │  /api/nexus/*    │     │  (port 8081)     │
-└──────────────────┘     └──────────────────┘     └──────────────────┘
-                              │                        │
-                        VRM 3D Avatar              ChromaDB
-                        Generative UI              LLM Router
-                        Cmd+K / Cmd+,              28+ Tools
+┌─────────────────────────────────────────────────────────────────────┐
+│  Navigateur ou Tauri v2                                             │
+│  ┌───────────────────────────────────────────────────────────────┐ │
+│  │  Next.js 16 Frontend                                         │ │
+│  │  ┌──────────┐ ┌───────────┐ ┌──────────┐ ┌───────────────┐  │ │
+│  │  │ VRM 3D   │ │ ChatView  │ │ LiveViz  │ │ ArtifactPanel │  │ │
+│  │  │ Avatar   │ │ (hub)     │ │ Panel    │ │ (rendering)   │  │ │
+│  │  │ lip-sync │ │ + Voice   │ │ brique   │ │ HTML/Chart/   │  │ │
+│  │  │ visemes  │ │ + GenUI   │ │ par      │ │ Image/Code    │  │ │
+│  │  │ gaze     │ │ + HITL    │ │ brique   │ │               │  │ │
+│  │  └──────────┘ └───────────┘ └──────────┘ └───────────────┘  │ │
+│  └───────────────────────────────────────────────────────────────┘ │
+│                              │                                      │
+│  Zustand Store + WebSocket   │  API Proxy /api/nexus/*             │
+│  (viz events, visemes,      │                                      │
+│   artifacts, voice)         │                                      │
+└──────────────────────────────┼──────────────────────────────────────┘
+                               │
+                    HTTP/SSE + WebSocket
+                               │
+┌──────────────────────────────┼──────────────────────────────────────┐
+│  NexusAgent Backend (FastAPI, port 8081)                            │
+│  ┌──────────┐ ┌──────────────┐ ┌────────────────────────────────┐ │
+│  │ LLM      │ │ 5-LAYER      │ │ 35+ MCP Tools                  │ │
+│  │ Router   │ │ MEMORY       │ │ (code, web, file, memory, KG,  │ │
+│  │ (13 prov)│ │              │ │  agent, voice, viz, skills)    │ │
+│  │          │ │ Working      │ └────────────────────────────────┘ │
+│  │ Free:    │ │ Episodic     │ ┌────────────────────────────────┐ │
+│  │ ZhipuAI  │ │ Semantic     │ │ Voice Pipeline                 │ │
+│  │ Pollinat.│ │ Procedural   │ │ VAD + STT + TTS + LipSync      │ │
+│  │ G4F      │ │ Identity     │ │ Edge TTS / VoiceVOX            │ │
+│  │          │ │              │ └────────────────────────────────┘ │
+│  │ Paid:    │ │ +Compactor   │ ┌────────────────────────────────┐ │
+│  │ OpenAI   │ │ +Orchestrator│ │ Viz Events                     │ │
+│  │ Anthropic│ │ +Crystallize │ │ Brick-by-brick streaming       │ │
+│  │ Gemini   │ └──────────────┘ │ File tree + Diff + Artifacts   │ │
+│  │ Ollama   │ ┌──────────────┐ └────────────────────────────────┘ │
+│  └──────────┘ │ Orchestrator │ ┌────────────────────────────────┐ │
+│               │ LangGraph    │ │ Agents                         │ │
+│               │ CrewAI       │ │ Developer, Researcher,         │ │
+│               │ ADK          │ │ Analyst, Operator              │ │
+│               │ 6 Patterns   │ │ + OpenAI Agents SDK            │ │
+│               └──────────────┘ └────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────────────┘
 ```
+
+## Nouveautés V3
+
+| Feature | Description |
+|---------|-------------|
+| **Mémoire 5 couches** | Working → Episodic → Semantic → Procedural (skills) → Identity |
+| **Skill Crystallization** | L'agent cristallise les stratégies réussies en skills réutilisables |
+| **Visualisation Live** | Brique par brique — fichiers, code, diffs en temps réel |
+| **Voice Pipeline** | VAD Silero + STT Whisper + TTS Edge/VoiceVOX + Lip-sync VRM |
+| **Artifact Rendering** | HTML, charts, images, code rendus dans l'interface |
+| **Environment Awareness** | L'agent connaît ses capacités, tools, skills, memory |
+| **HITL Approvals** | Approbation humaine pour les actions sensibles |
+| **Crons** | Tâches programmées récurrentes |
+| **VRM Lip-Sync** | Visèmes A/I/U/E/O appliqués au modèle VRM |
+| **Gaze Tracking** | L'avatar regarde vers le chat quand l'utilisateur tape |
+| **CC0 Avatars** | Galerie d'avatars gratuits intégrée |
+| **Conversation Persistence** | Sauvegarde localStorage automatique |
 
 ## Prérequis
 
@@ -24,65 +76,30 @@
 
 ```bash
 cd NexusAgent
-
-# Créer un environnement virtuel
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
-
-# Installer les dépendances
 pip install -r requirements.txt
 
-# Configurer (ZhipuAI GLM-4-Flash = GRATUIT)
-# Le fichier .env est déjà configuré avec la clé gratuite
+# Optionnel — pour la voice pipeline:
+pip install edge-tts silero-vad
 
 # Lancer le backend
 python -m nexus serve --port 8081
 ```
 
-Le backend démarre sur http://localhost:8081
-Documentation API : http://localhost:8081/docs
-
 ## 2. Frontend (Next.js 16)
 
 ```bash
-# À la racine du projet (pas dans NexusAgent/)
-
-# Installer les dépendances
 bun install
-# ou: npm install
-
-# Lancer en développement
 bun run dev
-# ou: npm run dev
 ```
 
-Le frontend démarre sur http://localhost:3000
-
-## 3. Desktop Tauri v2 (optionnel)
+## 3. Desktop Tauri v2
 
 ```bash
-# Installer Tauri CLI
 cargo install tauri-cli
-
-# Mode développement (lance Next.js + Tauri)
 cargo tauri dev
-
-# Build production
-cargo tauri build
 ```
-
-## Fonctionnalités V2
-
-- **Chat-centrique** : Un seul point d'entrée, le chat. Pas de sidebar, pas de panneaux.
-- **Avatar VRM 3D** : @pixiv/three-vrm + React Three Fiber (hologramme par défaut, modèle VRM chargeable)
-- **Generative UI** : Les résultats (mémoire, web, code, build) s'affichent comme des cartes DANS le chat
-- **Command Palette** : Cmd+K pour accéder à tout au clavier
-- **Settings Popover** : Cmd+, pour les paramètres (provider, modèle, mode, avatar)
-- **Tauri v2** : Remplace Electron (58% moins de RAM, 96% plus petit)
-- **ZhipuAI GLM-4-Flash** : 100% gratuit, provider par défaut
-- **WebSocket** : Événements temps réel (agent_thinking, tool_call, file_create, etc.)
-- **API Proxy** : /api/nexus/* → http://127.0.0.1:8081/*
 
 ## Raccourcis
 
@@ -90,13 +107,19 @@ cargo tauri build
 |-----------|--------|
 | ⌘K / Ctrl+K | Command Palette |
 | ⌘, / Ctrl+, | Settings |
-| Enter | Envoyer le message |
+| Enter | Envoyer |
 | Shift+Enter | Nouvelle ligne |
+| 🎤 | Voice input |
 
-## Modes
+## Modes Agent
 
-- **Plan** : Lecture seule, l'agent analyse et propose
-- **Build** : Accès complet, l'agent peut exécuter du code, créer des fichiers
+| Mode | Description |
+|------|-------------|
+| Chat | Conversation normale |
+| Plan | Lecture seule, analyse |
+| Build | Accès complet, écriture de code |
+| Research | Recherche web profonde |
+| Review | Audit de code/architecture |
 
 ## Providers LLM
 

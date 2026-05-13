@@ -5,6 +5,8 @@
 import type {
   ChatMessage, MemoryEntry, KnowledgeEntity,
   CodeResult, SystemStatus,
+  MemoryRecallResult, CrystallizedSkill, AgentCapabilities,
+  VizEvent, Viseme,
 } from "@/types/nexus";
 
 const API_BASE = "/api/nexus";
@@ -95,4 +97,85 @@ export const nexusApi = {
   // ── Generic Tool ──────────────────────────────────────────
   genericTool: (toolName: string, params: Record<string, unknown> = {}) =>
     post<unknown>(`/tools/${toolName}`, params),
+
+  // ── Memory (5-layer) ──
+  memoryRecall: (query: string, layers?: string[]) =>
+    post<{ results: MemoryRecallResult[] }>('/memory/recall', { query, layers }),
+
+  memoryStore: (content: string, type: string = "auto") =>
+    post<{ status: string }>('/memory/store', { content, type }),
+
+  episodicRecord: (event: string, context?: string) =>
+    post<{ status: string }>('/memory/episodic/record', { event, context }),
+
+  episodicRecall: (query: string, topK: number = 5) =>
+    post<{ results: unknown[] }>('/memory/episodic/recall', { query, top_k: topK }),
+
+  semanticAddFact: (fact: string, category?: string) =>
+    post<{ status: string }>('/memory/semantic/add_fact', { fact, category }),
+
+  semanticQuery: (query: string) =>
+    post<{ results: unknown[] }>('/memory/semantic/query', { query }),
+
+  proceduralCrystallize: (skillName: string, pattern: string) =>
+    post<{ skill_id: string }>('/memory/procedural/crystallize', { skill_name: skillName, pattern }),
+
+  proceduralFindRelevant: (task: string) =>
+    post<{ skills: CrystallizedSkill[] }>('/memory/procedural/find_relevant', { task }),
+
+  identityUpdate: (updates: Record<string, unknown>) =>
+    post<{ status: string }>('/memory/identity/update', { updates }),
+
+  identityProfile: () =>
+    get<Record<string, unknown>>('/memory/identity/profile'),
+
+  memoryCompact: () =>
+    post<{ status: string }>('/memory/compact'),
+
+  // ── Skills & Capabilities ──
+  capabilities: () =>
+    get<AgentCapabilities>('/capabilities'),
+
+  listSkills: () =>
+    get<CrystallizedSkill[]>('/skills'),
+
+  crystallizeSkill: (name: string, pattern: string) =>
+    post<{ skill_id: string }>('/skills/crystallize', { name, pattern }),
+
+  executeSkill: (name: string, args: Record<string, unknown> = {}) =>
+    post<unknown>('/skills/execute', { name, args }),
+
+  // ── Voice ──
+  voiceTranscribe: (audioBase64: string, language: string = "fr") =>
+    post<{ text: string }>('/voice/transcribe', { audio: audioBase64, language }),
+
+  voiceSynthesize: (text: string, engine: string = "edge", voice?: string) =>
+    post<{ audio: string; visemes: Viseme[] }>('/voice/synthesize', { text, engine, voice }),
+
+  voiceVoices: () =>
+    get<{ voices: { id: string; name: string; language: string }[] }>('/voice/voices'),
+
+  // ── Crons ──
+  scheduleCron: (task: string, schedule: string, cronId?: string) =>
+    post<{ cron_id: string }>('/crons/schedule', { task, schedule, cron_id: cronId }),
+
+  listCrons: () =>
+    get<{ crons: { id: string; task: string; schedule: string; next_run: string }[] }>('/crons/list'),
+
+  deleteCron: (cronId: string) =>
+    fetch(`${API_BASE}/crons/${cronId}`, { method: 'DELETE' }).then(r => r.json()),
+
+  // ── Visualization ──
+  vizHistory: (buildId: string) =>
+    get<{ events: VizEvent[] }>(`/viz/history/${buildId}`),
+
+  vizActive: () =>
+    get<{ builds: { id: string; event_count: number; latest_status: string }[] }>('/viz/active'),
+
+  // ── HITL Approvals ──
+  approveAction: (requestId: string) =>
+    post<{ status: string }>('/agents/approval', { request_id: requestId, behavior: 'allow' }),
+
+  denyAction: (requestId: string) =>
+    post<{ status: string }>('/agents/approval', { request_id: requestId, behavior: 'deny' }),
 };

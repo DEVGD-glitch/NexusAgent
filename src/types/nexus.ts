@@ -132,3 +132,123 @@ export interface CommandAction {
   icon?: string;
   action: () => void;
 }
+
+// ── Visualization (brick-by-brick) ─────────────────────────
+export type VizEventType =
+  | "viz_file_create" | "viz_file_edit" | "viz_file_delete" | "viz_dir_create"
+  | "viz_code_write" | "viz_code_execute" | "viz_command_run"
+  | "viz_build_step" | "viz_build_complete" | "viz_dependency_install"
+  | "viz_test_run" | "viz_deploy_start" | "viz_artifact_render"
+  | "viz_progress" | "viz_diff_preview" | "viz_file_tree_update" | "viz_error";
+
+export interface VizEvent {
+  id: string;
+  type: VizEventType;
+  timestamp: number;
+  title: string;
+  detail: string;
+  path?: string;
+  content?: string;
+  language?: string;
+  diff?: { old: string; new: string };
+  progress: number;
+  status: "pending" | "running" | "completed" | "error";
+  artifact?: { type: "html" | "chart" | "image" | "document"; content: string };
+  metadata: Record<string, unknown>;
+  line_number?: number;
+  total_lines?: number;
+}
+
+export interface FileTreeNode {
+  name: string;
+  path: string;
+  type: "file" | "directory";
+  children?: FileTreeNode[];
+  language?: string;
+  size?: number;
+}
+
+// ── Artifacts ──────────────────────────────────────────────
+export type ArtifactType = "html" | "chart" | "image" | "document" | "code" | "iframe";
+
+export interface Artifact {
+  id: string;
+  type: ArtifactType;
+  title: string;
+  content: string;
+  language?: string;
+  createdAt: number;
+}
+
+// ── Voice ──────────────────────────────────────────────────
+export type VoiceState = "idle" | "recording" | "transcribing" | "playing" | "error";
+
+export interface Viseme {
+  viseme: string;  // "A", "I", "U", "E", "O", "neutral"
+  start: number;
+  end: number;
+}
+
+export interface VoiceConfig {
+  engine: "edge" | "voicevox";
+  voice: string;
+  language: string;
+}
+
+// ── Skills ─────────────────────────────────────────────────
+export interface CrystallizedSkill {
+  id: string;
+  name: string;
+  trigger_patterns: string[];
+  steps: string[];
+  success_rate: number;
+  times_used: number;
+  last_used: number;
+  tags: string[];
+}
+
+// ── Multi-Agent ────────────────────────────────────────────
+export type AgentModeV3 = "chat" | "plan" | "build" | "research" | "review";
+
+export interface AgentSession {
+  id: string;
+  name: string;
+  type: string;
+  status: "running" | "completed" | "failed" | "pending" | "waiting_approval";
+  task: string;
+  progress: number;
+  startedAt: number;
+  completedAt?: number;
+  model?: string;
+  costUsd?: number;
+}
+
+// ── HITL Approval ──────────────────────────────────────────
+export interface ApprovalRequest {
+  id: string;
+  agentId: string;
+  toolName: string;
+  args: Record<string, unknown>;
+  riskLevel: "low" | "medium" | "high";
+  createdAt: number;
+}
+
+// ── Capabilities (environment awareness) ───────────────────
+export interface AgentCapabilities {
+  tools: string[];
+  skills: CrystallizedSkill[];
+  memory_layers: string[];
+  agent_types: string[];
+  providers: string[];
+  models: string[];
+}
+
+// ── Memory Layers ──────────────────────────────────────────
+export type MemoryLayer = "working" | "episodic" | "semantic" | "procedural" | "identity";
+
+export interface MemoryRecallResult {
+  layer: MemoryLayer;
+  content: string;
+  relevance: number;
+  timestamp: number;
+}
