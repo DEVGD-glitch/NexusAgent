@@ -1,0 +1,98 @@
+# ═══════════════════════════════════════════════════════════════
+# NEXUSAgent — .gitignore
+# ═══════════════════════════════════════════════════════════════
+
+# ── Python ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+.venv/
+venv/
+env/
+*.whl
+
+# ── Node.js ─────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+.cache/
+.npm/
+*.tsbuildinfo
+
+# ── IDE ─────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ── OS ──────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── Environment & Secrets ──────────────────────────────────
+.env
+.env.local
+.env.production
+.env.staging
+.env.*.local
+*.pem
+*.key
+
+# ── Data & Persistence ─────────────────────────────────────
+nexus_data/
+*.db
+*.sqlite
+*.sqlite3
+chroma/
+*.chroma
+
+# ── Build Artifacts — nexus-web ─────────────────────────────
+nexus-web/.next/
+nexus-web/node_modules/
+nexus-web/out/
+nexus-web/.cache/
+
+# ── Build Artifacts — nexus-desktop ─────────────────────────
+nexus-desktop/dist/
+nexus-desktop/node_modules/
+nexus-desktop/out/
+
+# ── Agent Working Files ────────────────────────────────────
+temp_analysis.txt
+*.log
+
+# ── Download ───────────────────────────────────────────────
+download/
+
+# ── Coverage ───────────────────────────────────────────────
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# ── MyPy ───────────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ── Ruff ───────────────────────────────────────────────────
+.ruff_cache/
+
+# ── Pytest ─────────────────────────────────────────────────
+.pytest_cache/
+
+# ── Docker volumes ─────────────────────────────────────────
+docker-data/

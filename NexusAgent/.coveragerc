@@ -1,0 +1,21 @@
+[run]
+omit =
+    nexus/desktop/*
+    nexus/browser/*
+    nexus/comms/*
+    nexus/computer/*
+    nexus/dev/code_engine.py
+    nexus/dev/deploy.py
+    nexus/dev/git_integration.py
+    nexus/dev/terminal.py
+    nexus/agents/openai_layer.py
+    nexus/core/telemetry.py
+    nexus/workflows/*
+    nexus/__main__.py
+    nexus/cli/app.py
+    nexus/core/resource_manager.py
+    nexus/core/evaluation.py
+    nexus/api/puter_proxy.py
+
+[report]
+fail_under = 70

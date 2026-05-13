@@ -1,54 +1,72 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.pyc
 
-# dependencies
-node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-
-# typescript
+# Build outputs
+.next/
+out/
+dist/
+build/
 *.tsbuildinfo
-next-env.d.ts
-local-*
-.claude
-.z-ai-config
-*.log
-dev.log
-dev.out.log
-test
-prompt
 
-server.log
-# Skills directory
-/skills/
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tauri
+src-tauri/target/
+
+# Database
+*.db
+*.db-journal
+prisma/migrations/
+
+# ChromaDB data
+data/chroma/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime
+workspace/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Archives (generated for download)
+download/*.zip
+
+# Agent context (development only)
+agent-ctx/
+
+# Worklog (development only)
+worklog.md
+
+# Custom DB
+db/custom.db
+
+# Lock files (keep bun.lock for reproducibility)
+# bun.lock
+
+# Prisma
+prisma/*.db

@@ -1,0 +1,34 @@
+# ── NEXUS Browser Service (isolated) ───────────────────────────
+# browser-use requires specific openai/pydantic versions that conflict
+# with the core environment. This runs in its own container.
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system deps for Playwright
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl wget gnupg \
+    libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 \
+    libgbm1 libasound2 libxshmfence1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install browser-use with its specific dependencies
+RUN pip install --no-cache-dir \
+    browser-use==0.12.6 \
+    playwright==1.44.0 \
+    fastapi==0.115.0 \
+    uvicorn==0.30.0
+
+# Install Playwright browsers
+RUN playwright install chromium --with-deps
+
+# Browser service API
+COPY docker/browser_service.py ./browser_service.py
+
+EXPOSE 8001
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+    CMD curl -f http://localhost:8001/health || exit 1
+
+CMD ["uvicorn", "browser_service:app", "--host", "0.0.0.0", "--port", "8001"]

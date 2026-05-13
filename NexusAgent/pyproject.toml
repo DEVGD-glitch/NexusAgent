@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["nexus*"]
+
+[project]
+name = "nexus-agent"
+version = "1.0.0"
+description = "NEXUS - Universal Sovereign AI Agent of Production Class"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "NEXUS Team"}]
+
+dependencies = [
+    # ── Web Framework ──
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    # ── Config & Validation ──
+    "pydantic>=2.11.0",
+    "pydantic-settings>=2.9.0",
+    "python-dotenv>=1.1.0",
+    # ── LLM ──
+    "litellm>=1.67.0",
+    "openai>=1.82.0",
+    "anthropic>=0.52.0",
+    "google-generativeai>=0.8.0",
+    "tiktoken>=0.9.0",
+    # ── CLI ──
+    "typer>=0.15.0",
+    "rich>=14.0.0",
+    # ── HTTP ──
+    "httpx>=0.28.0",
+    # ── Memory / Vector DB ──
+    "chromadb>=1.0.0",
+    # ── Orchestration ──
+    "langgraph>=0.4.0",
+    "langchain-core>=0.3.0",
+    # ── Knowledge Graph ──
+    "networkx>=3.4.0",
+    # ── Observability ──
+    "opentelemetry-sdk>=1.33.0",
+    "opentelemetry-api>=1.33.0",
+    # ── Resilience ──
+    "tenacity>=9.0.0",
+    # ── File / Process ──
+    "aiofiles>=24.0.0",
+    "python-multipart>=0.0.20",
+    "watchfiles>=1.0.0",
+    # ── Security ──
+    "cryptography>=44.0.0",
+    # ── MCP Protocol ──
+    "mcp>=1.9.0",
+    # ── Desktop App ──
+    "customtkinter>=5.2.0",
+    "Pillow>=11.0.0",
+    # ── WebSocket / Scheduler ──
+    "websockets>=15.0.0",
+    # ── Container ──
+    "docker>=7.0.0",
+]
+
+[project.optional-dependencies]
+browser = [
+    "browser-use>=0.12.6",
+    "playwright>=1.44.0",
+]
+desktop = [
+    "customtkinter>=5.2.0",
+    "pystray>=0.19.5",
+    "Pillow>=11.0.0",
+]
+avatar = [
+    "aiavatar>=0.8.0",
+    "python-osc>=1.8.0",
+]
+multiagent = [
+    "crewai>=1.14.4",
+    "google-adk>=1.32.0",
+    "openai-agents>=0.16.1",
+]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.26.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "httpx>=0.28.0",
+]
+
+[project.scripts]
+nexus = "nexus.cli:app"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
