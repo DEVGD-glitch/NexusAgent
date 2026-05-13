@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════════
+# NEXUS — .gitignore
+# ═══════════════════════════════════════════════════════════════
+
+# ── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual Environments ──────────────────────────────────────
+venv/
+.venv/
+env/
+
+# ── IDE / Editor ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Environment & Secrets ─────────────────────────────────────
+.env
+.env.local
+.env.production
+*.key
+*.pem
+
+# ── NEXUS Data ────────────────────────────────────────────────
+nexus_data/
+*.db
+*.sqlite
+
+# ── Test / Coverage ───────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ── Downloaded Wheels ─────────────────────────────────────────
+wheels/
+
+# ── Docker Volumes ────────────────────────────────────────────
+docker/volumes/
+
+# ── OS Generated ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# ── Graphify Artifacts ────────────────────────────────────────
+.graphify_*.json
+graphify_detect.json
+**/graphify-out/
+
+# ── Tool Configs ──────────────────────────────────────────
+.aider-*/
+.aider.input.history
+.claude/
+.github/
+.planning/
+
+# ── Test Artifacts ──────────────────────────────────────────
+*.jpeg
+*.jpg
+*.png
+*.pdf
+_test_*.py
+
+# ── Archives ─────────────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ── Jupyter ───────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── Node.js / Next.js ─────────────────────────────────────────
+node_modules/
+.next/
+out/
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log
+nexus_data/audit/

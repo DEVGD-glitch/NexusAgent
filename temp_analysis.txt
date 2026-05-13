@@ -1,0 +1,148 @@
+--- PROJECT.md ---
+# NEXUS — Agent IA Souverain
+
+## Vision
+Agent IA professionnel souverain — l'utilisateur garde le contrôle de ses données, ses providers LLM, et son infrastructure.
+
+## Architecture
+- **Backend**: Python 3.11+ — FastAPI, 13 providers LLM, 5-tier memory, 3 orchestrators, 50+ MCP tools
+- **Frontend**: Next.js 16 + React 19 + Tailwind v4 + shadcn/ui + Zustand 5
+- **Desktop**: Tauri v2 (wrapper Rust autour du web)
+
+## État Actuel (v2.x)
+- ✅ Backend très riche (29k lignes, 22 modules)
+- ❌ UI chat-only (2 panels sur 12 connectés)
+- ❌ Pas de Plan/Build split
+- ❌ Pas de live preview
+- ❌ Pas de kanban agents
+- ❌ VRM avatar dans un panneau séparé
+
+## Milestone Actuel — v3 "Agent-First"
+Transformer l'interface en workspace agent-first professionnel. S'inspirer de Cursor 3, Windsurf 2.0, Replit Agent 4, Lovable 2.0.
+
+### Objectifs v3
+1. **Agent Command Center** — Kanban multi-agents en temps réel
+2. **Plan/Build split** — Mode Plan (read-only) / Build (full access)
+3. **VRM avatar intégré** — Dans le chat, pas de panneau séparé
+4. **Brick-by-brick** — Code qui se construit sous les yeux
+5. **Live Preview** — Iframe du projet en développement
+6. **Provider config** — UI pour 13 providers avec gratuits sans clé
+7. **Parallel Agents** — N agents en parallèle
+8. **Desktop à jour** — Tauri v2 synchro avec le web
+9. **Telegram intégré** — Messages visibles dans l'UI
+
+
+--- REQUIREMENTS.md ---
+# Requirements — NEXUS v3 "Agent-First"
+
+## 1. UI Agent-First
+- Sidebar complète avec navigation vers tous les panneaux
+- Agent Command Center (kanban des agents en cours/terminés)
+- Plan/Build mode toggle avec indicateur visuel
+- VRM avatar intégré dans le chat (pas de panneau séparé)
+- Activity Feed enrichi brick-by-brick
+- Tous les 10 panels orphelins connectés ou supprimés
+
+## 2. Code Workspace
+- File explorer + code editor + terminal intégré
+- Live Preview (iframe) avec hot-reload
+- Diff view des changements agents
+- Animation brique-par-brique de la création de fichiers
+
+## 3. Provider Config
+- UI pour configurer les 13 providers LLM
+- Détection automatique des clés API
+- Test de connexion par provider
+- Providers gratuits sans clé mis en avant (Pollinations, G4F, DeepInfra)
+- Provider status dashboard (vert/rouge)
+
+## 4. Multi-Agent
+- Parallel agents (N agents en parallèle)
+- Agent Tabs (sessions côte-à-côte)
+- Task Queue avec priorisation
+
+## 5. Desktop
+- Tauri v2 à jour avec le web
+- CSP, permissions, config window
+
+## 6. Telegram
+- Messages Telegram visibles dans l'UI web
+- Notifications desktop
+
+## Non-Goals (v3)
+- Multi-channel (Discord, WhatsApp, Slack…) — juste Telegram
+- Voice wake & talk — plus tard
+- Plugin system — plus tard
+- Cron scheduler — plus tard
+- Self-learning loop — plus tard
+
+
+--- ROADMAP.md ---
+# ROADMAP — NEXUS v3 "Agent-First"
+
+## Phase 1 — Foundation UI Agent-First
+**Status**: ⏳ À planifier
+**Dépendances**: Aucune
+
+### Tasks
+1.1 Design System complet (tokens, couleurs, typographie, composants)
+1.2 Nouvelle sidebar multi-panneaux
+1.3 Agent Command Center (kanban)
+1.4 Plan/Build mode toggle
+1.5 Activity Feed enrichi brick-by-brick
+1.6 VRM avatar intégré dans le chat
+1.7 Nettoyage des 10 panels orphelins
+
+### Skills
+impeccable, shape, ui-ux-pro-max, typeset, colorize, arrange, extract, normalize, animate, distill, audit, critique, polish
+
+---
+
+## Phase 2 — Code Workspace & Live Preview
+**Status**: ⏳ À planifier
+**Dépendances**: Phase 1
+
+### Tasks
+2.1 Code Panel (file explorer + editor + terminal)
+2.2 Live Preview (iframe)
+2.3 Brick-by-brick code building animation
+2.4 Diff View
+2.5 Error handling + empty states
+
+### Skills
+impeccable, shape, arrange, animate, harden, normalize, audit, polish
+
+---
+
+## Phase 3 — Provider Config & Multi-Agent
+**Status**: ⏳ À planifier
+**Dépendances**: Phase 1
+
+### Tasks
+3.1 Provider Config Panel (13 providers, détection clés)
+3.2 Provider status dashboard
+3.3 Parallel Agents
+3.4 Agent Tabs
+3.5 Task Queue
+3.6 Telegram intégré dans l'UI
+
+### Skills
+impeccable, shape, colorize, arrange, animate, delight, harden, polish
+
+---
+
+## Phase 4 — Desktop & Final Polish
+**Status**: ⏳ À planifier
+**Dépendances**: Phases 1-3
+
+### Tasks
+4.1 Desktop Tauri v2 synchro
+4.2 Responsive design web + desktop
+4.3 Micro-interactions et animations
+4.4 Edge cases et i18n
+4.5 Quality pass final
+4.6 Code review complet
+4.7 UAT
+
+### Skills
+adapt, animate, delight, harden, distill, audit, critique, polish, gsd-code-review, gsd-verify-work

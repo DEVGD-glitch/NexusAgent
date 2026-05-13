@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  # ── NEXUS Core ────────────────────────────────────────────────
+  nexus-core:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.core
+    ports:
+      - "${NEXUS_PORT:-8080}:8080"
+    environment:
+      - NEXUS_ENV=${NEXUS_ENV:-production}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - BROWSER_SERVICE_URL=http://browser-service:8001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - ZAI_API_KEY=${ZAI_API_KEY}
+      - ZAI_BASE_URL=${ZAI_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}
+      - NEXUS_SECRET_KEY=${NEXUS_SECRET_KEY}
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    volumes:
+      - nexus-data:/app/nexus_data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── ChromaDB Vector Database ─────────────────────────────────
+  chromadb:
+    image: chromadb/chroma:1.15.3
+    ports:
+      - "${CHROMA_PORT:-8000}:8000"
+    volumes:
+      - chroma-data:/chroma/chroma
+    environment:
+      - ALLOW_RESET=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ── Browser Service (isolated - own env with browser-use) ────
+  browser-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.browser
+    ports:
+      - "8001:8001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  nexus-data:
+  chroma-data:
