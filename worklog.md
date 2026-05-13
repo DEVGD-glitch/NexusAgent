@@ -42,3 +42,23 @@ Stage Summary:
 - Command Palette = Cmd+K
 - Desktop = Tauri v2 (not Electron)
 - Provider = zhipuai/glm-4-flash (free)
+
+---
+Task ID: 3
+Agent: Main
+Task: Package full V2 project for download
+
+Work Log:
+- Cleaned dead files: search_zhipu_free.json, search_glm4.json, search_zhipu_register.json, old avatar.tsx, stale downloads
+- Fixed port mismatch: .env NEXUS_PORT changed from 8080 to 8081 (consistency with start scripts and frontend proxy)
+- Verified all components: vrm-avatar.tsx, chat-view.tsx, gen-ui.tsx, command-palette.tsx, settings-popover.tsx, page.tsx
+- Verified Tauri v2 config: src-tauri/ with proper window settings and Next.js integration
+- Build succeeds: next build compiles in 10.4s, all pages generated
+- Packaged as NexusAgent_V2_Complet.zip (1.3MB, excludes node_modules, .next, chroma, __pycache__, .git, venv)
+- Added INSTALL.md with full setup instructions (Backend, Frontend, Tauri Desktop)
+
+Stage Summary:
+- Full project packaged at /home/z/my-project/download/NexusAgent_V2_Complet.zip
+- All fixes applied (port consistency, dead file cleanup)
+- Build verified working
+- Ready for download
