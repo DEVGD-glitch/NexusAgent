@@ -1,72 +1,68 @@
+```
 # Dependencies
 node_modules/
 venv/
 .venv/
 __pycache__/
 *.pyc
-
-# Build outputs
-.next/
-out/
-dist/
-build/
-*.tsbuildinfo
+.pytest_cache/
+.mypy_cache/
 
 # Environment
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+*.env.*
 
-# IDE
+# Build artifacts
+dist/
+build/
+target/
+.npm
+.yarn
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
+*.tmp
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Tauri
-src-tauri/target/
+# Coverage
+coverage/
+htmlcov/
+.coverage
 
-# Database
-*.db
-*.db-journal
-prisma/migrations/
-
-# ChromaDB data
-data/chroma/
-
-# Logs
-*.log
-npm-debug.log*
-
-# Runtime
-workspace/
-
-# Cache
-.cache/
-.parcel-cache/
-.eslintcache
-
-# Archives (generated for download)
-download/*.zip
-
-# Agent context (development only)
-agent-ctx/
-
-# Worklog (development only)
-worklog.md
-
-# Custom DB
-db/custom.db
-
-# Lock files (keep bun.lock for reproducibility)
-# bun.lock
-
-# Prisma
-prisma/*.db
+# Compression
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```

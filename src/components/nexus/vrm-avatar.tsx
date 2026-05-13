@@ -532,6 +532,8 @@ interface VRMAvatarProps {
   isUserTyping?: boolean;
   className?: string;
   onAvatarSelect?: (url: string) => void;
+  // Professional mode: hide avatar, show only hologram or nothing
+  professionalMode?: boolean;
 }
 
 export function VRMAvatar({
@@ -542,9 +544,32 @@ export function VRMAvatar({
   isUserTyping = false,
   className = "",
   onAvatarSelect,
+  professionalMode = false,
 }: VRMAvatarProps) {
   const hasModel = !!modelUrl;
   const { currentVisemes, setAvatarExpression } = useNexusStore();
+
+  // Performance detection: check device capabilities
+  const isLowPerformance = useMemo(() => {
+    if (typeof navigator === 'undefined') return false;
+    
+    // Check device memory (if available)
+    const deviceMemory = (navigator as any).deviceMemory || 4;
+    const isLowMemory = deviceMemory <= 4;
+    
+    // Check hardware concurrency (CPU cores)
+    const cpuCores = navigator.hardwareConcurrency || 4;
+    const isLowCPU = cpuCores <= 4;
+    
+    // Check if mobile/tablet
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Low performance if: low memory OR low CPU OR mobile device
+    return isLowMemory || isLowCPU || isMobile;
+  }, []);
+
+  // Auto-enable professional mode on low-performance devices
+  const shouldUseProfessionalMode = professionalMode || isLowPerformance;
 
   // Handle avatar selection from gallery
   const handleAvatarSelect = useCallback(
@@ -553,6 +578,9 @@ export function VRMAvatar({
     },
     [onAvatarSelect]
   );
+
+  // In professional mode, always use hologram (more abstract/professional)
+  const showVRM = !shouldUseProfessionalMode && hasModel;
 
   return (
     <div className={`w-full h-full relative ${className}`}>
@@ -569,8 +597,8 @@ export function VRMAvatar({
         {/* Environment */}
         <Environment preset="night" />
 
-        {/* Avatar */}
-        {hasModel ? (
+        {/* Avatar: VRM model or Hologram fallback */}
+        {showVRM ? (
           <VRMModel
             url={modelUrl!}
             expression={expression}
@@ -600,8 +628,8 @@ export function VRMAvatar({
         />
       </Canvas>
 
-      {/* Avatar Gallery (only when no model loaded) */}
-      {!hasModel && (
+      {/* Avatar Gallery (only when no model loaded and not in professional mode) */}
+      {!hasModel && !shouldUseProfessionalMode && (
         <AvatarGallery onSelect={handleAvatarSelect} />
       )}
     </div>

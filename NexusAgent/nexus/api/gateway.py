@@ -2501,8 +2501,91 @@ async def get_providers():
 
 @app.get("/health")
 async def health_check():
-    """Simple health check endpoint."""
-    return {"status": "ok"}
+    """
+    Comprehensive health check endpoint for production monitoring.
+    
+    Returns:
+        dict: Health status with subsystem checks and metrics
+    """
+    import psutil
+    
+    start_time = time.time()
+    uptime = uptime_seconds()
+    
+    # Check subsystems
+    subsystems = {}
+    
+    # Check ChromaDB
+    try:
+        from nexus.memory.chroma_service import get_chroma_client
+        client = get_chroma_client()
+        if client:
+            subsystems["chromadb"] = {"status": "healthy", "latency_ms": round((time.time() - start_time) * 1000, 2)}
+        else:
+            subsystems["chromadb"] = {"status": "not_configured"}
+    except Exception as e:
+        subsystems["chromadb"] = {"status": "unhealthy", "error": str(e)}
+    
+    # Check LLM Providers
+    try:
+        from nexus.llm.router import get_router
+        router = get_router()
+        available = router.get_available_providers() if router else []
+        subsystems["llm"] = {
+            "status": "healthy" if len(available) > 0 else "degraded",
+            "providers_count": len(available),
+            "active_provider": settings.llm_default_provider if (settings := __import__('nexus.core.config', fromlist=['get_settings']).get_settings()) else None
+        }
+    except Exception as e:
+        subsystems["llm"] = {"status": "unhealthy", "error": str(e)}
+    
+    # Check Memory System
+    try:
+        from nexus.memory.orchestrator import get_orchestrator
+        orchestrator = get_orchestrator()
+        if orchestrator:
+            stats = orchestrator.get_stats()
+            subsystems["memory"] = {
+                "status": "healthy",
+                "total_embeddings": stats.get("total_embeddings", 0),
+                "collections": stats.get("collections", {})
+            }
+        else:
+            subsystems["memory"] = {"status": "not_initialized"}
+    except Exception as e:
+        subsystems["memory"] = {"status": "unhealthy", "error": str(e)}
+    
+    # System metrics
+    cpu_percent = psutil.cpu_percent(interval=0.1)
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage('/')
+    
+    # Determine overall status
+    unhealthy_count = sum(1 for s in subsystems.values() if s.get("status") == "unhealthy")
+    overall_status = "unhealthy" if unhealthy_count > 0 else ("degraded" if any(s.get("status") == "degraded" for s in subsystems.values()) else "healthy")
+    
+    return {
+        "status": overall_status,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "uptime_seconds": round(uptime, 2),
+        "version": "0.1.0",
+        "environment": os.getenv("NEXUS_ENV", "development"),
+        "subsystems": subsystems,
+        "system_metrics": {
+            "cpu_percent": cpu_percent,
+            "memory_percent": memory.percent,
+            "memory_used_gb": round(memory.used / (1024**3), 2),
+            "memory_total_gb": round(memory.total / (1024**3), 2),
+            "disk_percent": disk.percent,
+            "disk_used_gb": round(disk.used / (1024**3), 2),
+            "disk_total_gb": round(disk.total / (1024**3), 2),
+        }
+    }
+
+
+def uptime_seconds() -> float:
+    """Return the number of seconds since the server started."""
+    return time.time() - _START_TIME
 
 
 @app.get("/config")
@@ -2526,6 +2609,42 @@ async def get_config():
     except Exception as exc:
         logger.error("Config retrieval failed: %s", exc)
         raise HTTPException(status_code=500, detail=f"Could not retrieve config: {str(exc)}")
+
+
+@app.get("/metrics")
+async def get_prometheus_metrics():
+    """
+    Prometheus metrics endpoint for production monitoring.
+    
+    Returns metrics in Prometheus text format for scraping by Prometheus server.
+    Includes:
+    - HTTP request rates and latencies
+    - LLM token usage and costs
+    - Memory system performance
+    - Agent execution metrics
+    - System health indicators
+    
+    Usage with Prometheus:
+        scrape_configs:
+          - job_name: 'nexus-agent'
+            static_configs:
+              - targets: ['localhost:8080']
+            metrics_path: '/metrics'
+    """
+    from nexus.core.prometheus_metrics import metrics as prometheus_metrics
+    from starlette.responses import Response
+    
+    # Update system metrics
+    import psutil
+    prometheus_metrics.set_system_cpu(psutil.cpu_percent(interval=0.1))
+    prometheus_metrics.set_system_memory(psutil.virtual_memory().percent)
+    prometheus_metrics.set_system_disk(psutil.disk_usage('/').percent)
+    prometheus_metrics.set_system_uptime(uptime_seconds())
+    
+    return Response(
+        content=prometheus_metrics.get_latest_metrics(),
+        media_type=prometheus_metrics.get_content_type(),
+    )
 
 
 @app.post("/config")

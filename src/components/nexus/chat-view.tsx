@@ -93,7 +93,7 @@ function ActivityCards({ activities }: { activities: AgentActivity[] }) {
                   snippet: r.snippet || "",
                 }));
               }
-            } catch { /* not JSON */ }
+            } catch (error) { /* JSON parse expected for web results */ }
             return [{ title: a.content.slice(0, 80), url: "", snippet: a.content.slice(0, 200) }];
           }).flat()}
         />
@@ -104,25 +104,25 @@ function ActivityCards({ activities }: { activities: AgentActivity[] }) {
             try {
               const parsed = JSON.parse(a.content);
               return parsed.stdout || parsed.output || a.content;
-            } catch { return a.content; }
+            } catch (error) { return a.content; /* JSON parse expected */ }
           }).join("\n")}
           stderr={codeActivities.reduce((acc, a) => {
             try {
               const parsed = JSON.parse(a.content);
               return acc + (parsed.stderr || "");
-            } catch { return acc; }
+            } catch (error) { return acc; /* JSON parse expected */ }
           }, "")}
           exitCode={codeActivities.reduce((code, a) => {
             try {
               const parsed = JSON.parse(a.content);
               return parsed.exit_code ?? parsed.exitCode ?? code;
-            } catch { return code; }
+            } catch (error) { return code; /* JSON parse expected */ }
           }, 0)}
           timeMs={codeActivities.reduce((ms, a) => {
             try {
               const parsed = JSON.parse(a.content);
               return ms + (parsed.execution_time_ms ?? parsed.timeMs ?? 0);
-            } catch { return ms; }
+            } catch (error) { return ms; /* JSON parse expected */ }
           }, 0)}
         />
       )}
@@ -408,6 +408,9 @@ export function ChatView() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Professional mode from store (hologram instead of VRM for professional setting)
+  const avatarProfessionalMode = useNexusStore((state) => state.avatarProfessionalMode);
+
   const activeConv = conversations.find((c) => c.id === activeConversationId);
   const messages = activeConv?.messages ?? [];
   const isWorking = agentStatus !== "idle";
@@ -425,7 +428,7 @@ export function ChatView() {
           conversations,
           activeConversationId,
         }));
-      } catch { /* localStorage might be full */ }
+      } catch (error) { console.warn('[ChatView] localStorage save failed:', error); }
     }
   }, [conversations, activeConversationId]);
 
@@ -447,16 +450,43 @@ export function ChatView() {
           }
         }
       }
-    } catch { /* ignore parse errors */ }
+    } catch (error) { console.warn('[ChatView] localStorage load failed:', error); }
   }, []);
 
-  // Initialize first conversation if none exists
+  // Initialize first conversation if none exists - Enhanced Onboarding
   useEffect(() => {
     if (!activeConversationId) {
       const id = addConversation();
       addMessage(id, {
         role: "assistant",
-        content: "Bonjour ! Je suis **NEXUS**, votre agent IA souverain.\n\nJe peux chercher sur le web, executer du code, memoriser, construire — tout depuis cette conversation.\n\nDites-moi ce dont vous avez besoin.",
+        content: `# 👋 Bienvenue sur **NEXUS** — Votre Agent IA Souverain
+
+Je suis un agent IA complet qui fonctionne **localement**, sans dépendance cloud obligatoire.
+
+## 🚀 Ce que je peux faire :
+
+- 🔍 Recherche web — Trouver des informations à jour
+- 💻 Exécution de code — Tester, déboguer, construire
+- 🧠 Mémoire 5 couches — Se souvenir de nos conversations
+- 📊 Analyse de données — PDF, Excel, documents
+- 🎨 Génération d'images — Créer des visuels
+- 🤖 Multi-agents — Coordonner des tâches complexes
+
+## 💡 Suggestions pour commencer :
+
+- "Recherche les dernières nouvelles sur l'IA générative"
+- "Crée une application React avec TailwindCSS"
+- "Analyse ce document PDF et résume-le"
+- "Génère une image de paysage futuriste"
+
+## ⚙️ Personnalisation :
+
+- **⌘K** — Palette de commandes rapides
+- **⌘,** — Paramètres et configuration
+- **Avatar** — Cliquez sur "Choisir avatar" pour personnaliser
+- **Mode Pro** — Désactivez l'avatar dans les paramètres pour un environnement professionnel
+
+**Dites-moi ce dont vous avez besoin !**`,
       });
     }
   }, [activeConversationId, addConversation, addMessage]);
@@ -566,15 +596,21 @@ export function ChatView() {
                     fullContent += data.token;
                     setStreamingContent(fullContent);
                   }
-                } catch { /* skip */ }
+                } catch (error) { /* skip malformed token */ }
               }
             }
           }
         }
-      } catch {
+      } catch (error) {
         if (controller.signal.aborted) return;
-        const res = await nexusApi.chat(convMessages, provider, model);
-        fullContent = res.content;
+        console.warn('[ChatView] Streaming failed, falling back to non-streaming:', error);
+        try {
+          const res = await nexusApi.chat(convMessages, provider, model);
+          fullContent = res.content;
+        } catch (fallbackError) {
+          console.error('[ChatView] Fallback chat also failed:', fallbackError);
+          throw fallbackError;
+        }
       }
 
       setStreamingContent("");
@@ -666,6 +702,7 @@ export function ChatView() {
             thinking={isWorking}
             speaking={streamingContent.length > 0}
             modelUrl={avatarModelUrl ?? undefined}
+            professionalMode={avatarProfessionalMode}
           />
           {/* Avatar status overlay */}
           <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">

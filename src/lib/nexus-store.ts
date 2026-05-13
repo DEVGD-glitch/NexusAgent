@@ -43,6 +43,7 @@ interface NexusState {
   avatarExpression: AvatarExpression;
   avatarModelUrl: string | null;
   vrmHubOpen: boolean;
+  avatarProfessionalMode: boolean;  // Professional mode: use hologram instead of VRM
 
   // ── Connection ────────────────────────────────────────────
   backendConnected: boolean;
@@ -103,6 +104,7 @@ interface NexusState {
   setAvatarExpression: (e: AvatarExpression) => void;
   setAvatarModelUrl: (url: string | null) => void;
   setVrmHubOpen: (open: boolean) => void;
+  setAvatarProfessionalMode: (mode: boolean) => void;
   setBackendConnected: (c: boolean) => void;
 
   // Viz
@@ -154,6 +156,7 @@ export const useNexusStore = create<NexusState>((set) => ({
   avatarExpression: "neutral",
   avatarModelUrl: null,
   vrmHubOpen: false,
+  avatarProfessionalMode: false,  // Default: casual mode with VRM avatars
   backendConnected: false,
 
   vizEvents: [],
@@ -241,6 +244,7 @@ export const useNexusStore = create<NexusState>((set) => ({
   setAvatarExpression: (e) => set({ avatarExpression: e }),
   setAvatarModelUrl: (url) => set({ avatarModelUrl: url }),
   setVrmHubOpen: (open) => set({ vrmHubOpen: open }),
+  setAvatarProfessionalMode: (mode) => set({ avatarProfessionalMode: mode }),
   setBackendConnected: (c) => set({ backendConnected: c }),
 
   // Viz

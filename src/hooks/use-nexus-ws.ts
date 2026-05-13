@@ -238,12 +238,20 @@ export function useNexusWebSocket() {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
 
     try {
-      const ws = new WebSocket(WS_URL);
+      // Get auth token from localStorage if available
+      const token = typeof window !== 'undefined' ? localStorage.getItem('nexus_token') : null;
+      // Append token to WS URL for authentication
+      const wsUrl = token ? `${WS_URL}?token=${encodeURIComponent(token)}` : WS_URL;
+      const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => { storeRef.current.setBackendConnected(true); };
 
       ws.onmessage = (event) => {
-        try { handleEvent(JSON.parse(event.data)); } catch { /* ignore */ }
+        try {
+          handleEvent(JSON.parse(event.data));
+        } catch (error) {
+          console.warn('[WebSocket] Failed to parse event:', error);
+        }
       };
 
       ws.onclose = () => {
@@ -251,10 +259,14 @@ export function useNexusWebSocket() {
         reconnectRef.current = setTimeout(connect, 3000);
       };
 
-      ws.onerror = () => { ws.close(); };
+      ws.onerror = (error) => {
+        console.error('[WebSocket] Error:', error);
+        ws.close();
+      };
 
       wsRef.current = ws;
-    } catch {
+    } catch (error) {
+      console.error('[WebSocket] Connection error:', error);
       storeRef.current.setBackendConnected(false);
       reconnectRef.current = setTimeout(connect, 5000);
     }
