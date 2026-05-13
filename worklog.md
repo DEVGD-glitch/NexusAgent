@@ -249,3 +249,27 @@ const reader = response.body.getReader();
 const decoder = new TextDecoder();
 // Parse SSE events: event: token\ndata: {...}\n\n
 ```
+
+---
+Task ID: glm-flash-test
+Agent: main
+Task: Configurer et tester GLM-4-Flash (ZhipuAI) en situation réelle sur NexusAgent
+
+Work Log:
+- Recherche web : GLM-4-Flash et GLM-4.7-Flash sont 100% gratuits chez ZhipuAI
+- Nouveaux utilisateurs reçoivent 20 millions de tokens gratuits à l'inscription
+- Mis à jour le provider GLM (glm_provider.py) : ajouté glm-4-flash, glm-4.5-flash, glm-4v-flash comme gratuits
+- Mis à jour le router (router.py) : default GLM model = glm-4-flash (free)
+- Configuré .env avec ZAI_API_KEY fournie par l'utilisateur
+- Créé script de test complet test_glm_flash.py (9 scénarios, 22 tests)
+- Testé et vérifié les noms de modèles via l'API ZhipuAI
+- glm-4.7-flash n'est pas encore accessible via l'API (timeout), glm-4-flash fonctionne parfaitement
+- Corrigé les noms d'API internes dans le script de test
+
+Stage Summary:
+- 21/22 tests passés (95.5%)
+- Le seul échec est CodeExecutor qui nécessite Docker (non installé sur le serveur)
+- GLM-4-Flash fonctionne parfaitement : completion, streaming, function calling, conversation multi-tour
+- Coût total = $0.00 (GRATUIT)
+- Modèles gratuits vérifiés : glm-4-flash, glm-4.5-flash, glm-4v-flash
+- AUCUNE restriction géographique (contrairement à Google AI Studio)
