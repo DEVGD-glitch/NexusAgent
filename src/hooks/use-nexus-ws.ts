@@ -8,6 +8,9 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { useNexusStore } from "@/lib/nexus-store";
+import { createLogger } from "@/lib/logger";
+
+const log = createLogger("WebSocket");
 import type {
   AvatarExpression,
   VizEvent,
@@ -250,7 +253,7 @@ export function useNexusWebSocket() {
         try {
           handleEvent(JSON.parse(event.data));
         } catch (error) {
-          console.warn('[WebSocket] Failed to parse event:', error);
+          log.warn('Failed to parse event', error);
         }
       };
 
@@ -260,13 +263,13 @@ export function useNexusWebSocket() {
       };
 
       ws.onerror = (error) => {
-        console.error('[WebSocket] Error:', error);
+        log.error('WebSocket error', error);
         ws.close();
       };
 
       wsRef.current = ws;
     } catch (error) {
-      console.error('[WebSocket] Connection error:', error);
+      log.error('Connection error', error);
       storeRef.current.setBackendConnected(false);
       reconnectRef.current = setTimeout(connect, 5000);
     }

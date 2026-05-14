@@ -64,19 +64,21 @@ def _get_broadcaster():
 
 security_scheme = HTTPBearer(auto_error=False)
 
-DEFAULT_SECRET_KEY = "dev-test-key-not-for-production"
-FALLBACK_SECRET_KEY = "change-me-to-a-secure-random-string"
+_WEAK_SECRET_KEYS = frozenset({
+    "dev-test-key-not-for-production",
+    "change-me-to-a-secure-random-string",
+    "",
+})
 
 
 def _warn_default_key():
-    """Emit a single warning if NEXUS_SECRET_KEY is the default value."""
+    """Emit a single warning if NEXUS_SECRET_KEY is a weak/default value."""
     from nexus.core.config import get_settings
     sk = get_settings().nexus_secret_key
-    if sk in (DEFAULT_SECRET_KEY, FALLBACK_SECRET_KEY):
+    if sk in _WEAK_SECRET_KEYS or len(sk) < 16:
         logger.warning(
-            "NEXUS_SECRET_KEY is set to the default value '%s...'. "
+            "NEXUS_SECRET_KEY is weak or default. "
             "Generate a strong random key with: python -c \"import secrets; print(secrets.token_hex(32))\"",
-            sk[:20],
         )
 
 
@@ -129,8 +131,8 @@ app.add_middleware(
         "http://127.0.0.1:8080",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 
 
@@ -360,11 +362,13 @@ class ChatRequest(BaseModel):
     model: Optional[str] = Field(None, description="Specific model name")
     temperature: float = Field(0.7, ge=0.0, le=2.0)
     max_tokens: int = Field(4096, ge=1, le=128000)
+    thinkingConfig: Optional[dict[str, Any]] = Field(None, description="Thinking config for Gemma 4 etc: {thinkingLevel, thinkingBudget}")
 
 
 class RunRequest(BaseModel):
     task: str = Field(..., description="Task description", min_length=1)
     provider: Optional[str] = Field(None, description="Preferred LLM provider")
+    strategy: Optional[str] = Field(None, description="Orchestration strategy: pipeline, parallel, swarm")
 
 
 class CodeExecuteRequest(BaseModel):
@@ -448,6 +452,10 @@ async def chat_completion(request: ChatRequest):
             "model": request.model or "default",
         })
 
+        kwargs = {}
+        if request.thinkingConfig:
+            kwargs["thinking_config"] = request.thinkingConfig
+
         response = await router.complete(
             messages=user_messages,
             model=request.model,
@@ -455,6 +463,7 @@ async def chat_completion(request: ChatRequest):
             task_complexity=TaskComplexity.MEDIUM,
             temperature=request.temperature,
             max_tokens=request.max_tokens,
+            **kwargs,
         )
 
         # Broadcast: tool result
@@ -534,10 +543,14 @@ async def run_task(request: RunRequest):
             "phase": "planning",
         })
 
-        result = await run_nexus_task(
-            task=request.task,
-            messages=[],
-        )
+        try:
+            result = await asyncio.wait_for(
+                run_nexus_task(task=request.task, messages=[]),
+                timeout=120.0,
+            )
+        except asyncio.TimeoutError:
+            logger.warning("Task execution timed out: %s", request.task[:100])
+            raise HTTPException(status_code=504, detail="Task execution timed out after 120s")
 
         latency = (time.monotonic() - start) * 1000
 
@@ -2508,6 +2521,7 @@ async def health_check():
         dict: Health status with subsystem checks and metrics
     """
     import psutil
+    from nexus.core.config import get_settings
     
     start_time = time.time()
     uptime = uptime_seconds()
@@ -2530,11 +2544,12 @@ async def health_check():
     try:
         from nexus.llm.router import get_router
         router = get_router()
-        available = router.get_available_providers() if router else []
+        status = router.get_provider_status() if router else {}
+        available = [k for k, v in status.items() if v.get("available")]
         subsystems["llm"] = {
             "status": "healthy" if len(available) > 0 else "degraded",
             "providers_count": len(available),
-            "active_provider": settings.llm_default_provider if (settings := __import__('nexus.core.config', fromlist=['get_settings']).get_settings()) else None
+            "active_provider": get_settings().llm_default_provider
         }
     except Exception as e:
         subsystems["llm"] = {"status": "unhealthy", "error": str(e)}

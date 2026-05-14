@@ -43,11 +43,10 @@ function artifactLanguage(artifact: Artifact): string {
 // ── HTML Renderer (sandboxed iframe) ────────────────────────
 
 function HtmlRenderer({ content }: { content: string }) {
-  const sandboxAttrs = "allow-scripts allow-same-origin";
   return (
     <iframe
       srcDoc={content}
-      sandbox={sandboxAttrs}
+      sandbox="allow-scripts"
       className="w-full h-full border-0 bg-white rounded-lg"
       title="Artifact Preview"
     />
@@ -102,13 +101,17 @@ function ImageRenderer({ content }: { content: string }) {
 // ── Chart Renderer (simple SVG fallback) ─────────────────────
 
 function ChartRenderer({ content }: { content: string }) {
-  // If the content is SVG, render it directly
+  // If the content is SVG, render in a sandboxed iframe to prevent XSS
   if (content.trim().startsWith("<svg") || content.trim().startsWith("<?xml")) {
     return (
-      <div
-        className="flex items-center justify-center h-full p-4"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <div className="flex items-center justify-center h-full p-4">
+        <iframe
+          srcDoc={`<!DOCTYPE html><html><body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:transparent">${content}</body></html>`}
+          sandbox="allow-same-origin"
+          className="w-full h-full border-0"
+          title="SVG Chart"
+        />
+      </div>
     );
   }
 

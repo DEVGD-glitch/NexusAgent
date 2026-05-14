@@ -77,7 +77,7 @@ export function SettingsPopover() {
   const {
     settingsOpen, setSettingsOpen, provider, model, setProvider, setModel,
     agentMode, setAgentMode, avatarEnabled,
-  avatarProfessionalMode,, toggleAvatar, backendConnected,
+  avatarProfessionalMode, toggleAvatar, backendConnected,
     voiceConfig, setVoiceConfig, voiceState, setVoiceState,
     capabilities, crystallizedSkills,
   } = useNexusStore();
@@ -138,12 +138,12 @@ export function SettingsPopover() {
 
   const handleCompactMemory = useCallback(() => {
     // In production, call /memory/compact endpoint
-    console.log("[Nexus] Compacting memory...");
+    // Compacting memory
   }, []);
 
   const handleClearWorking = useCallback(() => {
     // In production, call /memory/clear?layer=working endpoint
-    console.log("[Nexus] Clearing working memory...");
+    // Clearing working memory
   }, []);
 
   // ── Capabilities counts ──
@@ -209,11 +209,9 @@ export function SettingsPopover() {
             <span className="text-[10px]">Avatar 3D</span>
             <button
               onClick={toggleAvatar}
-              className={`relative w-8 h-4 rounded-full transition-colors ${avatarEnabled,
-  avatarProfessionalMode, ? "bg-primary" : "bg-muted"}`}
+              className={`relative w-8 h-4 rounded-full transition-colors ${avatarEnabled ? "bg-primary" : "bg-muted"}`}
             >
-              <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${avatarEnabled,
-  avatarProfessionalMode, ? "translate-x-4" : "translate-x-0.5"}`} />
+              <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${avatarEnabled ? "translate-x-4" : "translate-x-0.5"}`} />
             </button>
           </div>
 

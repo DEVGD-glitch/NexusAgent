@@ -10,12 +10,14 @@ import type {
 } from "@/types/nexus";
 
 const API_BASE = "/api/nexus";
+const REQUEST_TIMEOUT_MS = 60_000;
 
-async function post<T>(path: string, body?: unknown): Promise<T> {
+async function post<T>(path: string, body?: unknown, timeoutMs = REQUEST_TIMEOUT_MS): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
+    signal: AbortSignal.timeout(timeoutMs),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
@@ -24,7 +26,7 @@ async function post<T>(path: string, body?: unknown): Promise<T> {
   return res.json();
 }
 
-async function get<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
+async function get<T>(path: string, params?: Record<string, string | number | boolean | undefined>, timeoutMs = REQUEST_TIMEOUT_MS): Promise<T> {
   const searchParams = new URLSearchParams();
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
@@ -32,7 +34,10 @@ async function get<T>(path: string, params?: Record<string, string | number | bo
     });
   }
   const qs = searchParams.toString();
-  const res = await fetch(`${API_BASE}${path}${qs ? `?${qs}` : ""}`, { cache: "no-store" });
+  const res = await fetch(`${API_BASE}${path}${qs ? `?${qs}` : ""}`, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(timeoutMs),
+  });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
     throw new Error(err.detail || `HTTP ${res.status}`);
@@ -50,6 +55,7 @@ export const nexusApi = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages, provider, model }),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     }),
 
   // ── Tasks ─────────────────────────────────────────────────
@@ -163,7 +169,7 @@ export const nexusApi = {
     get<{ crons: { id: string; task: string; schedule: string; next_run: string }[] }>('/crons/list'),
 
   deleteCron: (cronId: string) =>
-    fetch(`${API_BASE}/crons/${cronId}`, { method: 'DELETE' }).then(r => r.json()),
+    fetch(`${API_BASE}/crons/${cronId}`, { method: 'DELETE', signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) }).then(r => r.json()),
 
   // ── Visualization ──
   vizHistory: (buildId: string) =>

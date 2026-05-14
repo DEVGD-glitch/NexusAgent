@@ -38,6 +38,24 @@ class VoiceVoxBridge:
         self.base_url = base_url.rstrip("/")
         self._speakers_cache: list[dict] | None = None
         self.http_client: httpx.AsyncClient | None = None
+        self._available: Optional[bool] = None
+
+    async def is_available(self) -> bool:
+        """Check if VoiceVOX server is reachable."""
+        if self._available is not None:
+            return self._available
+
+        client = await self._get_client()
+        try:
+            resp = await client.get(f"{self.base_url}/version", timeout=3.0)
+            self._available = resp.status_code == 200
+            if self._available:
+                logger.info("[VoiceVox] Server available at %s", self.base_url)
+        except Exception:
+            self._available = False
+            logger.debug("[VoiceVox] Server not available at %s", self.base_url)
+
+        return self._available
 
     async def _get_client(self) -> httpx.AsyncClient:
         if self.http_client is None:

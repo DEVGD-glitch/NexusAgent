@@ -200,7 +200,7 @@ class GeminiProvider:
         if not api_key:
             raise LLMProviderError(provider="gemini", reason="GOOGLE_API_KEY not configured", model=model)
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
         gemini_contents = self._convert_messages_to_gemini(messages)
 
@@ -233,8 +233,9 @@ class GeminiProvider:
         if grounding:
             payload["tools"] = [{"google_search": {}}]
 
+        headers = {"x-goog-api-key": api_key}
         async with httpx.AsyncClient(timeout=120.0) as client:
-            response = await client.post(url, json=payload)
+            response = await client.post(url, json=payload, headers=headers)
 
         if response.status_code == 429:
             self._last_error = "HTTP 429: Rate limited by Gemini"
@@ -290,7 +291,7 @@ class GeminiProvider:
         if not api_key:
             raise LLMProviderError(provider="gemini", reason="GOOGLE_API_KEY not configured", model=model)
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:streamGenerateContent?alt=sse&key={api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:streamGenerateContent?alt=sse"
 
         gemini_contents = self._convert_messages_to_gemini(messages)
 
@@ -302,8 +303,9 @@ class GeminiProvider:
             },
         }
 
+        headers = {"x-goog-api-key": api_key}
         async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds) as client:
-            async with client.stream("POST", url, json=payload) as response:
+            async with client.stream("POST", url, json=payload, headers=headers) as response:
                 if response.status_code != 200:
                     error_reason = f"HTTP {response.status_code}"
                     self._last_error = error_reason

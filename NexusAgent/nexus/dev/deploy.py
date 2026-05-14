@@ -516,8 +516,17 @@ jobs:
         else:
             result.logs.append(f"Rollback failed: {output}")
 
+    @staticmethod
+    def _validate_docker_name(name: str) -> str:
+        """Validate a Docker container name/ID to prevent shell injection."""
+        import re
+        if not re.match(r'^[a-zA-Z0-9][a-zA-Z0-9._-]*$', name):
+            raise ValueError(f"Invalid Docker name: {name!r}")
+        return name
+
     async def _get_container_id(self, container_name: str) -> str:
         """Get the container ID for a given container name."""
+        self._validate_docker_name(container_name)
         exit_code, stdout, _ = await self._run_command(
             f"docker ps -q -f name={container_name}",
             timeout=10,
@@ -526,6 +535,7 @@ jobs:
 
     async def _stop_container(self, container_id: str) -> bool:
         """Stop a Docker container."""
+        self._validate_docker_name(container_id)
         exit_code, _, stderr = await self._run_command(
             f"docker stop {container_id}",
             timeout=30,
@@ -533,7 +543,7 @@ jobs:
         if exit_code != 0:
             logger.warning("Failed to stop container %s: %s", container_id[:12], stderr)
             # Try to force remove
-            await self._run_command(f"docker rm -f {container_id}", timeout=10)
+            await self._run_command(f"docker rm -f {container_id}", timeout=10)  # container_id already validated above
         return exit_code == 0
 
     async def _start_container(

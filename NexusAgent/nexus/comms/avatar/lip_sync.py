@@ -194,3 +194,44 @@ class LipSyncEngine:
         if not frame:
             return 0.0
         return sum(s * s for s in frame)
+
+
+class LipSyncExtractor:
+    """
+    Compatibility wrapper around LipSyncEngine.
+
+    Provides the extract_visemes() API used by voice_pipeline.py,
+    delegating to the canonical LipSyncEngine implementation.
+
+    This class exists to avoid code duplication — voice_pipeline.py
+    should import this instead of having its own inline implementation.
+    """
+
+    def __init__(self, sample_rate: int = 24000, frame_ms: int = 50):
+        self._engine = LipSyncEngine(sample_rate=sample_rate, frame_ms=frame_ms)
+
+    def extract_visemes(self, audio: bytes) -> list[dict]:
+        """Extract visemes from audio (energy-based). Returns VRM-compatible format."""
+        raw = self._engine.process(audio)
+        return [
+            {
+                "viseme": (v.get("name", "aa") or "silence").upper(),
+                "start": v["start_ms"] / 1000.0,
+                "end": (v["start_ms"] + v["duration_ms"]) / 1000.0,
+                "weight": v.get("value", 0.0),
+            }
+            for v in raw
+        ]
+
+    def extract_visemes_from_mora(self, mora_data: list[dict]) -> list[dict]:
+        """Extract visemes from VOICEVOX mora timing data (precise)."""
+        raw = self._engine.process_with_phonemes(mora_data)
+        return [
+            {
+                "viseme": (v.get("name", "aa") or "silence").upper(),
+                "start": v["start_ms"] / 1000.0,
+                "end": (v["start_ms"] + v["duration_ms"]) / 1000.0,
+                "weight": v.get("value", 0.0),
+            }
+            for v in raw
+        ]

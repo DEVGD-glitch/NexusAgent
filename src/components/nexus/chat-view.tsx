@@ -40,6 +40,9 @@ import {
   Eye, Volume2, VolumeX, User,
 } from "lucide-react";
 import type { ChatMessage, BuildStep, AgentActivity, VizEvent, Artifact } from "@/types/nexus";
+import { createLogger } from "@/lib/logger";
+
+const log = createLogger("ChatView");
 
 // ── Constants ────────────────────────────────────────────────
 const STORAGE_KEY = "nexus_conversations";
@@ -395,6 +398,7 @@ export function ChatView() {
     vizEvents, clearVizEvents,
     artifacts, activeArtifactId, setActiveArtifact,
     voiceState, voiceConfig,
+    pendingApprovals, removeApprovalRequest,
   } = useNexusStore();
 
   const [input, setInput] = useState("");
@@ -428,7 +432,7 @@ export function ChatView() {
           conversations,
           activeConversationId,
         }));
-      } catch (error) { console.warn('[ChatView] localStorage save failed:', error); }
+      } catch (error) { log.warn('localStorage save failed', error); }
     }
   }, [conversations, activeConversationId]);
 
@@ -450,7 +454,7 @@ export function ChatView() {
           }
         }
       }
-    } catch (error) { console.warn('[ChatView] localStorage load failed:', error); }
+    } catch (error) { log.warn('localStorage load failed', error); }
   }, []);
 
   // Initialize first conversation if none exists - Enhanced Onboarding
@@ -603,12 +607,12 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
         }
       } catch (error) {
         if (controller.signal.aborted) return;
-        console.warn('[ChatView] Streaming failed, falling back to non-streaming:', error);
+        log.warn('Streaming failed, falling back to non-streaming', error);
         try {
           const res = await nexusApi.chat(convMessages, provider, model);
           fullContent = res.content;
         } catch (fallbackError) {
-          console.error('[ChatView] Fallback chat also failed:', fallbackError);
+          log.error('Fallback chat also failed', fallbackError);
           throw fallbackError;
         }
       }
@@ -771,13 +775,13 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                   )}
 
                   {/* HITL Approval Requests */}
-                  {useNexusStore.getState().pendingApprovals.length > 0 && (
+                  {pendingApprovals.length > 0 && (
                     <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
                       <div className="flex items-center gap-2 mb-2">
                         <Shield size={12} className="text-amber-500" />
                         <span className="text-[11px] font-medium text-amber-500">Approbation requise</span>
                       </div>
-                      {useNexusStore.getState().pendingApprovals.slice(-3).map((req) => (
+                      {pendingApprovals.slice(-3).map((req) => (
                         <div key={req.id} className="flex items-center gap-2 p-2 rounded-lg bg-background/50 mb-1">
                           <span className="text-[10px] text-foreground/80 flex-1">
                             {req.toolName}: {JSON.stringify(req.args).slice(0, 80)}
@@ -789,7 +793,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                               className="h-5 text-[9px] text-emerald-500 hover:text-emerald-400"
                               onClick={async () => {
                                 await nexusApi.approveAction(req.id);
-                                useNexusStore.getState().removeApprovalRequest(req.id);
+                                removeApprovalRequest(req.id);
                               }}
                             >
                               Autoriser
@@ -800,7 +804,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                               className="h-5 text-[9px] text-red-500 hover:text-red-400"
                               onClick={async () => {
                                 await nexusApi.denyAction(req.id);
-                                useNexusStore.getState().removeApprovalRequest(req.id);
+                                removeApprovalRequest(req.id);
                               }}
                             >
                               Refuser

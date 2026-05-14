@@ -1,9 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// NEXUS — Global Store (Zustand) — Re-export from slices
+// NEXUS — Store Utilities
 // ═══════════════════════════════════════════════════════════════
-// This file re-exports from the slice-based store for backwards
-// compatibility. All components importing from nexus-store.ts
-// continue to work without changes.
 
-export { useNexusStore } from './store';
-export type { NexusState } from './store';
+export function uid(): string {
+  return crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
+}

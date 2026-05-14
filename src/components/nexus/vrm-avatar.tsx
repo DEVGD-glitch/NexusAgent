@@ -15,6 +15,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { VRMLoaderPlugin, VRM, VRMUtils } from "@pixiv/three-vrm";
 import { useNexusStore } from "@/lib/nexus-store";
 import type { AvatarExpression, Viseme } from "@/types/nexus";
+import { createLogger } from "@/lib/logger";
+
+const log = createLogger("VRMAvatar");
 
 // ── Expression mapping to VRM blend shapes ──────────────────
 
@@ -113,7 +116,7 @@ function VRMModel({
       (gltf) => {
         const vrm = gltf.userData.vrm as VRM | undefined;
         if (!vrm) {
-          console.warn("No VRM data in model, using fallback");
+          log.warn("No VRM data in model, using fallback");
           return;
         }
 
@@ -129,7 +132,7 @@ function VRMModel({
       },
       undefined,
       (error) => {
-        console.warn("VRM load failed, using hologram fallback:", error);
+        log.warn("VRM load failed, using hologram fallback", error);
       }
     );
 

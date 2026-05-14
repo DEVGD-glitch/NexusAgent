@@ -521,9 +521,54 @@ class LLMRouter:
 
                 # Rate limit
                 if "rate" in error_str or "429" in error_str:
-                    raise LLMRateLimitError(provider=provider.value)
+                    raise LLMRateLimitError(provider=provider.value) from e
 
-                raise LLMProviderError(provider=provider.value, reason=str(e), model=model)
+                raise LLMProviderError(provider=provider.value, reason=str(e), model=model) from e
+
+    def _gemini_convert_messages(self, messages: list[dict[str, str]]) -> tuple[Optional[dict], list[dict]]:
+        system = None
+        contents = []
+        for m in messages:
+            role = m.get("role", "user")
+            text = m.get("content", "")
+            if role == "system":
+                system_parts = system["parts"] if system else []
+                system_parts.append({"text": text})
+                system = {"parts": system_parts}
+            else:
+                gemini_role = "model" if role in ("assistant", "model") else "user"
+                contents.append({"role": gemini_role, "parts": [{"text": text}]})
+        return system, contents
+
+    def _gemini_parse_response(self, data: dict) -> tuple[str, dict, str, list]:
+        candidate = data["candidates"][0]
+        parts = candidate["content"]["parts"]
+        content = ""
+        for part in parts:
+            if not part.get("thought"):
+                content += part.get("text", "")
+        if not content:
+            content = parts[-1].get("text", "")
+        usage = data.get("usageMetadata", {})
+        usage_out = {
+            "prompt_tokens": usage.get("promptTokenCount", 0),
+            "completion_tokens": usage.get("candidatesTokenCount", 0),
+            "total_tokens": usage.get("totalTokenCount", 0),
+        }
+        finish = candidate.get("finishReason", "STOP").lower()
+        tool_calls = []
+        for part in parts:
+            if "functionCall" in part:
+                fc = part["functionCall"]
+                tool_calls.append({
+                    "id": fc.get("name", ""),
+                    "type": "function",
+                    "function": {
+                        "name": fc.get("name", ""),
+                        "arguments": json.dumps(fc.get("args", {})),
+                    },
+                })
+        return content, usage_out, finish, tool_calls
 
     async def _call_gemini_direct(
         self,
@@ -535,28 +580,29 @@ class LLMRouter:
         max_retries: int = 3,
     ) -> tuple[str, dict[str, int], str, list[dict[str, Any]]]:
         """
-        Call Gemini/Gemma models via OpenAI-compatible endpoint.
-        This bypasses LiteLLM which has intermittent 500 errors.
-        Retries with exponential backoff for transient errors.
+        Call Gemini/Gemma models via native Google API.
+        Uses the generateContent endpoint directly to avoid OpenAI-compatible quota limits.
         """
         api_key = self.settings.google_api_key
         if not api_key:
             raise LLMProviderError(provider="gemini", reason="GOOGLE_API_KEY not configured", model=model)
 
-        url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         headers = {
-            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
         }
-        payload = {
-            "model": model,
-            "messages": messages,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
+
+        system_prompt, contents = self._gemini_convert_messages(messages)
+        payload: dict[str, Any] = {
+            "contents": contents,
+            "generationConfig": {
+                "temperature": temperature,
+                "maxOutputTokens": max_tokens,
+            },
         }
-        if tools:
-            payload["tools"] = tools
-            payload["tool_choice"] = "auto"
+        if system_prompt:
+            payload["systemInstruction"] = system_prompt
 
         last_error = None
         for attempt in range(max_retries + 1):
@@ -567,13 +613,9 @@ class LLMRouter:
                 if response.status_code == 429:
                     raise LLMRateLimitError(provider="gemini")
 
-                # Retry on 500 errors (transient server errors)
                 if response.status_code >= 500 and attempt < max_retries:
                     delay = min(2 ** attempt * 2.0, 30.0)
-                    logger.warning(
-                        "Gemini 500 error (attempt %d/%d): %s. Retrying in %.1fs...",
-                        attempt + 1, max_retries + 1, response.text[:100], delay,
-                    )
+                    logger.warning("Gemini 500 error (attempt %d/%d): %s. Retrying in %.1fs...", attempt + 1, max_retries + 1, response.text[:100], delay)
                     await asyncio.sleep(delay)
                     continue
 
@@ -582,33 +624,7 @@ class LLMRouter:
                     raise LLMProviderError(provider="gemini", reason=f"HTTP {response.status_code}: {error_msg}", model=model)
 
                 data = response.json()
-                choice = data["choices"][0]
-                content = choice.get("message", {}).get("content") or ""
-
-                # Gemma models return <thought> tags with internal reasoning
-                # Strip them to get the clean response
-                if "<thought>" in content:
-                    parts = content.split("</thought>")
-                    content = parts[-1].strip() if len(parts) > 1 else content.strip()
-
-                # Extract tool calls
-                tool_calls = []
-                raw_tcs = choice.get("message", {}).get("tool_calls", [])
-                for tc in raw_tcs:
-                    tc_dict = {
-                        "id": tc.get("id", ""),
-                        "type": "function",
-                        "function": {
-                            "name": tc.get("function", {}).get("name", ""),
-                            "arguments": tc.get("function", {}).get("arguments", "{}"),
-                        }
-                    }
-                    tool_calls.append(tc_dict)
-
-                usage = data.get("usage", {})
-                finish_reason = choice.get("finish_reason", "stop")
-
-                return content, usage, finish_reason, tool_calls
+                return self._gemini_parse_response(data)
 
             except (LLMRateLimitError, LLMProviderError):
                 raise
@@ -733,3 +749,8 @@ class LLMRouter:
                 "last_status": self._provider_status.get(prov.value, {}),
             }
         return all_providers
+
+
+def get_router():
+    from nexus.llm.router import LLMRouter
+    return LLMRouter()
