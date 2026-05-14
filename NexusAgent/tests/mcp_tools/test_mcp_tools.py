@@ -1003,8 +1003,10 @@ class TestWebTools:
         mock_response = MagicMock()
         mock_response.text = long_content
         mock_response.status_code = 200
-        with patch("nexus.mcp_tools.web_tools.requests", create=True) as mock_req:
-            mock_req.get.return_value = mock_response
+        mock_response.headers = {}
+        mock_requests = MagicMock()
+        mock_requests.get.return_value = mock_response
+        with patch.dict("sys.modules", {"requests": mock_requests}):
             result = await web_tools.web_scrape("https://ex.com", max_length=100)
         data = json.loads(result)
         assert data["length"] == 100

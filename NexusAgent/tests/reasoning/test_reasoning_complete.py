@@ -958,7 +958,7 @@ class TestReActLoopInit:
 
     def test_default_max_steps(self):
         loop = ReActLoop()
-        assert loop.max_steps == 10
+        assert loop.max_iterations == 10
 
     def test_initial_state(self):
         loop = ReActLoop()
@@ -1036,7 +1036,7 @@ class TestReActLoopRun:
     async def test_run_max_steps_exceeded(self):
         """Should return max steps message when no answer found."""
         loop = ReActLoop()
-        loop.max_steps = 3
+        loop.max_iterations = 3
         with patch("nexus.reasoning.react.LLMRouter") as mock_cls:
             router = MagicMock()
             router.complete = AsyncMock()

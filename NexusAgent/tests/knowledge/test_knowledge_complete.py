@@ -1497,9 +1497,11 @@ class TestWatchdogService:
         with patch.object(watchdog, "_fetch_rss", new=AsyncMock(return_value=[
             RSSItem(title="Item", link="https://example.com/1", description="Desc"),
         ])):
-            await watchdog._check_source(source)
-            assert source.check_count == 1
-            assert source.last_checked > 0
+            # Also mock summarization to prevent real LLM calls that hang
+            with patch.object(watchdog, "_summarize_alert", new=AsyncMock()):
+                await watchdog._check_source(source)
+                assert source.check_count == 1
+                assert source.last_checked > 0
 
     @pytest.mark.asyncio
     async def test_check_source_error_sets_status(self, watchdog):

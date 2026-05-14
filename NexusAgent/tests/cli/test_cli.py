@@ -604,7 +604,7 @@ class TestEvalRunCommand:
     def test_eval_run_with_skill(self, mock_settings, mock_evaluator_result):
         """Eval run with --skill flag evaluates a skill."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.evaluate_skill = AsyncMock(return_value=mock_evaluator_result)
             mock_eval_cls.return_value = mock_eval
@@ -625,7 +625,7 @@ class TestEvalRunCommand:
         result_with_agent["agent_type"] = "researcher"
 
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.evaluate_agent = AsyncMock(return_value=result_with_agent)
             mock_eval_cls.return_value = mock_eval
@@ -638,7 +638,7 @@ class TestEvalRunCommand:
     def test_eval_run_default_suite(self, mock_settings, mock_evaluator_suite_results):
         """Eval run without --skill or --agent runs benchmark suite."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.run_benchmark_suite = AsyncMock(return_value=mock_evaluator_suite_results)
             mock_eval_cls.return_value = mock_eval
@@ -654,7 +654,7 @@ class TestEvalRunCommand:
                        "latency_ms": 200.0, "skill_id": "weak-skill", "agent_type": None}
 
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.evaluate_skill = AsyncMock(return_value=low_result)
             mock_eval_cls.return_value = mock_eval
@@ -667,7 +667,7 @@ class TestEvalRunCommand:
     def test_eval_run_with_benchmarks(self, mock_settings, mock_evaluator_result):
         """Eval run with --benchmarks flag."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.evaluate_skill = AsyncMock(return_value=mock_evaluator_result)
             mock_eval_cls.return_value = mock_eval
@@ -681,7 +681,7 @@ class TestEvalRunCommand:
     def test_eval_run_exception(self, mock_settings):
         """Eval run exception shows error message."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.run_benchmark_suite = AsyncMock(
                 side_effect=RuntimeError("Eval crashed"))
@@ -703,7 +703,7 @@ class TestEvalSuiteCommand:
     def test_eval_suite_shows_results(self, mock_settings, mock_evaluator_suite_results):
         """Eval suite displays a table of benchmark results."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.run_benchmark_suite = AsyncMock(return_value=mock_evaluator_suite_results)
             mock_eval_cls.return_value = mock_eval
@@ -719,7 +719,7 @@ class TestEvalSuiteCommand:
     def test_eval_suite_exception(self, mock_settings):
         """Eval suite exception shows error message."""
         with patch("nexus.cli.get_settings", return_value=mock_settings), \
-             patch("nexus.core.evaluation.Evaluator") as mock_eval_cls:
+             patch("nexus.core.evaluation.Evaluator", create=True) as mock_eval_cls:
             mock_eval = MagicMock()
             mock_eval.run_benchmark_suite = AsyncMock(
                 side_effect=RuntimeError("Suite failed"))

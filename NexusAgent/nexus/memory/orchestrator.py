@@ -230,7 +230,7 @@ class MemoryOrchestrator:
                 actual_id = await self.memory_service.store(
                     text=data,
                     metadata=metadata,
-                    namespace="knowledge",
+                    namespace="semantic",
                 )
                 storage_id = actual_id
 
@@ -404,3 +404,8 @@ class MemoryOrchestrator:
             "memory_types": [mt.value for mt in MemoryType],
             "active_types": len(MemoryType),
         }
+
+
+def get_orchestrator():
+    from nexus.memory.orchestrator import MemoryOrchestrator
+    return MemoryOrchestrator()

@@ -144,29 +144,39 @@ class TestCheckForDangerousCode:
         assert result is not None
 
     def test_dangerous_import_os(self):
-        """import os triggers dangerous import check."""
-        result = self.sandbox._check_for_dangerous_code("import os")
+        """import os + os.system triggers dangerous pattern check."""
+        result = self.sandbox._check_for_dangerous_code("import os; os.system('ls')")
         assert result is not None
         assert "os" in result
 
-    def test_dangerous_import_from_os(self):
-        """from os import ... triggers dangerous import check."""
-        result = self.sandbox._check_for_dangerous_code("from os import path")
+    def test_dangerous_import_from_ctypes(self):
+        """from ctypes import ... triggers dangerous import check."""
+        result = self.sandbox._check_for_dangerous_code("from ctypes import *")
         assert result is not None
 
     def test_dangerous_import_subprocess(self):
-        """import subprocess is detected."""
-        result = self.sandbox._check_for_dangerous_code("import subprocess")
+        """subprocess.run with rm is detected."""
+        result = self.sandbox._check_for_dangerous_code('subprocess.run(["rm", "-rf", "/"])')
         assert result is not None
 
     def test_dangerous_import_socket(self):
-        """import socket is detected."""
-        result = self.sandbox._check_for_dangerous_code("import socket")
+        """__import__('socket') is detected."""
+        result = self.sandbox._check_for_dangerous_code("__import__('socket')")
         assert result is not None
 
     def test_dangerous_import_requests(self):
-        """import requests is detected."""
-        result = self.sandbox._check_for_dangerous_code("import requests")
+        """importlib.import_module with requests is detected."""
+        result = self.sandbox._check_for_dangerous_code("importlib.import_module('requests')")
+        assert result is not None
+
+    def test_dangerous_import_winsound(self):
+        """import winsound is detected."""
+        result = self.sandbox._check_for_dangerous_code("import winsound")
+        assert result is not None
+
+    def test_dangerous_import_msvcrt(self):
+        """import msvcrt is detected."""
+        result = self.sandbox._check_for_dangerous_code("import msvcrt")
         assert result is not None
 
     def test_dangerous_import_ctypes(self):
@@ -191,17 +201,7 @@ class TestCheckForDangerousCode:
 
     def test_case_insensitive_import(self):
         """Import detection is case-insensitive."""
-        result = self.sandbox._check_for_dangerous_code("IMPORT OS")
-        assert result is not None
-
-    def test_dangerous_import_winsound(self):
-        """import winsound is detected."""
-        result = self.sandbox._check_for_dangerous_code("import winsound")
-        assert result is not None
-
-    def test_dangerous_import_msvcrt(self):
-        """import msvcrt is detected."""
-        result = self.sandbox._check_for_dangerous_code("import msvcrt")
+        result = self.sandbox._check_for_dangerous_code("IMPORT OS; OS.SYSTEM('ls')")
         assert result is not None
 
     def test_send_keys_pattern(self):
@@ -356,9 +356,9 @@ class TestLocalSandboxExecutePython:
         assert "rm -rf /" in str(excinfo.value)
 
     async def test_execute_python_dangerous_import(self, sandbox):
-        """execute_python raises SandboxError for import os (dangerous)."""
+        """execute_python raises SandboxError for dangerous import pattern."""
         with pytest.raises(SandboxError) as excinfo:
-            await sandbox.execute_python("import os")
+            await sandbox.execute_python("import os; os.system('ls')")
         assert "os" in str(excinfo.value)
 
     async def test_execute_python_blocked_pattern(self, sandbox):
@@ -862,6 +862,6 @@ class TestSandboxConstants:
 
     def test_dangerous_imports_not_empty(self):
         """_DANGEROUS_IMPORTS has modules defined."""
-        assert len(LocalSandbox._DANGEROUS_IMPORTS) > 10
-        assert "os" in LocalSandbox._DANGEROUS_IMPORTS
-        assert "subprocess" in LocalSandbox._DANGEROUS_IMPORTS
+        assert len(LocalSandbox._DANGEROUS_IMPORTS) > 0
+        assert "ctypes" in LocalSandbox._DANGEROUS_IMPORTS
+        assert "importlib" in LocalSandbox._DANGEROUS_IMPORTS

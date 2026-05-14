@@ -450,3 +450,10 @@ class NexusMemoryService:
             return True
         except Exception as exc:
             raise MemoryStoreError(namespace, str(exc)) from exc
+
+
+def get_chroma_client():
+    from nexus.memory.chroma_service import NexusMemoryService
+    from nexus.core.config import get_settings
+    settings = get_settings()
+    return NexusMemoryService(persist_dir=settings.chroma_persist_dir)

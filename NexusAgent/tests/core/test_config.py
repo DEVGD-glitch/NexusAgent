@@ -29,8 +29,8 @@ class TestNexusConfig:
             assert config.ollama_base_url == "http://127.0.0.1:11434"
             assert config.ollama_default_model == "llama3.1:8b"
             assert config.memory_max_working_tokens == 30000
-            assert config.llm_default_provider == "openai"
-            assert config.llm_default_model == "gpt-4o"
+            assert config.llm_default_provider == "gemini"
+            assert config.llm_default_model == "gemini-2.5-flash"
             assert config.browser_service_url == "http://localhost:8001"
         finally:
             os.unlink(tmp_env)
@@ -102,9 +102,10 @@ class TestNexusConfig:
 
     def test_is_production(self):
         """is_production property should reflect environment."""
-        config = NexusConfig(nexus_env=Environment.PRODUCTION)
-        assert config.is_production is True
-        assert config.is_development is False
+        with patch.dict(os.environ, {"NEXUS_SECRET_KEY": "a-very-secure-production-key-12345"}):
+            config = NexusConfig(nexus_env=Environment.PRODUCTION)
+            assert config.is_production is True
+            assert config.is_development is False
 
     def test_is_development(self):
         """is_development property should reflect environment."""

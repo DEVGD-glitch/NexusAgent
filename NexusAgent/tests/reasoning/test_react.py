@@ -60,7 +60,7 @@ class TestReActLoop:
     def test_init(self):
         """ReActLoop initialization."""
         loop = ReActLoop()
-        assert loop.max_steps == 10
+        assert loop.max_iterations == 10
 
     def test_reset(self):
         """Reset method."""

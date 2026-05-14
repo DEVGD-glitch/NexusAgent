@@ -321,7 +321,7 @@ class SkillLifecycleManager:
                 metadata={"skill_id": skill.skill_id, "name": skill.name, "category": skill.category, "stage": "deployed"},
                 namespace="skills",
             )
-        except Exception as e:
+        except BaseException as e:
             logger.warning("Failed to store skill in memory: %s", e)
 
         logger.info("Deployed skill '%s' (v%d, success_rate=%.0f%%)", skill.name, skill.version, skill.success_rate * 100)

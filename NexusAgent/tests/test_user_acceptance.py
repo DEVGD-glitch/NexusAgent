@@ -83,21 +83,31 @@ class TestLLMConnectivity:
     @pytest.mark.asyncio
     async def test_llm_mock_call_succeeds(self):
         """LLM should handle mock call without errors."""
-        from nexus.llm.router import LLMRouter, TaskComplexity
+        from nexus.llm.router import LLMRouter
 
         router = LLMRouter()
 
-        with patch("httpx.AsyncClient.post") as mock_post:
+        with patch("httpx.AsyncClient") as mock_client_class:
+            mock_client = AsyncMock()
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
-                "choices": [{
-                    "message": {"content": "Bonjour"},
-                    "finish_reason": "stop"
+                "candidates": [{
+                    "content": {
+                        "parts": [{"text": "Bonjour"}]
+                    },
+                    "finishReason": "STOP"
                 }],
-                "usage": {"prompt_tokens": 6, "completion_tokens": 1, "total_tokens": 7}
+                "usageMetadata": {
+                    "promptTokenCount": 6,
+                    "candidatesTokenCount": 1,
+                    "totalTokenCount": 7
+                }
             }
-            mock_post.return_value = mock_response
+            mock_client.post = AsyncMock(return_value=mock_response)
+            mock_client.__aenter__.return_value = mock_client
+            mock_client.__aexit__.return_value = None
+            mock_client_class.return_value = mock_client
 
             content, usage, finish, tools = await router._call_gemini_direct(
                 model="gemma-4-31b-it",
@@ -241,7 +251,7 @@ class TestSandbox:
         sandbox = LocalSandbox()
 
         with pytest.raises(SandboxError):
-            await sandbox.execute_python("from subprocess import run; run(['rm', '-rf', '/'])")
+            await sandbox.execute_python('subprocess.run(["rm", "-rf", "/"])')
 
     @pytest.mark.asyncio
     async def test_timeout_enforced(self):

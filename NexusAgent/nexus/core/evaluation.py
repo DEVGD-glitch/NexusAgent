@@ -195,6 +195,13 @@ class HumanEvalEval(BaseEval):
         return [await self.run()]
 
 
+class Evaluator:
+    """Evaluator for skill quality and performance metrics."""
+
+    def __init__(self, min_score_threshold: float = 0.7):
+        self.min_score_threshold = min_score_threshold
+
+
 class EvalRunner:
     """Runs all benchmarks and generates a summary report."""
 

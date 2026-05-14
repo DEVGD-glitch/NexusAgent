@@ -82,18 +82,30 @@ class TestLLMRouter:
         from nexus.llm.router import LLMRouter
 
         router = LLMRouter()
+        router.settings = MagicMock()
+        router.settings.google_api_key = "sk-test-google"
+        router.settings.llm_timeout_seconds = 30
 
-        with patch("httpx.AsyncClient.post") as mock_post:
+        with patch("httpx.AsyncClient") as mock_client_class:
+            mock_client = AsyncMock()
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = {
-                "choices": [{
-                    "message": {"content": "<thought>thinking step</thought>Final answer"},
-                    "finish_reason": "stop"
+                "candidates": [{
+                    "content": {
+                        "parts": [
+                            {"text": "thinking step", "thought": True},
+                            {"text": "Final answer"},
+                        ]
+                    },
+                    "finishReason": "STOP",
                 }],
-                "usage": {"prompt_tokens": 6, "completion_tokens": 2, "total_tokens": 8}
+                "usageMetadata": {"promptTokenCount": 6, "candidatesTokenCount": 2, "totalTokenCount": 8},
             }
-            mock_post.return_value = mock_response
+            mock_client.post = AsyncMock(return_value=mock_response)
+            mock_client.__aenter__.return_value = mock_client
+            mock_client.__aexit__.return_value = None
+            mock_client_class.return_value = mock_client
 
             content, usage, finish, tools = await router._call_gemini_direct(
                 model="gemma-4-31b-it",
@@ -102,8 +114,8 @@ class TestLLMRouter:
                 max_tokens=100,
             )
 
-            assert "<thought>" not in content
-            assert "Final answer" in content
+        assert "<thought>" not in content
+        assert "Final answer" in content
 
 
 # ═══════════════════════════════════════════════════════════════

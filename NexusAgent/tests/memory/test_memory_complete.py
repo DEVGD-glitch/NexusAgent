@@ -62,7 +62,7 @@ class TestMemoryOrchestratorStore:
         from nexus.memory.working import MessageRole as MR
 
         ctx = MemoryContext(
-            task="current context", task_type="conversation",
+            task="current context task", task_type="conversation",
             session_id="test_session", metadata={"role": MR.ASSISTANT.value},
         )
         with patch.object(orch_with_mock, "_detect_memory_type", return_value=MemoryType.WORKING):
@@ -80,7 +80,7 @@ class TestMemoryOrchestratorStore:
         from nexus.memory.working import MessageRole as MR
 
         ctx = MemoryContext(
-            task="current", task_type="conversation",
+            task="current role system", task_type="conversation",
             session_id="session_2",
             metadata={"role": MR.SYSTEM.value},  # lowercase "system"
         )

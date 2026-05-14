@@ -78,7 +78,7 @@ class WorkingMemory:
     system_prompt: Optional[str] = None
 
     def __post_init__(self):
-        if self.max_tokens is None:
+        if self.max_tokens is None or self.max_tokens == 0:
             settings = get_settings()
             self.max_tokens = settings.memory_max_working_tokens
             self.compression_threshold = settings.memory_compression_threshold

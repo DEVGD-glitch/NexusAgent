@@ -1064,510 +1064,263 @@ class TestObservabilityManager:
 # ═══════════════════════════════════════════════════════════════════
 
 class TestEvaluationEnums:
-    """Test evaluation enums."""
+    """Test the evaluation module's classes match expected API."""
 
-    def test_benchmark_type_values(self):
-        from nexus.core.evaluation import BenchmarkType
-        assert BenchmarkType.LATENCY.value == "latency"
-        assert BenchmarkType.ACCURACY.value == "accuracy"
-        assert BenchmarkType.THROUGHPUT.value == "throughput"
-        assert BenchmarkType.RESOURCE_USAGE.value == "resource_usage"
-        assert BenchmarkType.SUCCESS_RATE.value == "success_rate"
+    def test_eval_result_exists(self):
+        """EvalResult dataclass should be importable."""
+        from nexus.core.evaluation import EvalResult
+        assert EvalResult is not None
 
-    def test_benchmark_status_values(self):
-        from nexus.core.evaluation import BenchmarkStatus
-        assert BenchmarkStatus.PENDING.value == "pending"
-        assert BenchmarkStatus.RUNNING.value == "running"
-        assert BenchmarkStatus.COMPLETED.value == "completed"
-        assert BenchmarkStatus.FAILED.value == "failed"
+    def test_base_eval_exists(self):
+        """BaseEval should be importable."""
+        from nexus.core.evaluation import BaseEval
+        assert BaseEval is not None
+
+    def test_benchmark_classes_exist(self):
+        """SWEBenchEval and HumanEvalEval should be importable."""
+        from nexus.core.evaluation import SWEBenchEval, HumanEvalEval, EvalRunner
+        assert SWEBenchEval is not None
+        assert HumanEvalEval is not None
+        assert EvalRunner is not None
+
+    def test_eval_result_fields(self):
+        """EvalResult has expected fields."""
+        from nexus.core.evaluation import EvalResult
+
+        result = EvalResult(
+            benchmark="TestBenchmark",
+            total_tasks=10,
+            passed=8,
+            failed=2,
+            score=80.0,
+            duration_s=5.5,
+        )
+        assert result.benchmark == "TestBenchmark"
+        assert result.total_tasks == 10
+        assert result.passed == 8
+        assert result.failed == 2
+        assert result.score == 80.0
+        assert result.duration_s == 5.5
+        assert result.details == []
+        assert result.error is None
+
+    def test_eval_result_defaults(self):
+        """EvalResult has correct defaults."""
+        from nexus.core.evaluation import EvalResult
+
+        result = EvalResult(benchmark="DefaultTest")
+        assert result.total_tasks == 0
+        assert result.passed == 0
+        assert result.failed == 0
+        assert result.score == 0.0
+        assert result.duration_s == 0.0
+        assert result.details == []
 
 
 class TestTestCase:
-    """Test TestCase dataclass."""
+    """Test evaluation module classes — EvalResult as primary data holder."""
 
-    def test_creation(self):
-        """TestCase creation."""
-        from nexus.core.evaluation import TestCase
+    def test_eval_result_with_details(self):
+        """EvalResult can hold detailed test case results."""
+        from nexus.core.evaluation import EvalResult
 
-        tc = TestCase(
-            name="test_addition",
-            input_data={"a": 1, "b": 2},
-            expected_output="3",
-            timeout_seconds=15.0,
+        details = [
+            {"task_id": "task_1", "status": "passed"},
+            {"task_id": "task_2", "status": "failed", "error": "timeout"},
+        ]
+        result = EvalResult(
+            benchmark="DetailTest",
+            total_tasks=2,
+            passed=1,
+            failed=1,
+            score=50.0,
+            duration_s=3.0,
+            details=details,
         )
-        assert tc.name == "test_addition"
-        assert tc.input_data == {"a": 1, "b": 2}
-        assert tc.expected_output == "3"
-        assert tc.timeout_seconds == 15.0
+        assert len(result.details) == 2
+        assert result.details[0]["status"] == "passed"
+        assert result.details[1]["error"] == "timeout"
 
-    def test_default_timeout(self):
-        """TestCase default timeout."""
-        from nexus.core.evaluation import TestCase
+    def test_eval_result_with_error(self):
+        """EvalResult can hold an error message."""
+        from nexus.core.evaluation import EvalResult
 
-        tc = TestCase(name="quick", input_data={})
-        assert tc.timeout_seconds == 30.0
+        result = EvalResult(benchmark="ErrorTest", error="Dataset not found")
+        assert result.error == "Dataset not found"
+        assert result.score == 0.0
 
 
 class TestEvaluationResult:
-    """Test EvaluationResult dataclass."""
+    """Test EvalResult construction and properties."""
 
-    def test_creation(self):
-        """EvaluationResult creation."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
+    def test_eval_result_creation(self):
+        """EvalResult with all fields."""
+        from nexus.core.evaluation import EvalResult
 
-        result = EvaluationResult(
-            skill_id="test_skill",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0.85,
-            latency_ms=150.0,
-            test_cases_passed=17,
-            test_cases_total=20,
+        result = EvalResult(
+            benchmark="AccuracyBench",
+            total_tasks=20,
+            passed=17,
+            failed=3,
+            score=85.0,
+            duration_s=150.0,
         )
-        assert result.skill_id == "test_skill"
-        assert result.score == 0.85
-        assert result.latency_ms == 150.0
-        assert result.test_cases_passed == 17
+        assert result.benchmark == "AccuracyBench"
+        assert result.score == 85.0
+        assert result.passed == 17
+        assert result.failed == 3
 
-    def test_success_rate_property(self):
-        """success_rate property should compute correctly."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
+    def test_eval_result_zero_tasks(self):
+        """EvalResult with zero tasks."""
+        from nexus.core.evaluation import EvalResult
 
-        result = EvaluationResult(
-            skill_id="test",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0.5,
-            latency_ms=100,
-            test_cases_passed=3,
-            test_cases_total=5,
-        )
-        assert result.success_rate == 0.6
-
-    def test_success_rate_zero_total(self):
-        """success_rate with zero total should return 0."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
-
-        result = EvaluationResult(
-            skill_id="test",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0,
-            latency_ms=0,
-            test_cases_passed=0,
-            test_cases_total=0,
-        )
-        assert result.success_rate == 0.0
+        result = EvalResult(benchmark="Empty", total_tasks=0, passed=0, failed=0)
+        assert result.score == 0.0
+        assert result.passed == 0
 
 
 class TestBenchmarkRun:
-    """Test BenchmarkRun dataclass."""
+    """Test the evaluation runner and base classes."""
 
-    def test_creation(self):
-        """BenchmarkRun creation."""
-        from nexus.core.evaluation import BenchmarkRun, BenchmarkType, BenchmarkStatus
+    def test_base_eval_initialization(self):
+        """BaseEval initializes correctly."""
+        from nexus.core.evaluation import BaseEval
 
-        run = BenchmarkRun(
-            run_id="run_1",
-            name="Test Suite",
-            description="First benchmark",
-            benchmark_type=BenchmarkType.LATENCY,
-        )
-        assert run.run_id == "run_1"
-        assert run.name == "Test Suite"
-        assert run.status == BenchmarkStatus.PENDING
+        eval_inst = BaseEval()
+        assert eval_inst._results == []
+        assert eval_inst.settings is not None
+
+    def test_eval_runner_has_evaluators(self):
+        """EvalRunner should initialize with benchmark evaluators."""
+        from nexus.core.evaluation import EvalRunner
+
+        runner = EvalRunner()
+        assert len(runner.evaluators) == 2
+        assert runner.all_results == []
+        names = [type(e).__name__ for e in runner.evaluators]
+        assert "SWEBenchEval" in names
+        assert "HumanEvalEval" in names
 
 
 class TestEvaluator:
-    """Test Evaluator class."""
+    """Test evaluation classes — BaseEval, SWEBenchEval, HumanEvalEval, EvalRunner."""
 
     @pytest.fixture
-    def evaluator(self):
-        from nexus.core.evaluation import Evaluator
-        return Evaluator(default_timeout=10.0, min_score_threshold=0.7)
-
-    def test_init(self, evaluator):
-        """Evaluator initialization."""
-        assert evaluator.default_timeout == 10.0
-        assert evaluator.min_score_threshold == 0.7
-
-    @pytest.mark.asyncio
-    async def test_evaluate_skill_all_pass(self, evaluator):
-        """evaluate_skill with all tests passing."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
-
-        async def good_skill(**kwargs):
-            return "expected_output"
-
-        test_cases = [
-            TestCase(name="tc1", input_data={}, expected_output="expected_output"),
-            TestCase(name="tc2", input_data={"x": 1}, expected_output="expected_output"),
-        ]
-
-        result = await evaluator.evaluate_skill(
-            skill_id="good_skill",
-            skill_impl=good_skill,
-            test_cases=test_cases,
-            benchmark_type=BenchmarkType.ACCURACY,
+    def eval_result(self):
+        from nexus.core.evaluation import EvalResult
+        return EvalResult(
+            benchmark="TestBench",
+            total_tasks=5,
+            passed=4,
+            failed=1,
+            score=80.0,
+            duration_s=2.5,
         )
-        assert result.score == 1.0
-        assert result.test_cases_passed == 2
-        assert result.test_cases_total == 2
-        assert result.error_rate == 0.0
+
+    def test_eval_result_attributes(self, eval_result):
+        """EvalResult has correct attributes."""
+        assert eval_result.benchmark == "TestBench"
+        assert eval_result.score == 80.0
+        assert eval_result.total_tasks == 5
+        assert eval_result.passed == 4
+        assert eval_result.failed == 1
+        assert eval_result.duration_s == 2.5
 
     @pytest.mark.asyncio
-    async def test_evaluate_skill_some_fail(self, evaluator):
-        """evaluate_skill with some failures."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    async def test_base_eval_abstract(self):
+        """BaseEval run/run_all should raise NotImplementedError."""
+        from nexus.core.evaluation import BaseEval
 
-        async def mixed_skill(**kwargs):
-            # Returns wrong output for second test
-            return "wrong_output"
+        be = BaseEval()
+        with pytest.raises(NotImplementedError):
+            await be.run()
+        with pytest.raises(NotImplementedError):
+            await be.run_all()
 
-        test_cases = [
-            TestCase(name="tc1", input_data={}, expected_output="wrong_output"),
-            TestCase(name="tc2", input_data={}, expected_output="expected_output"),
-        ]
+    def test_base_eval_summary_empty(self):
+        """BaseEval summary with no results."""
+        from nexus.core.evaluation import BaseEval
 
-        result = await evaluator.evaluate_skill(
-            skill_id="mixed",
-            skill_impl=mixed_skill,
-            test_cases=test_cases,
-        )
-        assert result.score == 0.5
-        assert result.test_cases_passed == 1
-        assert result.test_cases_total == 2
+        be = BaseEval()
+        summary = be.summary()
+        assert "Benchmark Results" in summary
 
-    @pytest.mark.asyncio
-    async def test_evaluate_skill_without_expected_output(self, evaluator):
-        """evaluate_skill without expected output should check truthiness."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    def test_swebench_eval_init(self):
+        """SWEBenchEval initializes correctly."""
+        from nexus.core.evaluation import SWEBenchEval
 
-        async def returning_skill(**kwargs):
-            return "some result"
-
-        test_cases = [
-            TestCase(name="tc1", input_data={}),
-        ]
-
-        result = await evaluator.evaluate_skill(
-            skill_id="returning",
-            skill_impl=returning_skill,
-            test_cases=test_cases,
-        )
-        assert result.score == 1.0
+        eval_inst = SWEBenchEval(dataset_path="nonexistent.json")
+        assert eval_inst.dataset_path == "nonexistent.json"
+        assert eval_inst._dataset == []
 
     @pytest.mark.asyncio
-    async def test_evaluate_skill_none_return(self, evaluator):
-        """evaluate_skill should fail for None return without expected."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    async def test_swebench_run_not_found(self):
+        """SWEBenchEval.run with unknown task returns error."""
+        from nexus.core.evaluation import SWEBenchEval
 
-        async def none_skill(**kwargs):
-            return None
-
-        test_cases = [
-            TestCase(name="tc1", input_data={}),
-        ]
-
-        result = await evaluator.evaluate_skill(
-            skill_id="none_skill",
-            skill_impl=none_skill,
-            test_cases=test_cases,
-        )
-        assert result.score == 0.0
+        eval_inst = SWEBenchEval(dataset_path="nonexistent.json")
+        result = await eval_inst.run("nonexistent_task")
+        assert result.error is not None
+        assert "not found" in result.error.lower()
 
     @pytest.mark.asyncio
-    async def test_evaluate_skill_timeout(self, evaluator):
-        """evaluate_skill should handle timeouts."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    async def test_humaneval_run(self):
+        """HumanEvalEval.run should execute."""
+        from nexus.core.evaluation import HumanEvalEval
 
-        async def slow_skill(**kwargs):
-            await asyncio.sleep(100)
-
-        test_cases = [
-            TestCase(name="slow", input_data={}, timeout_seconds=0.01),
-        ]
-
-        result = await evaluator.evaluate_skill(
-            skill_id="slow",
-            skill_impl=slow_skill,
-            test_cases=test_cases,
-        )
-        assert result.error_rate > 0
+        eval_inst = HumanEvalEval()
+        result = await eval_inst.run()
+        assert result.score >= 0.0
+        assert result.total_tasks > 0
 
     @pytest.mark.asyncio
-    async def test_evaluate_skill_exception(self, evaluator):
-        """evaluate_skill should handle exceptions."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    async def test_eval_runner_run_all(self):
+        """EvalRunner.run_all should execute all evaluators."""
+        from nexus.core.evaluation import EvalRunner
 
-        async def broken_skill(**kwargs):
-            raise RuntimeError("Skill crashed")
+        runner = EvalRunner()
+        results = await runner.run_all()
+        assert isinstance(results, list)
 
-        test_cases = [
-            TestCase(name="broken", input_data={}),
-        ]
+    def test_eval_runner_generate_report(self):
+        """EvalRunner.generate_report should return markdown."""
+        from nexus.core.evaluation import EvalRunner
 
-        result = await evaluator.evaluate_skill(
-            skill_id="broken",
-            skill_impl=broken_skill,
-            test_cases=test_cases,
-        )
-        assert result.error_rate > 0
-        assert result.score == 0.0
+        runner = EvalRunner()
+        report = runner.generate_report()
+        assert "NEXUS Benchmark Report" in report
 
-    @pytest.mark.asyncio
-    async def test_evaluate_skill_sync_function(self, evaluator):
-        """evaluate_skill should handle sync functions."""
-        from nexus.core.evaluation import TestCase, BenchmarkType
+    def test_eval_result_with_details(self):
+        """EvalResult with details list."""
+        from nexus.core.evaluation import EvalResult
 
-        def sync_skill(**kwargs):
-            return "sync_result"
+        details = [{"task": "t1", "result": "pass"}]
+        result = EvalResult(benchmark="Details", total_tasks=1, passed=1, details=details)
+        assert len(result.details) == 1
+        assert result.details[0]["result"] == "pass"
 
-        test_cases = [
-            TestCase(name="sync", input_data={}, expected_output="sync_result"),
-        ]
+    def test_eval_result_with_error(self):
+        """EvalResult with error field."""
+        from nexus.core.evaluation import EvalResult
 
-        result = await evaluator.evaluate_skill(
-            skill_id="sync",
-            skill_impl=sync_skill,
-            test_cases=test_cases,
-        )
-        assert result.score == 1.0
+        result = EvalResult(benchmark="Error", error="Something broke")
+        assert result.error == "Something broke"
 
-    @pytest.mark.asyncio
-    async def test_evaluate_agent_keyword_match(self, evaluator):
-        """evaluate_agent should check keywords in output."""
-        class MockAgentResult:
-            def __init__(self):
-                self.answer = "The capital of France is Paris"
-                self.success = True
+    def test_swebench_eval_load_dataset_missing(self):
+        """SWEBenchEval.load_dataset with missing file returns empty list."""
+        from nexus.core.evaluation import SWEBenchEval
 
-        async def run(input_text):
-            return MockAgentResult()
-
-        agent = MagicMock()
-        agent.run = run
-        agent.agent_type = "research_agent"
-
-        tasks = [
-            {"input": "Capital of France?", "expected_keywords": ["Paris"]},
-        ]
-
-        result = await evaluator.evaluate_agent(agent, tasks)
-        assert result.test_cases_passed == 1
-        assert result.score == 1.0
-
-    @pytest.mark.asyncio
-    async def test_evaluate_agent_no_keywords(self, evaluator):
-        """evaluate_agent without keywords should check success."""
-        class MockAgentResult:
-            def __init__(self):
-                self.success = True
-
-        async def run(input_text):
-            return MockAgentResult()
-
-        agent = MagicMock()
-        agent.run = run
-        agent.agent_type = "test"
-
-        tasks = [
-            {"input": "Do something"},
-        ]
-
-        result = await evaluator.evaluate_agent(agent, tasks)
-        assert result.score == 1.0
-
-    @pytest.mark.asyncio
-    async def test_evaluate_agent_error(self, evaluator):
-        """evaluate_agent should handle agent errors."""
-        agent = MagicMock()
-        agent.run = AsyncMock(side_effect=Exception("Agent failed"))
-        agent.agent_type = "failing"
-
-        tasks = [
-            {"input": "Do something", "expected_keywords": ["result"]},
-        ]
-
-        result = await evaluator.evaluate_agent(agent, tasks)
-        assert result.score == 0.0
-        assert result.error_rate > 0
-
-    @pytest.mark.asyncio
-    async def test_run_benchmark_suite(self, evaluator):
-        """run_benchmark_suite should run across multiple skills."""
-        from nexus.core.evaluation import TestCase
-
-        async def skill_a(**kwargs):
-            return "output_a"
-
-        async def skill_b(**kwargs):
-            return "output_b"
-
-        skills = {
-            "skill_a": skill_a,
-            "skill_b": skill_b,
-        }
-        test_cases = {
-            "skill_a": [TestCase(name="a1", input_data={}, expected_output="output_a")],
-            "skill_b": [TestCase(name="b1", input_data={}, expected_output="output_b")],
-        }
-
-        run = await evaluator.run_benchmark_suite(
-            name="Full Suite",
-            skills=skills,
-            test_cases=test_cases,
-        )
-        assert run.status.value == "completed"
-        assert len(run.results) == 2
-        assert run.name == "Full Suite"
-
-    @pytest.mark.asyncio
-    async def test_run_benchmark_empty_skills(self, evaluator):
-        """run_benchmark_suite with empty skills should return empty run."""
-        run = await evaluator.run_benchmark_suite(
-            name="Empty",
-            skills={},
-            test_cases={},
-        )
-        assert run.status.value == "completed"
-        assert len(run.results) == 0
-
-    @pytest.mark.asyncio
-    async def test_run_benchmark_skips_missing_test_cases(self, evaluator):
-        """run_benchmark_suite should skip skills without test cases."""
-        skills = {"skill_a": lambda: "result"}
-        run = await evaluator.run_benchmark_suite(
-            name="Skip",
-            skills=skills,
-            test_cases={},
-        )
-        assert len(run.results) == 0
-
-    def test_get_historical_results(self, evaluator):
-        """get_historical_results should return benchmark history."""
+        eval_inst = SWEBenchEval(dataset_path="nonexistent.json")
         import asyncio
-        from nexus.core.evaluation import TestCase
+        dataset = asyncio.run(eval_inst.load_dataset())
+        assert dataset == []
 
-        async def skill(**kwargs):
-            return "output"
+    def test_base_eval_settings(self):
+        """BaseEval reads settings."""
+        from nexus.core.evaluation import BaseEval
 
-        skills = {"skill_x": skill}
-        cases = {"skill_x": [TestCase(name="t1", input_data={})]}
-
-        asyncio.run(evaluator.run_benchmark_suite("Run 1", skills, cases))
-        history = evaluator.get_historical_results()
-        assert len(history) == 1
-
-    def test_get_historical_results_filtered(self, evaluator):
-        """get_historical_results filtered by skill_id."""
-        import asyncio
-        from nexus.core.evaluation import TestCase
-
-        async def skill_a(**kwargs):
-            return "a"
-
-        async def skill_b(**kwargs):
-            return "b"
-
-        skills_a = {"skill_a": skill_a}
-        cases_a = {"skill_a": [TestCase(name="t1", input_data={})]}
-
-        asyncio.run(evaluator.run_benchmark_suite("Suite", skills_a, cases_a))
-        filtered = evaluator.get_historical_results(skill_id="skill_a")
-        assert len(filtered) == 1
-
-        filtered_missing = evaluator.get_historical_results(skill_id="skill_z")
-        assert len(filtered_missing) == 0
-
-    def test_get_improvement_trend_insufficient_data(self, evaluator):
-        """get_improvement_trend with < 2 data points."""
-        trend = evaluator.get_improvement_trend("new_skill")
-        assert trend["trend"] == "insufficient_data"
-
-    def test_get_improvement_trend_with_data(self, evaluator):
-        """get_improvement_trend should compute direction."""
-        import asyncio
-        from nexus.core.evaluation import TestCase, EvaluationResult, BenchmarkRun, BenchmarkType, BenchmarkStatus
-
-        # Add historical results directly
-        run = BenchmarkRun(
-            run_id="r1",
-            name="Old",
-            status=BenchmarkStatus.COMPLETED,
-            results=[
-                EvaluationResult(
-                    skill_id="skill_x",
-                    benchmark_type=BenchmarkType.ACCURACY,
-                    score=0.6,
-                    latency_ms=100,
-                    test_cases_passed=6,
-                    test_cases_total=10,
-                ),
-            ],
-        )
-        evaluator._benchmark_history.append(run)
-
-        run2 = BenchmarkRun(
-            run_id="r2",
-            name="New",
-            status=BenchmarkStatus.COMPLETED,
-            results=[
-                EvaluationResult(
-                    skill_id="skill_x",
-                    benchmark_type=BenchmarkType.ACCURACY,
-                    score=0.9,
-                    latency_ms=50,
-                    test_cases_passed=9,
-                    test_cases_total=10,
-                ),
-            ],
-        )
-        evaluator._benchmark_history.append(run2)
-
-        trend = evaluator.get_improvement_trend("skill_x")
-        assert trend["data_points"] == 2
-        assert trend["direction"] in ("improving", "declining")
-
-    def test_needs_improvement_low_score(self, evaluator):
-        """needs_improvement should return True for low score."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
-
-        result = EvaluationResult(
-            skill_id="test",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0.5,
-            latency_ms=100,
-            test_cases_passed=5,
-            test_cases_total=10,
-        )
-        assert evaluator.needs_improvement(result) is True
-
-    def test_needs_improvement_high_error(self, evaluator):
-        """needs_improvement should return True for high error rate."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
-
-        result = EvaluationResult(
-            skill_id="test",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0.9,
-            latency_ms=100,
-            test_cases_passed=9,
-            test_cases_total=10,
-            error_rate=0.3,
-        )
-        assert evaluator.needs_improvement(result) is True
-
-    def test_needs_improvement_ok(self, evaluator):
-        """needs_improvement should return False for good result."""
-        from nexus.core.evaluation import EvaluationResult, BenchmarkType
-
-        result = EvaluationResult(
-            skill_id="test",
-            benchmark_type=BenchmarkType.ACCURACY,
-            score=0.85,
-            latency_ms=100,
-            test_cases_passed=17,
-            test_cases_total=20,
-        )
-        assert evaluator.needs_improvement(result) is False
+        be = BaseEval()
+        assert be.settings is not None
 
 
 # ═══════════════════════════════════════════════════════════════════

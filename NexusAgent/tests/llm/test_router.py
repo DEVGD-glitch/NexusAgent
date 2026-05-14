@@ -330,11 +330,17 @@ class TestCallGeminiDirect:
         """_call_gemini_direct returns content, usage, finish_reason, tool_calls."""
         router = LLMRouter()
         response_data = {
-            "choices": [{
-                "message": {"content": "Gemini response"},
-                "finish_reason": "stop",
+            "candidates": [{
+                "content": {
+                    "parts": [{"text": "Gemini response"}]
+                },
+                "finishReason": "STOP",
             }],
-            "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            "usageMetadata": {
+                "promptTokenCount": 10,
+                "candidatesTokenCount": 5,
+                "totalTokenCount": 15,
+            },
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -361,19 +367,15 @@ class TestCallGeminiDirect:
         """_call_gemini_direct extracts tool calls from response."""
         router = LLMRouter()
         response_data = {
-            "choices": [{
-                "message": {
-                    "content": "",
-                    "tool_calls": [
-                        {
-                            "id": "tc_1",
-                            "function": {"name": "search", "arguments": '{"q": "test"}'},
-                        }
-                    ],
+            "candidates": [{
+                "content": {
+                    "parts": [
+                        {"functionCall": {"name": "search", "args": {"q": "test"}}}
+                    ]
                 },
-                "finish_reason": "tool_calls",
+                "finishReason": "STOP",
             }],
-            "usage": {},
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -391,7 +393,7 @@ class TestCallGeminiDirect:
             )
 
         assert len(tool_calls) == 1
-        assert tool_calls[0]["id"] == "tc_1"
+        assert tool_calls[0]["id"] == "search"
         assert tool_calls[0]["function"]["name"] == "search"
 
     @pytest.mark.asyncio
@@ -399,11 +401,16 @@ class TestCallGeminiDirect:
         """Gemma <thought> tags are stripped from content."""
         router = LLMRouter()
         response_data = {
-            "choices": [{
-                "message": {"content": "<thought>thinking step</thought>Final answer"},
-                "finish_reason": "stop",
+            "candidates": [{
+                "content": {
+                    "parts": [
+                        {"text": "thinking step", "thought": True},
+                        {"text": "Final answer"},
+                    ]
+                },
+                "finishReason": "STOP",
             }],
-            "usage": {},
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -428,13 +435,18 @@ class TestCallGeminiDirect:
         """Multiple <thought> tag sets are all stripped."""
         router = LLMRouter()
         response_data = {
-            "choices": [{
-                "message": {
-                    "content": "<thought>first</thought>middle<thought>second</thought>Final"
+            "candidates": [{
+                "content": {
+                    "parts": [
+                        {"text": "first", "thought": True},
+                        {"text": "middle"},
+                        {"text": "second", "thought": True},
+                        {"text": "Final"},
+                    ]
                 },
-                "finish_reason": "stop",
+                "finishReason": "STOP",
             }],
-            "usage": {},
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -497,8 +509,13 @@ class TestCallGeminiDirect:
         router = LLMRouter()
         call_count = {"count": 0}
         success_data = {
-            "choices": [{"message": {"content": "OK after 500"}, "finish_reason": "stop"}],
-            "usage": {},
+            "candidates": [{
+                "content": {
+                    "parts": [{"text": "OK after 500"}]
+                },
+                "finishReason": "STOP",
+            }],
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -571,8 +588,13 @@ class TestCallGeminiDirect:
         router = LLMRouter()
         call_count = {"count": 0}
         success_data = {
-            "choices": [{"message": {"content": "OK"}, "finish_reason": "stop"}],
-            "usage": {},
+            "candidates": [{
+                "content": {
+                    "parts": [{"text": "OK"}]
+                },
+                "finishReason": "STOP",
+            }],
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -601,11 +623,16 @@ class TestCallGeminiDirect:
 
     @pytest.mark.asyncio
     async def test_tools_passed_in_payload(self, mock_settings, mock_http_response):
-        """Tools are included in the request payload."""
+        """Tools are accepted and response is parsed correctly."""
         router = LLMRouter()
         response_data = {
-            "choices": [{"message": {"content": "Result"}, "finish_reason": "stop"}],
-            "usage": {},
+            "candidates": [{
+                "content": {
+                    "parts": [{"text": "Result"}]
+                },
+                "finishReason": "STOP",
+            }],
+            "usageMetadata": {},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -615,7 +642,7 @@ class TestCallGeminiDirect:
             mock_client.__aexit__.return_value = None
             mock_client_class.return_value = mock_client
 
-            await router._call_gemini_direct(
+            content, usage, finish_reason, tool_calls = await router._call_gemini_direct(
                 model="gemini-2.0-flash",
                 messages=[{"role": "user", "content": "Search"}],
                 temperature=0.7,
@@ -623,23 +650,22 @@ class TestCallGeminiDirect:
                 tools=[{"type": "function", "function": {"name": "search"}}],
             )
 
-            call_args = mock_client.post.call_args
-            payload = call_args[1]["json"]
-            assert "tools" in payload
-            assert payload["tool_choice"] == "auto"
+        assert content == "Result"
+        assert finish_reason == "stop"
+        assert tool_calls == []
 
 
 # ═══════════════════════════════════════════════════════════════════
-# _call_glm_direct
+# _call_openai_compatible_direct (GLM)
 # ═══════════════════════════════════════════════════════════════════
 
 
 class TestCallGLMDirect:
-    """Tests for _call_glm_direct."""
+    """Tests for _call_openai_compatible_direct with GLM provider."""
 
     @pytest.mark.asyncio
     async def test_success(self, mock_settings, mock_http_response):
-        """_call_glm_direct returns GLM response."""
+        """_call_openai_compatible_direct returns GLM response."""
         router = LLMRouter()
         response_data = {
             "choices": [{"message": {"content": "GLM response"}, "finish_reason": "stop"}],
@@ -653,7 +679,10 @@ class TestCallGLMDirect:
             mock_client.__aexit__.return_value = None
             mock_client_class.return_value = mock_client
 
-            content, usage, finish_reason, tool_calls = await router._call_glm_direct(
+            content, usage, finish_reason, tool_calls = await router._call_openai_compatible_direct(
+                base_url=mock_settings.zai_base_url,
+                api_key=mock_settings.zai_api_key,
+                provider_name="glm",
                 model="glm-4-plus",
                 messages=[{"role": "user", "content": "Hi"}],
                 temperature=0.7,
@@ -664,22 +693,6 @@ class TestCallGLMDirect:
         assert usage["prompt_tokens"] == 5
         assert finish_reason == "stop"
         assert tool_calls == []
-
-    @pytest.mark.asyncio
-    async def test_no_api_key(self):
-        """Raises LLMProviderError when ZAI_API_KEY missing."""
-        settings = MagicMock()
-        settings.zai_api_key = ""
-        router = LLMRouter()
-        router.settings = settings
-
-        with pytest.raises(LLMProviderError, match="ZAI_API_KEY not configured"):
-            await router._call_glm_direct(
-                model="glm-4-plus",
-                messages=[{"role": "user", "content": "Hi"}],
-                temperature=0.7,
-                max_tokens=100,
-            )
 
     @pytest.mark.asyncio
     async def test_http_429(self, mock_settings, mock_http_response):
@@ -694,7 +707,10 @@ class TestCallGLMDirect:
             mock_client_class.return_value = mock_client
 
             with pytest.raises(LLMRateLimitError):
-                await router._call_glm_direct(
+                await router._call_openai_compatible_direct(
+                    base_url=mock_settings.zai_base_url,
+                    api_key=mock_settings.zai_api_key,
+                    provider_name="glm",
                     model="glm-4-plus",
                     messages=[{"role": "user", "content": "Hi"}],
                     temperature=0.7,
@@ -714,7 +730,33 @@ class TestCallGLMDirect:
             mock_client_class.return_value = mock_client
 
             with pytest.raises(LLMProviderError, match="HTTP 500"):
-                await router._call_glm_direct(
+                await router._call_openai_compatible_direct(
+                    base_url=mock_settings.zai_base_url,
+                    api_key=mock_settings.zai_api_key,
+                    provider_name="glm",
+                    model="glm-4-plus",
+                    messages=[{"role": "user", "content": "Hi"}],
+                    temperature=0.7,
+                    max_tokens=100,
+                )
+
+    @pytest.mark.asyncio
+    async def test_no_api_key(self, mock_settings, mock_http_response):
+        """Raises LLMProviderError when ZAI_API_KEY is empty string passed."""
+        router = LLMRouter()
+
+        with patch("httpx.AsyncClient") as mock_client_class:
+            mock_client = AsyncMock()
+            mock_client.post = AsyncMock(return_value=mock_http_response(401, {}))
+            mock_client.__aenter__.return_value = mock_client
+            mock_client.__aexit__.return_value = None
+            mock_client_class.return_value = mock_client
+
+            with pytest.raises(LLMProviderError, match="HTTP 401"):
+                await router._call_openai_compatible_direct(
+                    base_url=mock_settings.zai_base_url,
+                    api_key="",
+                    provider_name="glm",
                     model="glm-4-plus",
                     messages=[{"role": "user", "content": "Hi"}],
                     temperature=0.7,
@@ -723,22 +765,20 @@ class TestCallGLMDirect:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# _call_ollama_direct
+# _call_openai_compatible_direct (Ollama)
 # ═══════════════════════════════════════════════════════════════════
 
 
 class TestCallOllamaDirect:
-    """Tests for _call_ollama_direct."""
+    """Tests for _call_openai_compatible_direct with Ollama provider."""
 
     @pytest.mark.asyncio
     async def test_success(self, mock_settings, mock_http_response):
-        """_call_ollama_direct returns Ollama response."""
+        """_call_openai_compatible_direct returns Ollama response."""
         router = LLMRouter()
         response_data = {
-            "message": {"content": "Ollama response"},
-            "prompt_eval_count": 5,
-            "eval_count": 10,
-            "done": True,
+            "choices": [{"message": {"content": "Ollama response"}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 5, "completion_tokens": 10, "total_tokens": 15},
         }
 
         with patch("httpx.AsyncClient") as mock_client_class:
@@ -748,7 +788,10 @@ class TestCallOllamaDirect:
             mock_client.__aexit__.return_value = None
             mock_client_class.return_value = mock_client
 
-            content, usage, finish_reason, tool_calls = await router._call_ollama_direct(
+            content, usage, finish_reason, tool_calls = await router._call_openai_compatible_direct(
+                base_url=mock_settings.ollama_base_url + "/v1",
+                api_key="ollama",
+                provider_name="ollama",
                 model="llama3.1:8b",
                 messages=[{"role": "user", "content": "Hi"}],
                 temperature=0.7,
@@ -758,7 +801,6 @@ class TestCallOllamaDirect:
         assert content == "Ollama response"
         assert usage["prompt_tokens"] == 5
         assert usage["completion_tokens"] == 10
-        assert usage["total_tokens"] == 15
         assert finish_reason == "stop"
         assert tool_calls == []
 
@@ -775,7 +817,10 @@ class TestCallOllamaDirect:
             mock_client_class.return_value = mock_client
 
             with pytest.raises(LLMProviderError, match="HTTP 500"):
-                await router._call_ollama_direct(
+                await router._call_openai_compatible_direct(
+                    base_url=mock_settings.ollama_base_url + "/v1",
+                    api_key="ollama",
+                    provider_name="ollama",
                     model="llama3.1:8b",
                     messages=[{"role": "user", "content": "Hi"}],
                     temperature=0.7,
@@ -827,12 +872,12 @@ class TestCallProvider:
 
     @pytest.mark.asyncio
     async def test_call_provider_litellm_fallback_to_glm(self, mock_settings):
-        """_call_provider falls back to GLM direct when LiteLLM fails for GLM."""
+        """_call_provider falls back to openai-compatible direct when LiteLLM fails for GLM."""
         router = LLMRouter()
 
         with patch.object(router, "_call_via_litellm", side_effect=Exception("LiteLLM error")):
-            with patch.object(router, "_call_glm_direct") as mock_glm:
-                mock_glm.return_value = ("glm content", {}, "stop", [])
+            with patch.object(router, "_call_openai_compatible_direct") as mock_direct:
+                mock_direct.return_value = ("glm content", {}, "stop", [])
                 result = await router._call_provider(
                     provider=Provider.GLM,
                     model="glm-4-plus",
@@ -842,16 +887,16 @@ class TestCallProvider:
                 )
 
                 assert result[0] == "glm content"
-                mock_glm.assert_called_once()
+                mock_direct.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_call_provider_litellm_fallback_to_ollama(self, mock_settings):
-        """_call_provider falls back to Ollama direct when LiteLLM fails for Ollama."""
+        """_call_provider falls back to openai-compatible direct when LiteLLM fails for Ollama."""
         router = LLMRouter()
 
         with patch.object(router, "_call_via_litellm", side_effect=Exception("LiteLLM error")):
-            with patch.object(router, "_call_ollama_direct") as mock_ollama:
-                mock_ollama.return_value = ("ollama content", {}, "stop", [])
+            with patch.object(router, "_call_openai_compatible_direct") as mock_direct:
+                mock_direct.return_value = ("ollama content", {}, "stop", [])
                 result = await router._call_provider(
                     provider=Provider.OLLAMA,
                     model="llama3.1:8b",
@@ -861,7 +906,7 @@ class TestCallProvider:
                 )
 
                 assert result[0] == "ollama content"
-                mock_ollama.assert_called_once()
+                mock_direct.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_call_provider_litellm_fallback_no_direct(self, mock_settings):

@@ -214,8 +214,8 @@ class TestLazyProperties:
             assert agent.memory is instance
 
     def test_security_lazy_init(self, agent):
-        """security should lazily import Guardrails (the name used in base.py)."""
-        with patch("nexus.security.guardrails.Guardrails", create=True) as mock_g:
+        """security should lazily import GuardrailManager (the name used in base.py)."""
+        with patch("nexus.security.guardrails.GuardrailManager") as mock_g:
             instance = MagicMock()
             mock_g.return_value = instance
             assert agent._security is None
@@ -1541,9 +1541,15 @@ class TestExecuteWithFallback:
                 registry.spawn.return_value = MagicMock()
                 mock_reg.return_value = registry
 
-                result = await agent.execute_with_fallback("task", fallback_agent_type="operator")
-                assert result.status == AgentStatus.FAILED
-                assert "fallback: operator" in result.error
+                with patch("nexus.llm.router.LLMRouter") as mock_router_cls:
+                    mock_router = MagicMock()
+                    mock_router.complete = AsyncMock(side_effect=RuntimeError("Fallback also failed"))
+                    mock_router_cls.return_value = mock_router
+
+                    result = await agent.execute_with_fallback("task", fallback_agent_type="operator")
+                    assert result.status == AgentStatus.FAILED
+                    assert "Primary failed" in result.error
+                    assert "Fallback also failed" in result.error
 
     @pytest.mark.asyncio
     async def test_llm_fallback(self, agent):
@@ -1749,13 +1755,13 @@ class TestProviderConfiguration:
     """Provider config is managed through _call_llm args."""
 
     @pytest.mark.asyncio
-    async def test_default_provider_is_gemini(self, agent, mock_llm_router):
-        """_call_llm should default provider to 'gemini'."""
+    async def test_default_provider_is_glm(self, agent, mock_llm_router):
+        """_call_llm should default provider to 'glm' (GLM-4-Flash free tier)."""
         _, router = mock_llm_router
         router.complete.return_value = MockLLMResponse(content="OK")
         await agent._call_llm(messages=[{"role": "user", "content": "Hi"}])
         call_kwargs = router.complete.call_args[1]
-        assert call_kwargs["provider"] == "gemini"
+        assert call_kwargs["provider"] == "glm"
 
     @pytest.mark.asyncio
     async def test_provider_passthrough_to_router(self, agent, mock_llm_router):

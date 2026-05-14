@@ -353,6 +353,12 @@ class TestOrchestrationRouterStats:
         from nexus.orchestrator.router import OrchestrationRouter
         return OrchestrationRouter()
 
+    @pytest.fixture(autouse=True)
+    def mock_engine_availability(self):
+        """Prevent actual engine imports that can hang."""
+        with patch("nexus.orchestrator.router._check_engine_available", return_value=True):
+            yield
+
     def test_get_stats_empty(self, router):
         """get_stats on fresh router should return zeros."""
         stats = router.get_stats()
@@ -375,6 +381,12 @@ class TestOrchestrationRouterExecute:
     def router(self):
         from nexus.orchestrator.router import OrchestrationRouter
         return OrchestrationRouter()
+
+    @pytest.fixture(autouse=True)
+    def mock_engine_availability(self):
+        """Prevent actual engine imports that can hang."""
+        with patch("nexus.orchestrator.router._check_engine_available", return_value=True):
+            yield
 
     @pytest.mark.asyncio
     async def test_execute_success(self, router):
@@ -1323,7 +1335,9 @@ class TestSkillLifecycleManagerDiscover:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_discover_new_skill(self, manager):
@@ -1382,7 +1396,9 @@ class TestSkillLifecycleManagerDesign:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_design_with_parameters(self, manager):
@@ -1443,7 +1459,9 @@ class TestSkillLifecycleManagerImplement:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_implement_generates_code(self, manager):
@@ -1490,7 +1508,9 @@ class TestSkillLifecycleManagerValidate:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_validate_passing_skill(self, manager):
@@ -1554,7 +1574,9 @@ class TestSkillLifecycleManagerDeploy:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_deploy_success(self, manager):
@@ -1598,7 +1620,9 @@ class TestSkillLifecycleManagerUtils:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     def test_get_skill(self, manager):
         """get_skill should return skill by ID."""
@@ -1667,7 +1691,9 @@ class TestSkillLifecycleManagerEvolve:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_evolve_increments_version(self, manager):
@@ -1675,8 +1701,8 @@ class TestSkillLifecycleManagerEvolve:
         skill = await manager.discover_skill(task_pattern="evolve_test", frequency=1)
         original_version = skill.version
 
-        with patch.object(manager, "design_skill", new=AsyncMock()) as mock_design:
-            mock_design.return_value = MagicMock(version=original_version + 1)
+        with patch.object(manager, "advance_stage", new=AsyncMock()) as mock_adv:
+            mock_adv.return_value = MagicMock(version=original_version + 1)
             evolved = await manager.evolve_skill(skill.skill_id, feedback="Make it faster")
             assert evolved.version == original_version + 1
 
@@ -1703,7 +1729,9 @@ class TestSkillLifecycleManagerAdvanceStage:
     @pytest.fixture
     def manager(self):
         from nexus.orchestrator.skill_lifecycle import SkillLifecycleManager
-        return SkillLifecycleManager()
+        m = SkillLifecycleManager()
+        m.min_usage_for_discovery = 999
+        return m
 
     @pytest.mark.asyncio
     async def test_advance_from_discovery_to_deploy(self, manager):
