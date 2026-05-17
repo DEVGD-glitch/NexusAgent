@@ -44,7 +44,7 @@ import { ApprovalCard } from "./approval-card";
 import { StreamingContent } from "./streaming-content";
 import { motion } from "framer-motion";
 import {
-  Send, Sparkles, Shield, Zap,
+  Send, Sparkles, Shield, Zap, Settings,
   Square, X, FileCode, BarChart3, Image as ImageIcon, FileText, Code2,
   Eye, Volume2, VolumeX, User, Menu,
 } from "lucide-react";
@@ -534,14 +534,16 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
 
       {/* Avatar Zone (left) — only if enabled */}
       {avatarEnabled && !isMobile && (
-        <div className="w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden">
-          <VRMAvatar
-            expression={avatarExpression}
-            thinking={isWorking}
-            speaking={streamingContent.length > 0}
-            modelUrl={avatarModelUrl ?? undefined}
-            professionalMode={avatarProfessionalMode}
-          />
+        <div className="w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center">
+            <VRMAvatar
+              expression={avatarExpression}
+              thinking={isWorking}
+              speaking={streamingContent.length > 0}
+              modelUrl={avatarModelUrl ?? undefined}
+              professionalMode={avatarProfessionalMode}
+            />
+          </div>
           {/* Avatar status overlay */}
           <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm border border-border/20" role="status" aria-live="polite">
@@ -586,6 +588,14 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                 <span className="text-[12px] text-foreground/60 truncate flex-1">
                   {activeConv?.title || "Nouvelle conversation"}
                 </span>
+                <button
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                  aria-label="Ouvrir les parametres"
+                  className="w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                  title="Parametres (provider, modele, cle API)"
+                >
+                  <Settings size={14} />
+                </button>
               </div>
 
               {/* Messages */}

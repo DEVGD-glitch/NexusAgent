@@ -306,10 +306,11 @@ export function SettingsPopover() {
       <PopoverTrigger asChild>
         <button
           aria-label="Ouvrir les parametres"
-          className="fixed bottom-4 left-4 w-8 h-8 rounded-full bg-muted/30 border border-border/20 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors z-50"
+          className="fixed bottom-4 left-4 h-9 px-3 rounded-full bg-muted/40 backdrop-blur-sm border border-border/30 flex items-center gap-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors z-50 shadow-lg"
           title="Parametres (Cmd+,)"
         >
           <Settings size={14} />
+          <span className="text-[11px] font-medium hidden sm:inline">Parametres</span>
         </button>
       </PopoverTrigger>
       <PopoverContent className={`w-80 p-0 max-h-[70vh] overflow-y-auto ${isMobile ? "mobile-popover-fullscreen" : ""}`} side="top" align="start">

@@ -588,7 +588,7 @@ export function VRMAvatar({
   return (
     <div className={`w-full h-full relative ${className}`}>
       <Canvas
-        camera={{ position: [0, 1.5, 2.2], fov: 35 }}
+        camera={{ position: [0, 1.2, 2.5], fov: 40 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
@@ -611,11 +611,13 @@ export function VRMAvatar({
             isUserTyping={isUserTyping}
           />
         ) : (
-          <HologramAvatar
-            thinking={thinking}
-            speaking={speaking}
-            currentVisemes={currentVisemes}
-          />
+          <group position={[0, 0.1, 0]}>
+            <HologramAvatar
+              thinking={thinking}
+              speaking={speaking}
+              currentVisemes={currentVisemes}
+            />
+          </group>
         )}
 
         {/* Contact shadow — raised to align with avatar feet */}
@@ -627,7 +629,7 @@ export function VRMAvatar({
           enablePan={false}
           minPolarAngle={Math.PI / 4}
           maxPolarAngle={Math.PI / 2.2}
-          target={[0, 1.4, 0]}
+          target={[0, 1.2, 0]}
         />
       </Canvas>
 
