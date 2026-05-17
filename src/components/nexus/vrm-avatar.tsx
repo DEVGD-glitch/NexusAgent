@@ -428,7 +428,7 @@ function HologramAvatar({
     <group ref={groupRef}>
       {/* Core sphere */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[0.5, 32, 32]} />
+        <sphereGeometry args={[0.22, 32, 32]} />
         <meshStandardMaterial
           color="#06b6d4"
           emissive="#06b6d4"
