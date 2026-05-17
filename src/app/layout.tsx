@@ -36,7 +36,7 @@ function LoadingFallback() {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased bg-background text-foreground`}>
+      <body className={`${inter.className} antialiased bg-background text-foreground safe-top safe-bottom`}>
         <ThemeProvider>
           <ErrorBoundary>
             <Suspense fallback={<LoadingFallback />}>

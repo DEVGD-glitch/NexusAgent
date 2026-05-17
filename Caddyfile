@@ -1,23 +1,47 @@
-:81 {
-	@transform_port_query {
-		query XTransformPort=*
-	}
+# ═══════════════════════════════════════════════════════════════
+# NEXUS Agent — Caddyfile (Reverse Proxy + TLS)
+# ═══════════════════════════════════════════════════════════════
 
-	handle @transform_port_query {
-		reverse_proxy localhost:{query.XTransformPort} {
-			header_up Host {host}
-			header_up X-Forwarded-For {remote_host}
-			header_up X-Forwarded-Proto {scheme}
-			header_up X-Real-IP {remote_host}
-		}
-	}
+{
+    email admin@nexus-agent.local
+}
 
-	handle {
-		reverse_proxy localhost:3000 {
-			header_up Host {host}
-			header_up X-Forwarded-For {remote_host}
-			header_up X-Forwarded-Proto {scheme}
-			header_up X-Real-IP {remote_host}
-		}
-	}
+# HTTP → HTTPS redirect
+http:// {
+    redir https://{host}{uri}
+}
+
+# Main site
+:443, localhost {
+    # Frontend
+    reverse_proxy nexus-web:3000
+
+    # Backend API
+    reverse_proxy /api/* nexus-api:8081
+    reverse_proxy /ws/* nexus-api:8081
+    reverse_proxy /docs* nexus-api:8081
+    reverse_proxy /openapi.json nexus-api:8081
+    reverse_proxy /health* nexus-api:8081
+    reverse_proxy /ready* nexus-api:8081
+
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    }
+
+    # WebSocket support
+    @websocket {
+        header Connection *Upgrade*
+        header Upgrade    websocket
+    }
+    reverse_proxy @websocket nexus-api:8081 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Proto {scheme}
+    }
 }

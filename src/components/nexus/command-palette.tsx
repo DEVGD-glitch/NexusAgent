@@ -1,98 +1,69 @@
-// ═══════════════════════════════════════════════════════════════
-// NEXUS — Command Palette (Cmd+K)
-// Quick access for power users — everything reachable from keyboard
-// Enhanced V3: mode switching, memory, skills, voice, crons, etc.
-// ═══════════════════════════════════════════════════════════════
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNexusStore } from "@/lib/nexus-store";
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandItem,
-  CommandShortcut,
-} from "@/components/ui/command";
-import {
-  MessageSquare, Settings, Brain, BookOpen, Users,
-  Shield, Zap, Terminal, Globe, Code2,
-  Mic, Database, Sparkles, Clock, Wrench, Eye, EyeOff,
-  Trash2, User,
+  Send, Sparkles, Shield, Zap, Settings, Bot, FileText,
+  Palette, Globe, Mic, Volume2, Brain, Database, Trash2,
+  Plus, Search, MessageSquare, BarChart3, HelpCircle,
+  Moon, Sun, Monitor, X,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
-interface CommandEntry {
+interface CommandItem {
   id: string;
   label: string;
-  icon: LucideIcon;
   shortcut?: string;
+  icon: React.ReactNode;
   action: () => void;
+  group: string;
 }
 
 export function CommandPalette() {
   const {
-    commandOpen, setCommandOpen, setSettingsOpen,
-    avatarEnabled,
+    commandOpen, setCommandOpen,
+    addConversation, setActiveView,
+    setSettingsOpen, setAgentMode, agentMode,
+    avatarEnabled, toggleAvatar,
+    provider, setProvider, model, setModel,
+    conversations, activeConversationId,
+    voiceConfig, setVoiceConfig,
   } = useNexusStore();
-  const [search, setSearch] = useState("");
 
-  const commands: CommandEntry[] = [
-    // ── Existing commands ──
-    { id: "settings", label: "Ouvrir les parametres", icon: Settings, shortcut: "⌘,", action: () => { setSettingsOpen(true); setCommandOpen(false); } },
-    { id: "mode-build", label: "Mode Build (acces complet)", icon: Zap, action: () => { useNexusStore.getState().setAgentMode("build"); setCommandOpen(false); } },
-    { id: "mode-plan", label: "Mode Plan (lecture seule)", icon: Shield, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
-    { id: "toggle-avatar", label: "Activer/desactiver l'avatar 3D", icon: Users, action: () => { useNexusStore.getState().toggleAvatar(); setCommandOpen(false); } },
-    { id: "vrm-hub", label: "Changer d'avatar VRM", icon: User, action: () => { useNexusStore.getState().setVrmHubOpen(true); setCommandOpen(false); } },
-    { id: "ask-memory", label: "Poser une question a la memoire", icon: Brain, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
-    { id: "web-search", label: "Rechercher sur le web", icon: Globe, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
-    { id: "run-code", label: "Executer du code", icon: Terminal, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
-    { id: "new-chat", label: "Nouvelle conversation", icon: MessageSquare, action: () => { useNexusStore.getState().addConversation(); setCommandOpen(false); } },
-    { id: "knowledge", label: "Interroger le graphe de connaissances", icon: BookOpen, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
-    { id: "spawn-agent", label: "Creer un agent", icon: Users, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
+  const { theme, setTheme } = useTheme();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    // ── New V3 commands ──
-    { id: "mode-chat", label: "Mode Chat", icon: MessageSquare, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
-    { id: "mode-research", label: "Mode Recherche", icon: Globe, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
-    { id: "mode-review", label: "Mode Review", icon: Code2, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
-    { id: "memory-recall", label: "Rechercher dans la memoire", icon: Brain, action: () => { setCommandOpen(false); /* focus input with /memory prefix */ } },
-    { id: "memory-compact", label: "Compacter la memoire", icon: Database, action: () => { setCommandOpen(false); /* call /memory/compact */ } },
-    { id: "skill-list", label: "Lister les skills cristallises", icon: Sparkles, action: () => { setCommandOpen(false); /* show skills in context panel */ } },
-    { id: "voice-toggle", label: "Activer/desactiver la voix", icon: Mic, action: () => {
-      const currentState = useNexusStore.getState().voiceState;
-      useNexusStore.getState().setVoiceState(currentState === "idle" ? "recording" : "idle");
-      setCommandOpen(false);
-    }},
-    { id: "list-crons", label: "Voir les taches programmees", icon: Clock, action: () => { setCommandOpen(false); /* show crons in context panel */ } },
-    { id: "capabilities", label: "Voir les capacites de l'agent", icon: Wrench, action: () => { setCommandOpen(false); /* show capabilities */ } },
-    { id: "toggle-viz", label: "Afficher/masquer la visualisation", icon: avatarEnabled ? Eye : EyeOff, action: () => { setCommandOpen(false); /* toggle viz panel */ } },
-    { id: "clear-chat", label: "Effacer la conversation", icon: Trash2, action: () => {
-      // Clear current conversation messages
-      const store = useNexusStore.getState();
-      const convId = store.activeConversationId;
-      if (convId) {
-        useNexusStore.setState((s) => ({
-          conversations: s.conversations.map((c) =>
-            c.id === convId ? { ...c, messages: [] } : c
-          ),
-        }));
-      }
-      setCommandOpen(false);
-    }},
+  const commands: CommandItem[] = [
+    { id: "new-chat", label: "Nouvelle conversation", shortcut: "⌘N", icon: <Plus size={14} />, action: () => { addConversation(); setCommandOpen(false); }, group: "Navigation" },
+    { id: "search-chats", label: "Rechercher conversations...", shortcut: "⌘K", icon: <Search size={14} />, action: () => { inputRef.current?.focus(); }, group: "Navigation" },
+    { id: "settings", label: "Paramètres", shortcut: "⌘,", icon: <Settings size={14} />, action: () => { setSettingsOpen(true); setCommandOpen(false); }, group: "Navigation" },
+    { id: "dashboard", label: "Dashboard", icon: <BarChart3 size={14} />, action: () => { setCommandOpen(false); }, group: "Navigation" },
+
+    { id: "mode-plan", label: "Mode Plan", icon: <Shield size={14} />, action: () => { setAgentMode("plan"); setCommandOpen(false); }, group: "Mode Agent" },
+    { id: "mode-build", label: "Mode Build", icon: <Zap size={14} />, action: () => { setAgentMode("build"); setCommandOpen(false); }, group: "Mode Agent" },
+
+    { id: "provider-gemini", label: "Provider: Google AI (Gemini)", icon: <Bot size={14} />, action: () => { setProvider("gemini"); setModel("gemma-4-31b-it"); setCommandOpen(false); }, group: "Provider" },
+    { id: "provider-openai", label: "Provider: OpenAI (GPT-4o)", icon: <Bot size={14} />, action: () => { setProvider("openai"); setModel("gpt-4o"); setCommandOpen(false); }, group: "Provider" },
+    { id: "provider-anthropic", label: "Provider: Anthropic (Claude)", icon: <Bot size={14} />, action: () => { setProvider("anthropic"); setModel("claude-sonnet-4-20250514"); setCommandOpen(false); }, group: "Provider" },
+    { id: "provider-groq", label: "Provider: Groq (Llama)", icon: <Bot size={14} />, action: () => { setProvider("groq"); setModel("llama-3.3-70b-versatile"); setCommandOpen(false); }, group: "Provider" },
+
+    { id: "toggle-avatar", label: avatarEnabled ? "Masquer l'avatar" : "Afficher l'avatar", icon: <Bot size={14} />, action: () => { toggleAvatar(); setCommandOpen(false); }, group: "Avatar" },
+
+    { id: "theme-light", label: "Thème: Clair", icon: <Sun size={14} />, action: () => { setTheme("light"); setCommandOpen(false); }, group: "Thème" },
+    { id: "theme-dark", label: "Thème: Sombre", icon: <Moon size={14} />, action: () => { setTheme("dark"); setCommandOpen(false); }, group: "Thème" },
+    { id: "theme-system", label: "Thème: Système", icon: <Monitor size={14} />, action: () => { setTheme("system"); setCommandOpen(false); }, group: "Thème" },
+
+    { id: "voice-toggle", label: voiceConfig.engine === "edge" ? "Moteur: Edge TTS" : "Moteur: VoiceVOX", icon: <Volume2 size={14} />, action: () => { setVoiceConfig({ ...voiceConfig, engine: voiceConfig.engine === "edge" ? "voicevox" : "edge" }); setCommandOpen(false); }, group: "Voix" },
+
+    { id: "help", label: "Aide & Raccourcis", icon: <HelpCircle size={14} />, action: () => { setCommandOpen(false); }, group: "Aide" },
   ];
-
-  const filtered = search
-    ? commands.filter((c) => c.label.toLowerCase().includes(search.toLowerCase()))
-    : commands;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setCommandOpen(!commandOpen);
-        setSearch("");
       }
       if (e.key === "Escape" && commandOpen) {
         setCommandOpen(false);
@@ -102,44 +73,35 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", handler);
   }, [commandOpen, setCommandOpen]);
 
-  if (!commandOpen) return null;
+  const grouped = commands.reduce<Record<string, CommandItem[]>>((acc, cmd) => {
+    (acc[cmd.group] = acc[cmd.group] || []).push(cmd);
+    return acc;
+  }, {});
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[25vh]" role="dialog" aria-label="Palette de commandes" aria-modal="true">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCommandOpen(false)} />
-      <div className="relative w-full max-w-md mx-4">
-        <Command className="rounded-xl border border-border/30 shadow-2xl bg-card/95 backdrop-blur-md">
-          <CommandInput
-            placeholder="Tapez une commande..."
-            value={search}
-            onValueChange={setSearch}
-            className="h-10 text-sm"
-          />
-          <CommandList className="max-h-64 overflow-y-auto p-1">
-            <CommandEmpty className="py-3 text-center text-[11px] text-muted-foreground">
-              Aucune commande
-            </CommandEmpty>
-            {filtered.map((cmd) => {
-              const Icon = cmd.icon;
-              return (
-                <CommandItem
-                  key={cmd.id}
-                  onSelect={cmd.action}
-                  className="flex items-center gap-3 px-3 py-1.5 rounded-lg cursor-pointer text-xs hover:bg-muted/30 aria-selected:bg-muted/30"
-                >
-                  <Icon size={13} className="text-muted-foreground shrink-0" />
+    <CommandDialog open={commandOpen} onOpenChange={setCommandOpen}>
+      <CommandInput ref={inputRef} placeholder="Tapez une commande ou recherchez..." />
+      <CommandList>
+        <CommandEmpty>Aucun résultat.</CommandEmpty>
+        {Object.entries(grouped).map(([group, items]) => (
+          <div key={group}>
+            <CommandGroup heading={group}>
+              {items.map((cmd) => (
+                <CommandItem key={cmd.id} onSelect={cmd.action}>
+                  <span className="mr-2 text-muted-foreground">{cmd.icon}</span>
                   <span className="flex-1">{cmd.label}</span>
                   {cmd.shortcut && (
-                    <CommandShortcut className="text-[9px] text-muted-foreground/50 font-mono">
+                    <kbd className="ml-auto text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
                       {cmd.shortcut}
-                    </CommandShortcut>
+                    </kbd>
                   )}
                 </CommandItem>
-              );
-            })}
-          </CommandList>
-        </Command>
-      </div>
-    </div>
+              ))}
+            </CommandGroup>
+            <CommandSeparator />
+          </div>
+        ))}
+      </CommandList>
+    </CommandDialog>
   );
 }

@@ -1,0 +1,96 @@
+# ═══════════════════════════════════════════════════════════════
+# NEXUS Agent — Docker Compose (Production)
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # ── Frontend (Next.js) ──
+  nexus-web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_NEXUS_BACKEND=http://nexus-api:8081
+      - DATABASE_URL=file:/app/data/dev.db
+    depends_on:
+      nexus-api:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - web-data:/app/data
+    networks:
+      - nexus-network
+
+  # ── Backend API ──
+  nexus-api:
+    build:
+      context: ./NexusAgent
+      dockerfile: ../docker/Dockerfile.core
+    ports:
+      - "8081:8081"
+    environment:
+      - NEXUS_ENV=production
+      - NEXUS_PORT=8081
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - nexus-data:/app/nexus_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - nexus-network
+
+  # ── ChromaDB ──
+  chromadb:
+    image: chromadb/chroma:1.15.3
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/chroma/chroma
+    environment:
+      - ALLOW_RESET=FALSE
+      - ANONYMIZED_TELEMETRY=FALSE
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-network
+
+  # ── Caddy (Reverse Proxy + TLS) ──
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - nexus-web
+      - nexus-api
+    restart: unless-stopped
+    networks:
+      - nexus-network
+
+networks:
+  nexus-network:
+    driver: bridge
+
+volumes:
+  web-data:
+  nexus-data:
+  chroma-data:
+  caddy-data:
+  caddy-config:

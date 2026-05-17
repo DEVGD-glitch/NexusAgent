@@ -177,45 +177,91 @@
   overflow: hidden;
 }
 
-/* ── Mobile Responsive Styles ─────────────────────────── */
+/* ── Mobile Responsive Improvements ─────────────────────────── */
 @media (max-width: 768px) {
-  /* Fullscreen popover / bottom sheet on mobile */
-  .mobile-popover-fullscreen {
+  /* Hide avatar zone on mobile */
+  .avatar-zone-mobile {
+    display: none !important;
+  }
+
+  /* Full-width chat on mobile */
+  .chat-container-mobile {
+    width: 100% !important;
+  }
+
+  /* Larger touch targets */
+  button, [role="button"], input, textarea, select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Bottom sheet for settings */
+  .mobile-bottom-sheet {
     position: fixed !important;
-    top: 0 !important;
+    bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    transform: none !important;
-    border-radius: 0 !important;
-    border: none !important;
-    z-index: 50;
-    animation: slide-up 0.25s ease-out;
+    max-height: 85vh !important;
+    border-radius: 16px 16px 0 0 !important;
+    animation: slide-up 0.3s ease-out;
   }
 
-  /* Larger touch targets for form controls */
-  input,
-  textarea,
-  select,
-  [role="combobox"] {
-    min-height: 44px;
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px !important;
   }
 
-  /* Prevent iOS text size inflation */
-  html {
-    -webkit-text-size-adjust: 100%;
+  /* Safe area for notched devices */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Hide desktop-only elements */
+  .hidden-mobile {
+    display: none !important;
   }
 }
 
-/* Slide-up animation for mobile bottom sheet */
+/* Slide-up animation */
 @keyframes slide-up {
-  from {
-    transform: translateY(100%) !important;
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ── Tablet ─────────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .avatar-zone-tablet {
+    width: 200px !important;
   }
-  to {
-    transform: translateY(0) !important;
+}
+
+/* ── Print styles ───────────────────────────────────────────── */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── High contrast ──────────────────────────────────────────── */
+@media (prefers-contrast: high) {
+  :root {
+    --border: oklch(0.5 0 0);
+    --muted-foreground: oklch(0.4 0 0);
   }
 }

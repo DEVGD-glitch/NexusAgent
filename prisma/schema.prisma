@@ -1,8 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// ═══════════════════════════════════════════════════════════════
+// NEXUS Agent — Prisma Schema
+// Complete domain model for production-grade sovereign AI agent
+// ═══════════════════════════════════════════════════════════════
 
 generator client {
   provider = "prisma-client-js"
@@ -13,20 +12,318 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ── Users & Auth ──
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  avatarUrl     String?
+  role          UserRole  @default(USER)
+  apiKey        String?   @unique
+  apiKeyHash    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  conversations Conversation[]
+  auditLogs     AuditLog[]
+  apiKeys       ApiKey[]
+  plugins       UserPlugin[]
+  skills        UserSkill[]
+  settings      UserSettings?
+  agentSessions AgentSession[]
+  memoryEntries MemoryEntry[]
+  workflows     Workflow[]
+  cronJobs      CronJob[]
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum UserRole {
+  ADMIN
+  USER
+  READONLY
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  keyHash     String
+  permissions String[]
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model UserSettings {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme            String   @default("dark")
+  language         String   @default("fr")
+  defaultProvider  String   @default("gemini")
+  defaultModel     String   @default("gemma-4-31b-it")
+  avatarEnabled    Boolean  @default(true)
+  avatarUrl        String?
+  ttsEnabled       Boolean  @default(false)
+  ttsEngine        String   @default("edge")
+  ttsVoice         String   @default("fr-FR-DeniseNeural")
+  autoRead         Boolean  @default(false)
+  agentMode        String   @default("plan")
+  professionalMode Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+}
+
+// ── Conversations ──
+
+model Conversation {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String    @default("Nouvelle conversation")
+  agentMode   String    @default("plan")
+  provider    String?
+  model       String?
+  isPinned    Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  messages    Message[]
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String
+  toolCalls      Json?
+  toolResults    Json?
+  tokenCount     Int?
+  provider       String?
+  model          String?
+  latency        Int?
+  cost           Float?
+  artifacts      Json?
+  createdAt      DateTime    @default(now())
+}
+
+enum MessageRole {
+  user
+  assistant
+  system
+  tool
+}
+
+// ── Agents & Sessions ──
+
+model AgentSession {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agentType   String
+  status      AgentStatus @default(IDLE)
+  task        String
+  plan        String?
+  result      String?
+  provider    String?
+  model       String?
+  tokensUsed  Int         @default(0)
+  cost        Float       @default(0)
+  startedAt   DateTime    @default(now())
+  completedAt DateTime?
+  error       String?
+  logs        Json?
+}
+
+enum AgentStatus {
+  IDLE
+  THINKING
+  PLANNING
+  EXECUTING
+  WAITING_APPROVAL
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// ── Memory ──
+
+model MemoryEntry {
+  id           String      @id @default(cuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  layer        MemoryLayer
+  content      String
+  embedding    Bytes?
+  metadata     Json
+  hash         String      @unique
+  source       String?
+  importance   Float       @default(0.5)
+  accessCount  Int         @default(0)
+  lastAccessed DateTime?
+  createdAt    DateTime    @default(now())
+  expiresAt    DateTime?
+
+  @@index([userId, layer])
+  @@index([hash])
+}
+
+enum MemoryLayer {
+  working
+  episodic
+  semantic
+  procedural
+  identity
+}
+
+// ── Tools & MCP ──
+
+model Tool {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  category    String
+  description String
+  schema      Json
+  enabled     Boolean  @default(true)
+  isBuiltin   Boolean  @default(true)
+  pluginId    String?
+  plugin      Plugin?  @relation(fields: [pluginId], references: [id])
+  usageCount  Int      @default(0)
+  avgLatency  Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Plugin {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  version     String
+  description String
+  author      String
+  manifest    Json
+  enabled     Boolean    @default(false)
+  isVerified  Boolean    @default(false)
+  trustLevel  TrustLevel @default(UNKNOWN)
+  installedAt DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tools       Tool[]
+  users       UserPlugin[]
+}
+
+enum TrustLevel {
+  UNKNOWN
+  MEDIUM
+  HIGH
+  VERIFIED
+}
+
+model UserPlugin {
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pluginId String
+  plugin   Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  enabled  Boolean @default(true)
+  config   Json?
+  @@id([userId, pluginId])
+}
+
+model UserSkill {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId String
+  name    String
+  enabled Boolean @default(true)
+  config  Json?
+  @@id([userId, skillId])
+}
+
+// ── Audit & Security ──
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String
+  resource    String?
+  details     Json?
+  ipAddress   String?
+  userAgent   String?
+  severity    Severity @default(INFO)
+  blocked     Boolean  @default(false)
+  blockReason String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+}
+
+enum Severity {
+  DEBUG
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+// ── Workflows ──
+
+model Workflow {
+  id            String            @id @default(cuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  definition    Json
+  enabled       Boolean           @default(true)
+  isTemplate    Boolean           @default(false)
+  version       Int               @default(1)
+  runCount      Int               @default(0)
+  lastRunAt     DateTime?
+  lastRunStatus WorkflowRunStatus?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+enum WorkflowRunStatus {
+  SUCCESS
+  FAILED
+  RUNNING
+  CANCELLED
+}
+
+// ── Cron Jobs ──
+
+model CronJob {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  schedule      String
+  task          String
+  enabled       Boolean  @default(true)
+  lastRunAt     DateTime?
+  lastRunStatus String?
+  nextRunAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ── Metrics ──
+
+model DailyMetric {
+  id            String   @id @default(cuid())
+  date          DateTime @db.Date
+  userId        String?
+  tokensUsed    Int      @default(0)
+  toolCalls     Int      @default(0)
+  conversations Int      @default(0)
+  messagesSent  Int      @default(0)
+  errors        Int      @default(0)
+  cost          Float    @default(0)
+  avgLatency    Float?
+  createdAt     DateTime @default(now())
+
+  @@unique([date, userId])
+  @@index([date])
 }

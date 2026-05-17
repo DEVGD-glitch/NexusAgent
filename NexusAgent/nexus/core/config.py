@@ -53,7 +53,7 @@ class NexusConfig(BaseSettings):
     nexus_log_level: LogLevel = LogLevel.INFO
     nexus_secret_key: str = "change-me-to-a-secure-random-string"
     nexus_host: str = "0.0.0.0"
-    nexus_port: int = 8080
+    nexus_port: int = 8081
     nexus_working_dir: str = "./nexus_data"
 
     # ── LLM Provider Keys ──────────────────────────────────────

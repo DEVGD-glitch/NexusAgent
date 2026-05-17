@@ -534,7 +534,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
 
       {/* Avatar Zone (left) — only if enabled */}
       {avatarEnabled && !isMobile && (
-        <div className="w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden flex items-center justify-center">
+        <div className="avatar-zone-mobile w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden flex items-center justify-center">
           <div className="w-full h-full flex items-center justify-center">
             <VRMAvatar
               expression={avatarExpression}
@@ -569,7 +569,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
       )}
 
       {/* Main Content Area — Chat + Side Panels */}
-      <div className="flex-1 flex min-w-0 h-full">
+      <div className="chat-container-mobile flex-1 flex min-w-0 h-full">
         <ResizablePanelGroup direction="horizontal">
           {/* Chat Zone */}
           <ResizablePanel defaultSize={hasSidePanel || hasArtifactPanel ? 60 : 100} minSize={40}>

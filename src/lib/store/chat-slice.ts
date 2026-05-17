@@ -5,6 +5,7 @@
 import type { StateCreator } from 'zustand';
 import type { Conversation, ChatMessage } from '@/types/nexus';
 import { uid } from './utils';
+import { saveConversation, getAllConversations, deleteConversation as deleteConvDB, saveMessage, getMessages } from '../db';
 
 // ── Constants ────────────────────────────────────────────────
 const MAX_MESSAGES_PER_CONVERSATION = 500;
@@ -25,20 +26,19 @@ export const createChatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = (set)
   activeConversationId: null,
 
   addConversation: () => {
-    const id = uid();
+    const id = crypto.randomUUID();
+    const conv: Conversation = {
+      id,
+      title: 'Nouvelle conversation',
+      messages: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
     set((s) => ({
-      conversations: [
-        ...s.conversations,
-        {
-          id,
-          title: 'Nouvelle conversation',
-          messages: [],
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-      ],
+      conversations: [conv, ...s.conversations],
       activeConversationId: id,
     }));
+    saveConversation(conv).catch(() => {});
     return id;
   },
 
@@ -58,19 +58,16 @@ export const createChatSlice: StateCreator<ChatSlice, [], [], ChatSlice> = (set)
       };
     }),
 
-  addMessage: (convId, msg) =>
+  addMessage: (convId, msg) => {
+    const msgWithId = { ...msg, id: msg.id || crypto.randomUUID() };
     set((s) => ({
       conversations: s.conversations.map((c) =>
         c.id === convId
-          ? {
-              ...c,
-              messages: [
-                ...c.messages.slice(-(MAX_MESSAGES_PER_CONVERSATION - 1)),
-                { ...msg, id: uid(), timestamp: Date.now() },
-              ],
-              updatedAt: Date.now(),
-            }
+          ? { ...c, messages: [...c.messages, msgWithId], updatedAt: Date.now() }
           : c
       ),
-    })),
+    }));
+    saveMessage({ ...msgWithId, conversationId: convId }).catch(() => {});
+    saveConversation({ id: convId, updatedAt: Date.now() } as Conversation).catch(() => {});
+  },
 });

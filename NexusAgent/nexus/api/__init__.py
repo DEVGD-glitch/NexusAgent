@@ -1,13 +1,4 @@
-"""
-NEXUS API Package — Gateway server, voice routes, and proxy modules.
+"""NEXUS API — Modular FastAPI application."""
+from nexus.api.app import create_app
 
-Primary entry point:
-    from nexus.api.gateway import app  # The FastAPI application
-
-Voice API:
-    from nexus.api.voice_routes import router  # Voice APIRouter
-"""
-
-from nexus.api.gateway import app
-
-__all__ = ["app"]
+__all__ = ["create_app"]

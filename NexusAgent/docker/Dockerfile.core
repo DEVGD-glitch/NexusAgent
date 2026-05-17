@@ -1,37 +1,25 @@
-# ── NEXUS Core Service ──────────────────────────────────────────
 FROM python:3.11-slim
 
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl git build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    curl gcc && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install Python dependencies
-COPY pyproject.toml .
-RUN pip install --no-cache-dir -e ".[dev]" 2>/dev/null || \
-    pip install --no-cache-dir \
-    mcp langgraph chromadb fastapi uvicorn pydantic pydantic-settings \
-    python-dotenv litellm typer httpx pytest pytest-asyncio \
-    tiktoken aiofiles tenacity rich websockets opentelemetry-sdk \
-    opentelemetry-api pybreaker watchdog pytesseract python-multipart \
-    apscheduler
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY nexus/ ./nexus/
-COPY tests/ ./tests/
-COPY .env.example .env.example
+# Copy application
+COPY . .
 
-# Create data directories
-RUN mkdir -p /app/nexus_data/chroma /app/nexus_data/audit
+# Create non-root user
+RUN useradd -m -u 1000 nexus && chown -R nexus:nexus /app
+USER nexus
 
-# Expose port
 EXPOSE 8081
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
     CMD curl -f http://localhost:8081/health || exit 1
 
-# Run the gateway (api.gateway, not core.gateway)
-CMD ["uvicorn", "nexus.api.gateway:app", "--host", "0.0.0.0", "--port", "8081"]
+CMD ["python", "-m", "nexus", "serve", "--port", "8081"]
