@@ -2,38 +2,42 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
-from nexus.api.models import MemoryStoreRequest, MemoryRecallRequest
-from nexus.memory.chroma_service import get_memory_service
+from nexus.memory.chroma_service import NexusMemoryService
+from nexus.core.config import get_settings
 
 router = APIRouter()
 
 
+def _get_memory() -> NexusMemoryService:
+    """Get memory service instance."""
+    settings = get_settings()
+    return NexusMemoryService(persist_dir=settings.chroma_persist_dir)
+
+
 @router.post("/store")
-async def store_memory(request: MemoryStoreRequest):
+async def store_memory(request: dict):
     """Store a memory entry."""
     try:
-        mem = get_memory_service()
-        doc_id = mem.store(
-            namespace=request.layer,
-            content=request.content,
-            metadata=request.metadata or {},
-        )
-        return {"id": doc_id, "layer": request.layer}
+        mem = _get_memory()
+        layer = request.get("layer", "knowledge")
+        content = request.get("content", "")
+        metadata = request.get("metadata", {})
+        doc_id = mem.store(content=content, namespace=layer, metadata=metadata)
+        return {"id": doc_id, "layer": layer}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/recall")
-async def recall_memory(request: MemoryRecallRequest):
+async def recall_memory(request: dict):
     """Recall memories from a layer."""
     try:
-        mem = get_memory_service()
-        results = mem.search(
-            namespace=request.layer,
-            query=request.query,
-            n_results=request.limit,
-        )
-        return {"results": results, "count": len(results.get("documents", []))}
+        mem = _get_memory()
+        layer = request.get("layer", "knowledge")
+        query = request.get("query", "")
+        limit = request.get("limit", 5)
+        results = mem.search(query=query, namespace=layer, top_k=limit)
+        return {"results": results, "count": len(results.get("documents", [[]])[0])}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -42,11 +46,11 @@ async def recall_memory(request: MemoryRecallRequest):
 async def memory_stats():
     """Get memory layer statistics."""
     try:
-        mem = get_memory_service()
+        mem = _get_memory()
         counts = {}
-        for layer in ["working", "episodic", "semantic", "procedural", "identity"]:
+        for layer in ["conversations", "episodes", "knowledge", "skills", "identity", "code"]:
             try:
-                col = mem.get_collection(layer)
+                col = mem._get_collection(layer)
                 counts[layer] = col.count()
             except Exception:
                 counts[layer] = 0
@@ -59,7 +63,7 @@ async def memory_stats():
 async def compact_memory():
     """Compact memory layers."""
     try:
-        mem = get_memory_service()
+        mem = _get_memory()
         mem.compact()
         return {"status": "compacted"}
     except Exception as e:
@@ -69,9 +73,9 @@ async def compact_memory():
 @router.post("/clear")
 async def clear_layer(request: dict):
     """Clear a specific memory layer."""
-    layer = request.get("layer", "working")
+    layer = request.get("layer", "knowledge")
     try:
-        mem = get_memory_service()
+        mem = _get_memory()
         mem.clear_namespace(layer)
         return {"status": "cleared", "layer": layer}
     except Exception as e:

@@ -27,6 +27,10 @@ from nexus.tools.registry import (
     get_tool_registry,
 )
 
+# Auto-register sovereign tools on import
+_registry = get_tool_registry()
+_registry.import_sovereign_tools()
+
 __all__ = [
     "Tool",
     "ToolCategory",

@@ -233,6 +233,60 @@ class ToolRegistry:
         logger.info("Imported %d tools from nexus.mcp_tools", count)
         return count
 
+    def import_sovereign_tools(self) -> int:
+        """Register sovereign agent tools: git, terminal, browser, filesystem."""
+        import json
+        from nexus.tools.git_tools import (
+            git_status, git_diff, git_log, git_commit,
+            git_branch, git_checkout, git_create_branch,
+        )
+        from nexus.tools.terminal import terminal_exec
+        from nexus.tools.browser import fetch_page
+        from nexus.tools.filesystem import read_file, write_file, list_directory, search_files
+
+        tools_to_register = [
+            # Git tools
+            ("git_status", ToolCategory.GIT, git_status, "Get git status of repository"),
+            ("git_diff", ToolCategory.GIT, git_diff, "Get git diff"),
+            ("git_log", ToolCategory.GIT, git_log, "Get recent git commits"),
+            ("git_commit", ToolCategory.GIT, git_commit, "Stage and commit changes"),
+            ("git_branch", ToolCategory.GIT, git_branch, "List branches"),
+            ("git_checkout", ToolCategory.GIT, git_checkout, "Switch to a branch"),
+            ("git_create_branch", ToolCategory.GIT, git_create_branch, "Create new branch"),
+            # Terminal
+            ("terminal_exec", ToolCategory.SHELL, terminal_exec, "Execute terminal command with sandboxing"),
+            # Browser
+            ("fetch_page", ToolCategory.SYSTEM, fetch_page, "Fetch web page content"),
+            # Filesystem
+            ("read_file", ToolCategory.FILE, read_file, "Read file with path traversal protection"),
+            ("write_file", ToolCategory.FILE, write_file, "Write file with path traversal protection"),
+            ("list_directory", ToolCategory.FILE, list_directory, "List directory contents"),
+            ("search_files", ToolCategory.FILE, search_files, "Search files by pattern"),
+        ]
+
+        count = 0
+        for name, category, handler, description in tools_to_register:
+            # Wrap sync functions as async
+            async def async_wrapper(func=handler, **kwargs):
+                result = func(**kwargs)
+                if isinstance(result, dict):
+                    return json.dumps(result, ensure_ascii=False)
+                return str(result)
+
+            tool = Tool(
+                name=name,
+                description=description,
+                category=category,
+                handler=async_wrapper,
+                timeout_seconds=60,
+                tags=["sovereign", "production"],
+            )
+            self.register(tool)
+            count += 1
+
+        logger.info("Registered %d sovereign tools", count)
+        return count
+
     # ── Stats ─────────────────────────────────────────────────────
 
     def stats(self) -> dict[str, Any]:

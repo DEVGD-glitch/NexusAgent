@@ -10,14 +10,21 @@ async def list_tools():
     """List all available tools."""
     registry = get_tool_registry()
     tools = registry.list_tools()
-    return {"tools": tools, "count": len(tools)}
+    return {"tools": [t.to_dict() for t in tools], "count": len(tools)}
 
 
 @router.get("/categories")
 async def list_categories():
     """List tool categories."""
     registry = get_tool_registry()
-    return {"categories": registry.get_categories()}
+    tools = registry.list_tools()
+    categories = {}
+    for t in tools:
+        cat = t.category.value
+        if cat not in categories:
+            categories[cat] = 0
+        categories[cat] += 1
+    return {"categories": categories}
 
 
 @router.post("/call")
@@ -30,7 +37,7 @@ async def call_tool(request: dict):
 
     registry = get_tool_registry()
     try:
-        result = await registry.call_tool(tool_name, **args)
+        result = await registry.execute(tool_name, **args)
         return {"tool": tool_name, "result": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

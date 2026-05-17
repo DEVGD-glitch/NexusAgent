@@ -490,7 +490,7 @@ def tui(
 @app.command()
 def serve(
     host: str = typer.Option("0.0.0.0", "--host", "-h", help="Bind host"),
-    port: int = typer.Option(8080, "--port", "-p", help="Bind port"),
+    port: int = typer.Option(8081, "--port", "-p", help="Bind port"),
     reload: bool = typer.Option(False, "--reload", help="Enable auto-reload (dev)"),
     log_level: str = typer.Option("info", "--log-level", "-l", help="Log level"),
 ):
@@ -510,12 +510,13 @@ def serve(
     ))
 
     uvicorn.run(
-        "nexus.api.gateway:app",
+        "nexus.api.app:create_app",
         host=bind_host,
         port=bind_port,
         reload=reload,
         log_level=log_level.lower(),
         access_log=True,
+        factory=True,
     )
 
 
