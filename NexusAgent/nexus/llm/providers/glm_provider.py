@@ -28,6 +28,7 @@ GLM_MODELS = {
     # ── Free models (100% free, no cost) ──────────────────────
     "glm-4-flash": {"context": 128000, "cost_input": 0.00, "cost_output": 0.00, "free": True},
     "glm-4.5-flash": {"context": 128000, "cost_input": 0.00, "cost_output": 0.00, "free": True},
+    "glm-4.7-flash": {"context": 128000, "cost_input": 0.00, "cost_output": 0.00, "free": True},
     "glm-4v-flash": {"context": 8192, "cost_input": 0.00, "cost_output": 0.00, "free": True, "vision": True},
     # ── Paid models (verified working) ────────────────────────
     "glm-4-plus": {"context": 128000, "cost_input": 0.50, "cost_output": 0.50},
@@ -89,7 +90,7 @@ class GLMProvider:
 
     @property
     def is_available(self) -> bool:
-        return bool(self.settings.zai_api_key)
+        return bool(self.settings.zai_api_key or self.settings.openbig_model_api_key)
 
     @property
     def base_url(self) -> str:
@@ -135,9 +136,9 @@ class GLMProvider:
         """
         start = time.monotonic()
 
-        api_key = self.settings.zai_api_key
+        api_key = self.settings.zai_api_key or self.settings.openbig_model_api_key
         if not api_key:
-            raise LLMProviderError(provider="glm", reason="ZAI_API_KEY not configured", model=model)
+            raise LLMProviderError(provider="glm", reason="ZAI_API_KEY / OPENBIG_MODEL_API_KEY not configured", model=model)
 
         url = f"{self.base_url}/chat/completions"
         headers = {
@@ -242,9 +243,9 @@ class GLMProvider:
         max_tokens: int = 4096,
     ) -> AsyncIterator[str]:
         """Stream a chat completion from GLM via SSE."""
-        api_key = self.settings.zai_api_key
+        api_key = self.settings.zai_api_key or self.settings.openbig_model_api_key
         if not api_key:
-            raise LLMProviderError(provider="glm", reason="ZAI_API_KEY not configured", model=model)
+            raise LLMProviderError(provider="glm", reason="ZAI_API_KEY / OPENBIG_MODEL_API_KEY not configured", model=model)
 
         url = f"{self.base_url}/chat/completions"
         headers = {

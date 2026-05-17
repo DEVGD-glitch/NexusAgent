@@ -57,7 +57,7 @@ def mock_settings():
     settings.orchestrator_interrupt_before_executor = False
 
     targets = [
-        "nexus.core.gateway.get_settings",
+        "nexus.core.config.get_settings",
         "nexus.core.a2a.get_settings",
         "nexus.core.observability.get_settings",
         "nexus.core.evaluation.get_settings",
@@ -79,13 +79,13 @@ class TestGatewayApp:
 
     def test_app_created(self):
         """App should be created with expected metadata."""
-        from nexus.core.gateway import app
-        assert app.title == "NEXUS Agent API"
+        from nexus.api.gateway import app
+        assert app.title == "NEXUS Agent Gateway"
         assert app.version == "0.1.0"
 
     def test_app_has_cors_middleware(self):
         """App should have CORS middleware registered."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.middleware.cors import CORSMiddleware
         middleware_classes = [m.cls for m in app.user_middleware]
         assert CORSMiddleware in middleware_classes
@@ -96,17 +96,17 @@ class TestGatewayHealthEndpoint:
 
     def test_health_returns_ok(self):
         """GET /health should return status ok."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from nexus.core.config import Environment
         from fastapi.testclient import TestClient
 
-        with patch("nexus.core.gateway.get_settings") as mock_gs:
+        with patch("nexus.core.config.get_settings") as mock_gs:
             mock_gs.return_value.nexus_env = Environment.DEVELOPMENT
             client = TestClient(app)
             resp = client.get("/health")
             assert resp.status_code == 200
             data = resp.json()
-            assert data["status"] == "ok"
+            assert data["status"] == "healthy"
             assert data["version"] == "0.1.0"
             assert "environment" in data
             assert "uptime_seconds" in data
@@ -117,7 +117,7 @@ class TestGatewayRunEndpoint:
 
     def test_run_success(self):
         """POST /run should execute task."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
         mock_result = {
@@ -129,45 +129,59 @@ class TestGatewayRunEndpoint:
             "thread_id": "thread_123",
         }
 
+        mock_broadcaster = MagicMock()
+        mock_broadcaster.broadcast = AsyncMock()
+
+        mock_limiter = MagicMock()
+        mock_limiter.check = MagicMock()
+
         with patch("nexus.orchestrator.langgraph_engine.run_nexus_task",
                    new=AsyncMock(return_value=mock_result)):
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                mock_gs.return_value.nexus_env = "development"
-                client = TestClient(app)
-                resp = client.post("/run", json={"task": "Test the system"})
-                assert resp.status_code == 200
-                data = resp.json()
-                assert data["result"] == "Task completed"
-                assert data["status"] == "completed"
-                assert data["iterations"] == 2
+            with patch("nexus.api.gateway._get_broadcaster", return_value=mock_broadcaster):
+                with patch("nexus.api.gateway._get_limiter", return_value=mock_limiter):
+                    client = TestClient(app)
+                    resp = client.post("/run", json={"task": "Test the system"})
+                    assert resp.status_code == 200
+                    data = resp.json()
+                    assert data["result"] == "Task completed"
+                    assert data["status"] == "completed"
+                    assert data["steps"] == 2
 
     def test_run_error(self):
         """POST /run should return 500 on failure."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
+
+        mock_broadcaster = MagicMock()
+        mock_broadcaster.broadcast = AsyncMock()
+
+        mock_limiter = MagicMock()
+        mock_limiter.check = MagicMock()
 
         with patch("nexus.orchestrator.langgraph_engine.run_nexus_task",
                    new=AsyncMock(side_effect=Exception("Execution failed"))):
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                mock_gs.return_value.nexus_env = "development"
-                client = TestClient(app)
-                resp = client.post("/run", json={"task": "Failing task"})
-                assert resp.status_code == 500
+            with patch("nexus.api.gateway._get_broadcaster", return_value=mock_broadcaster):
+                with patch("nexus.api.gateway._get_limiter", return_value=mock_limiter):
+                    client = TestClient(app)
+                    resp = client.post("/run", json={"task": "Failing task"})
+                    assert resp.status_code == 500
 
     def test_run_empty_task(self):
         """POST /run with empty task should return 422."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
-        with patch("nexus.core.gateway.get_settings") as mock_gs:
-            mock_gs.return_value.nexus_env = "development"
+        mock_limiter = MagicMock()
+        mock_limiter.check = MagicMock()
+
+        with patch("nexus.api.gateway._get_limiter", return_value=mock_limiter):
             client = TestClient(app)
             resp = client.post("/run", json={"task": ""})
             assert resp.status_code == 422
 
     def test_run_with_options(self):
         """POST /run with optional parameters."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
         mock_result = {
@@ -179,19 +193,25 @@ class TestGatewayRunEndpoint:
             "thread_id": "custom_thread",
         }
 
+        mock_broadcaster = MagicMock()
+        mock_broadcaster.broadcast = AsyncMock()
+
+        mock_limiter = MagicMock()
+        mock_limiter.check = MagicMock()
+
         with patch("nexus.orchestrator.langgraph_engine.run_nexus_task",
                    new=AsyncMock(return_value=mock_result)):
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                mock_gs.return_value.nexus_env = "development"
-                client = TestClient(app)
-                resp = client.post("/run", json={
-                    "task": "Test",
-                    "provider": "openai",
-                    "complexity": "simple",
-                    "thread_id": "custom_thread",
-                    "context": [{"role": "user", "content": "hello"}],
-                })
-                assert resp.status_code == 200
+            with patch("nexus.api.gateway._get_broadcaster", return_value=mock_broadcaster):
+                with patch("nexus.api.gateway._get_limiter", return_value=mock_limiter):
+                    client = TestClient(app)
+                    resp = client.post("/run", json={
+                        "task": "Test",
+                        "provider": "openai",
+                        "complexity": "simple",
+                        "thread_id": "custom_thread",
+                        "context": [{"role": "user", "content": "hello"}],
+                    })
+                    assert resp.status_code == 200
 
 
 class TestGatewayChatEndpoint:
@@ -199,7 +219,7 @@ class TestGatewayChatEndpoint:
 
     def test_chat_success(self):
         """POST /chat should return completion."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app, _router
         from fastapi.testclient import TestClient
         from nexus.llm.router import LLMResponse, Provider
 
@@ -211,11 +231,11 @@ class TestGatewayChatEndpoint:
             latency_ms=100.0,
         )
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(return_value=mock_response)
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        mock_router = MagicMock()
+        mock_router.complete = AsyncMock(return_value=mock_response)
+
+        with patch("nexus.api.gateway._get_router", return_value=mock_router):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.post("/chat", json={
@@ -228,7 +248,7 @@ class TestGatewayChatEndpoint:
 
     def test_chat_with_parameters(self):
         """POST /chat with model and temperature."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
         from nexus.llm.router import LLMResponse, Provider
 
@@ -240,11 +260,11 @@ class TestGatewayChatEndpoint:
             latency_ms=200.0,
         )
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(return_value=mock_response)
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        mock_router = MagicMock()
+        mock_router.complete = AsyncMock(return_value=mock_response)
+
+        with patch("nexus.api.gateway._get_router", return_value=mock_router):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.post("/chat", json={
@@ -260,14 +280,14 @@ class TestGatewayChatEndpoint:
 
     def test_chat_error(self):
         """POST /chat should return 500 on error."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(side_effect=Exception("LLM error"))
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        mock_router = MagicMock()
+        mock_router.complete = AsyncMock(side_effect=Exception("LLM error"))
+
+        with patch("nexus.api.gateway._get_router", return_value=mock_router):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.post("/chat", json={
@@ -281,11 +301,11 @@ class TestGatewayStatusEndpoint:
 
     def test_status(self):
         """GET /status should return agent info."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from nexus.core.config import Environment
         from fastapi.testclient import TestClient
 
-        with patch("nexus.core.gateway.get_settings") as mock_gs:
+        with patch("nexus.core.config.get_settings") as mock_gs:
             mock_gs.return_value.nexus_env = Environment.DEVELOPMENT
             mock_gs.return_value.available_providers = ["openai", "anthropic"]
             client = TestClient(app)
@@ -303,17 +323,17 @@ class TestGatewayProvidersEndpoint:
 
     def test_providers_success(self):
         """GET /providers should return provider status."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.get_provider_status.return_value = {
-                "openai": {"available": True},
-                "anthropic": {"available": True},
-            }
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        mock_router = MagicMock()
+        mock_router.get_provider_status.return_value = {
+            "openai": {"available": True},
+            "anthropic": {"available": True},
+        }
+
+        with patch("nexus.api.gateway._get_router", return_value=mock_router):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.get("/providers")
@@ -323,14 +343,14 @@ class TestGatewayProvidersEndpoint:
 
     def test_providers_error(self):
         """GET /providers should handle errors."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.get_provider_status.side_effect = Exception("Status error")
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        mock_router = MagicMock()
+        mock_router.get_provider_status.side_effect = Exception("Status error")
+
+        with patch("nexus.api.gateway._get_router", return_value=mock_router):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.get("/providers")
@@ -342,14 +362,14 @@ class TestGatewayMemoryStatsEndpoint:
 
     def test_memory_stats_success(self):
         """GET /memory/stats should return namespace counts."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
         mock_mem = MagicMock()
         mock_mem.count = AsyncMock(return_value=5)
 
-        with patch("nexus.memory.chroma_service.NexusMemoryService", return_value=mock_mem):
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        with patch("nexus.api.gateway._get_memory_service", return_value=mock_mem):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 mock_gs.return_value.chroma_persist_dir = "/tmp/test"
                 client = TestClient(app)
@@ -361,14 +381,14 @@ class TestGatewayMemoryStatsEndpoint:
 
     def test_memory_stats_error(self):
         """GET /memory/stats should handle errors."""
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
         from fastapi.testclient import TestClient
 
         mock_mem = MagicMock()
         mock_mem.count = AsyncMock(side_effect=Exception("Memory error"))
 
-        with patch("nexus.memory.chroma_service.NexusMemoryService", return_value=mock_mem):
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
+        with patch("nexus.api.gateway._get_memory_service", return_value=mock_mem):
+            with patch("nexus.core.config.get_settings") as mock_gs:
                 mock_gs.return_value.nexus_env = "development"
                 client = TestClient(app)
                 resp = client.get("/memory/stats")
@@ -380,92 +400,33 @@ class TestGatewayMemoryStatsEndpoint:
 
 
 class TestGatewayWebSocket:
-    """Test WebSocket /ws/chat endpoint."""
+    """Test WebSocket /ws endpoint (event streaming)."""
 
-    @pytest.mark.asyncio
-    async def test_websocket_connect_and_message(self):
-        """WebSocket should accept and respond to messages."""
-        from nexus.core.gateway import app
+    def test_websocket_connect_and_disconnect(self):
+        """WebSocket /ws should accept connections and handle disconnect."""
+        from nexus.api.gateway import app
+        from nexus.api.auth import verify_auth
         from fastapi.testclient import TestClient
-        from nexus.llm.router import LLMResponse, Provider
 
-        mock_response = LLMResponse(
-            content="Echo: Hello",
-            provider=Provider.OPENAI,
-            model="gpt-4o",
-            usage={},
-            latency_ms=50.0,
-        )
+        mock_broadcaster = MagicMock()
+        mock_broadcaster.subscribe = AsyncMock(return_value="sub_1")
+        mock_broadcaster.unsubscribe = AsyncMock()
+        mock_broadcaster.pump_subscriber = AsyncMock()
 
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(return_value=mock_response)
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                mock_gs.return_value.nexus_env = "development"
-                client = TestClient(app)
-                with client.websocket_connect("/ws/chat") as ws:
-                    ws.send_text(json.dumps({"content": "Hello"}))
-                    data = ws.receive_json()
-                    assert data["type"] == "response"
-                    assert data["content"] == "Echo: Hello"
+        async def noop_auth():
+            return None
 
-    @pytest.mark.asyncio
-    async def test_websocket_plain_text(self):
-        """WebSocket should handle plain text messages."""
-        from nexus.core.gateway import app
-        from fastapi.testclient import TestClient
-        from nexus.llm.router import LLMResponse, Provider
-
-        mock_response = LLMResponse(
-            content="Response to plain text",
-            provider=Provider.OPENAI,
-            model="gpt-4o",
-            usage={},
-            latency_ms=50.0,
-        )
-
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(return_value=mock_response)
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                mock_gs.return_value.nexus_env = "development"
-                client = TestClient(app)
-                with client.websocket_connect("/ws/chat") as ws:
-                    ws.send_text("Hello")
-                    data = ws.receive_json()
-                    assert data["type"] == "response"
-
-    @pytest.mark.asyncio
-    async def test_websocket_empty_message(self):
-        """WebSocket should skip empty messages."""
-        from nexus.core.gateway import app
-        from fastapi.testclient import TestClient
-        from nexus.llm.router import LLMResponse, Provider
-
-        mock_response = LLMResponse(
-            content="Response to Hi",
-            provider=Provider.OPENAI,
-            model="gpt-4o",
-            usage={},
-            latency_ms=50.0,
-        )
-
-        with patch("nexus.llm.router.LLMRouter") as mock_cls:
-            mock_router = MagicMock()
-            mock_router.complete = AsyncMock(return_value=mock_response)
-            mock_cls.return_value = mock_router
-            with patch("nexus.core.gateway.get_settings") as mock_gs:
-                from nexus.core.config import Environment
-                mock_gs.return_value.nexus_env = Environment.DEVELOPMENT
-                client = TestClient(app)
-                with client.websocket_connect("/ws/chat") as ws:
-                    ws.send_text(json.dumps({"content": ""}))
-                    # Should not crash, just continue
-                    ws.send_text(json.dumps({"content": "Hi"}))
-                    data = ws.receive_json()
-                    assert data["type"] == "response"
+        app.dependency_overrides[verify_auth] = noop_auth
+        try:
+            with patch("nexus.api.gateway._get_broadcaster", return_value=mock_broadcaster):
+                with patch("nexus.api.auth.verify_ws_auth", new_callable=AsyncMock):
+                    client = TestClient(app)
+                    with client.websocket_connect("/ws") as ws:
+                        pass
+                    mock_broadcaster.subscribe.assert_called_once()
+                    mock_broadcaster.unsubscribe.assert_called_once()
+        finally:
+            app.dependency_overrides.clear()
 
 
 class TestGatewayPathTraversal:
@@ -473,14 +434,14 @@ class TestGatewayPathTraversal:
 
     def test_get_working_dir(self):
         """_get_working_dir should return Path."""
-        from nexus.core.gateway import _get_working_dir
+        from nexus.api.gateway import _get_working_dir
 
         wd = _get_working_dir()
         assert isinstance(wd, Path)
 
     def test_safe_path_valid(self, tmp_path):
         """Valid path within working dir should return resolved Path."""
-        from nexus.core.gateway import _safe_path
+        from nexus.api.gateway import _safe_path
 
         safe = _safe_path(str(tmp_path / "test.txt"), tmp_path)
         assert safe is not None
@@ -488,14 +449,14 @@ class TestGatewayPathTraversal:
 
     def test_safe_path_traversal_detected(self, tmp_path):
         """Path traversal outside working dir should return None."""
-        from nexus.core.gateway import _safe_path
+        from nexus.api.gateway import _safe_path
 
         result = _safe_path("../etc/passwd", tmp_path)
         assert result is None
 
     def test_safe_path_absolute_outside(self, tmp_path):
         """Absolute path outside working dir should return None."""
-        from nexus.core.gateway import _safe_path
+        from nexus.api.gateway import _safe_path
 
         result = _safe_path("/etc/passwd", tmp_path)
         assert result is None

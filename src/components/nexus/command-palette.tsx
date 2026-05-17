@@ -46,12 +46,12 @@ export function CommandPalette() {
     { id: "mode-plan", label: "Mode Plan (lecture seule)", icon: Shield, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
     { id: "toggle-avatar", label: "Activer/desactiver l'avatar 3D", icon: Users, action: () => { useNexusStore.getState().toggleAvatar(); setCommandOpen(false); } },
     { id: "vrm-hub", label: "Changer d'avatar VRM", icon: User, action: () => { useNexusStore.getState().setVrmHubOpen(true); setCommandOpen(false); } },
-    { id: "ask-memory", label: "Poser une question a la memoire", icon: Brain, action: () => { setCommandOpen(false); /* focus input with /memory prefix */ } },
-    { id: "web-search", label: "Rechercher sur le web", icon: Globe, action: () => { setCommandOpen(false); } },
-    { id: "run-code", label: "Executer du code", icon: Terminal, action: () => { setCommandOpen(false); } },
+    { id: "ask-memory", label: "Poser une question a la memoire", icon: Brain, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
+    { id: "web-search", label: "Rechercher sur le web", icon: Globe, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
+    { id: "run-code", label: "Executer du code", icon: Terminal, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
     { id: "new-chat", label: "Nouvelle conversation", icon: MessageSquare, action: () => { useNexusStore.getState().addConversation(); setCommandOpen(false); } },
-    { id: "knowledge", label: "Interroger le graphe de connaissances", icon: BookOpen, action: () => { setCommandOpen(false); } },
-    { id: "spawn-agent", label: "Creer un agent", icon: Users, action: () => { setCommandOpen(false); } },
+    { id: "knowledge", label: "Interroger le graphe de connaissances", icon: BookOpen, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
+    { id: "spawn-agent", label: "Creer un agent", icon: Users, action: () => { setCommandOpen(false); document.querySelector<HTMLTextAreaElement>('[data-chat-input]')?.focus(); } },
 
     // ── New V3 commands ──
     { id: "mode-chat", label: "Mode Chat", icon: MessageSquare, action: () => { useNexusStore.getState().setAgentMode("plan"); setCommandOpen(false); } },
@@ -105,7 +105,7 @@ export function CommandPalette() {
   if (!commandOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[25vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[25vh]" role="dialog" aria-label="Palette de commandes" aria-modal="true">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCommandOpen(false)} />
       <div className="relative w-full max-w-md mx-4">
         <Command className="rounded-xl border border-border/30 shadow-2xl bg-card/95 backdrop-blur-md">

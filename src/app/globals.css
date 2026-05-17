@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 :root {
   --background: oklch(1 0 0);
@@ -33,7 +34,40 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
+/* Light theme via data-theme attribute */
+[data-theme="light"] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0.08 260);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.725);
+  --destructive-foreground: oklch(0.577 0.245 27.725);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --sidebar-background: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0.08 260);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Dark theme (default and explicit) */
+:root,
+[data-theme="dark"] {
   --background: oklch(0.12 0.01 260);
   --foreground: oklch(0.93 0.01 260);
   --card: oklch(0.15 0.01 260);
@@ -141,4 +175,47 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* ── Mobile Responsive Styles ─────────────────────────── */
+@media (max-width: 768px) {
+  /* Fullscreen popover / bottom sheet on mobile */
+  .mobile-popover-fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    z-index: 50;
+    animation: slide-up 0.25s ease-out;
+  }
+
+  /* Larger touch targets for form controls */
+  input,
+  textarea,
+  select,
+  [role="combobox"] {
+    min-height: 44px;
+  }
+
+  /* Prevent iOS text size inflation */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Slide-up animation for mobile bottom sheet */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%) !important;
+  }
+  to {
+    transform: translateY(0) !important;
+  }
 }

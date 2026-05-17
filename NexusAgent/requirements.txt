@@ -1,11 +1,7 @@
-# ═══════════════════════════════════════════════════════════════
-# NEXUS — Universal Sovereign AI Agent
-# Complete requirements for Windows/Linux/macOS
-# Compatible versions — tested for Python 3.11+ on Windows
-# Install: pip install -r requirements.txt
-# ═══════════════════════════════════════════════════════════════
+# NEXUS Agent - Requirements
+# Python 3.11+ | pip install -r requirements.txt
 
-# ── Core Dependencies ──────────────────────────────────────────
+# Core
 fastapi
 uvicorn[standard]
 pydantic<3.0
@@ -20,30 +16,30 @@ websockets
 python-multipart
 watchfiles
 
-# ── LLM Providers ─────────────────────────────────────────────
+# LLM
 litellm
 openai
 anthropic
 google-generativeai
 tiktoken
 
-# ── Memory / Vector DB ────────────────────────────────────────
+# Memory
 chromadb
 
-# ── Orchestration ─────────────────────────────────────────────
+# Orchestration
 langgraph<1.0
 langchain-core<1.0
 langsmith
 
-# ── Knowledge Graph ───────────────────────────────────────────
+# Knowledge
 networkx
 
-# ── Security ──────────────────────────────────────────────────
+# Security
 cryptography
 bcrypt
 PyJWT
 
-# ── Observability ─────────────────────────────────────────────
+# Observability
 opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-grpc
@@ -51,44 +47,22 @@ opentelemetry-exporter-otlp-proto-common
 opentelemetry-proto
 prometheus-client
 
-# ── Infrastructure ────────────────────────────────────────────
+# Infrastructure
 docker
 orjson
 sqlalchemy
 greenlet
 psutil
 
-# ── Desktop App Dependencies ──────────────────────────────────
-customtkinter
-pystray
-Pillow
-
-# ── MCP Protocol ──────────────────────────────────────────────
+# MCP
 mcp
 
-# ── Testing ────────────────────────────────────────────────────
+# Testing
 pytest
 pytest-asyncio
 pytest-cov
 
-# ── Browser Automation ──────────────────────────────────────────
-# browser-use requires Docker (isolated micro-service due to openai pin)
-# See docker-compose.yml for the isolated service
-# playwright
-
-# ── Multi-Agent Frameworks ─────────────────────────────────────
-crewai
-google-adk
-openai-agents
-
-# ── Avatar / Voice ─────────────────────────────────────────────
-# aiavatar (AIAvatarKit) for Speech-to-Speech avatar pipeline
-# Install: pip install aiavatar
-# Requires VOICEVOX (free) running at http://127.0.0.1:50021
-# aiavatar
-# python-osc (for VRChat OSC bridge):
-# python-osc
-
-# ── Free Provider Hub ──────────────────────────────────────────
-# No additional dependencies needed — uses httpx (already listed above)
-# Pollinations.ai and G4F.dev are HTTP-based, OpenAI-compatible APIs
+# Multi-Agent (optional, install if needed)
+# crewai
+# google-adk
+# openai-agents

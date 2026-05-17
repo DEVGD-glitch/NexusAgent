@@ -10,6 +10,7 @@ Integrates with:
 from __future__ import annotations
 
 import logging
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any, Optional
@@ -34,6 +35,11 @@ class Span:
     def duration_ms(self) -> float:
         end = self.end_time or time.monotonic()
         return (end - self.start_time) * 1000
+
+
+MAX_SPANS = 1000
+MAX_LLM_CALLS = 500
+MAX_METRICS_PER_NAME = 1000
 
 
 class ObservabilityManager:
@@ -85,12 +91,18 @@ class ObservabilityManager:
             "success": success,
             "timestamp": time.time(),
         })
+        # Prune old LLM calls to prevent memory leak
+        if len(self._llm_calls) > MAX_LLM_CALLS:
+            self._llm_calls = self._llm_calls[-MAX_LLM_CALLS:]
 
     def record_metric(self, name: str, value: float):
         """Record a custom metric."""
         if name not in self._metrics:
             self._metrics[name] = []
         self._metrics[name].append(value)
+        # Prune old metrics to prevent memory leak
+        if len(self._metrics[name]) > MAX_METRICS_PER_NAME:
+            self._metrics[name] = self._metrics[name][-MAX_METRICS_PER_NAME:]
 
     def get_stats(self) -> dict[str, Any]:
         """Get observability statistics."""
@@ -132,6 +144,9 @@ class Tracer:
         if exc_type:
             self.span.status = "error"
             self.span.attributes["error"] = str(exc_val)
+        # Prune old spans to prevent memory leak
+        if len(self.manager._spans) > MAX_SPANS:
+            self.manager._spans = self.manager._spans[-MAX_SPANS:]
 
     def set_attribute(self, key: str, value: Any):
         """Set a span attribute."""
@@ -150,11 +165,18 @@ class Tracer:
 
 # Global observability singleton
 _observability: Optional[ObservabilityManager] = None
+_observability_lock = threading.Lock()
 
 
 def get_observability() -> ObservabilityManager:
-    """Get the global ObservabilityManager singleton."""
+    """Get the global ObservabilityManager singleton.
+
+    Thread-safe: uses double-checked locking to ensure
+    the singleton is created exactly once under concurrent access.
+    """
     global _observability
     if _observability is None:
-        _observability = ObservabilityManager()
+        with _observability_lock:
+            if _observability is None:
+                _observability = ObservabilityManager()
     return _observability

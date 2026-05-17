@@ -11,6 +11,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNexusStore } from "@/lib/nexus-store";
 import { nexusApi } from "@/lib/nexus-api";
 import { Mic, MicOff, Loader2, Volume2, VolumeX } from "lucide-react";
+import { createLogger } from "@/lib/logger";
+
+const logger = createLogger("voice-ui");
 
 // ── VoiceWaveform ───────────────────────────────────────────
 // Small animated waveform visualization using CSS animations
@@ -78,6 +81,7 @@ export function TTSPlayback({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const blobUrlRef = useRef<string | null>(null);
   const { setVoiceState, setCurrentVisemes } = useNexusStore();
 
   const speak = useCallback(async () => {
@@ -109,6 +113,7 @@ export function TTSPlayback({
         }
         const blob = new Blob([audioArray], { type: "audio/mp3" });
         const url = URL.createObjectURL(blob);
+        blobUrlRef.current = url;
 
         const audio = new Audio(url);
         audioRef.current = audio;
@@ -163,6 +168,11 @@ export function TTSPlayback({
         audioRef.current.pause();
         audioRef.current = null;
       }
+      // Revoke blob URL to prevent memory leak
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
     };
   }, []);
 
@@ -170,6 +180,7 @@ export function TTSPlayback({
     <div className="flex items-center gap-1">
       <button
         onClick={isPlaying ? stop : speak}
+        aria-label={isPlaying ? "Arreter la lecture" : "Lire a voix haute"}
         className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
           isPlaying
             ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30"
@@ -258,15 +269,16 @@ export function VoiceButton({
                 setCurrentTranscription(result.text);
                 onTranscription(result.text);
               }
-            } catch {
-              // Transcription failed
+            } catch (err) {
+              logger.warn("Transcription failed", err);
             } finally {
               setVoiceState("idle");
             }
           };
 
           reader.readAsDataURL(blob);
-        } catch {
+        } catch (err) {
+          logger.error("Recording failed", err);
           setVoiceState("error");
           setTimeout(() => setVoiceState("idle"), 2000);
         }
@@ -322,6 +334,14 @@ export function VoiceButton({
     <div className={`relative ${className}`}>
       <motion.button
         onClick={handleClick}
+        aria-label={
+          voiceState === "recording"
+            ? "Arreter l'enregistrement"
+            : voiceState === "transcribing"
+            ? "Transcription en cours..."
+            : "Enregistrer un message vocal"
+        }
+        aria-pressed={voiceState === "recording"}
         className={`relative w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
           voiceState === "recording"
             ? "bg-red-500/20 text-red-500 hover:bg-red-500/30"

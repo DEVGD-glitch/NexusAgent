@@ -769,7 +769,7 @@ class OpenAIAgentsLayer:
             "result": final_result,
             "handoff_count": len(handoff_history),
             "handoff_history": [h.to_dict() for h in handoff_history],
-            "iterations": iteration + 1 if 'iteration' in dir() else 1,
+            "iterations": iteration + 1 if 'iteration' in locals() else 1,
         }
 
     def get_agent_definition(self, agent_type: NexusAgentType) -> dict[str, Any]:

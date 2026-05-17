@@ -123,9 +123,9 @@ class PollinationsProvider:
                 cost_usd=0.0,
             )
         except httpx.HTTPStatusError as e:
-            raise LLMProviderError(f"Pollinations API error: {e.response.status_code} {e.response.text}") from e
+            raise LLMProviderError("pollinations", f"API error: {e.response.status_code} {e.response.text}") from e
         except httpx.RequestError as e:
-            raise LLMProviderError(f"Pollinations request failed: {e}") from e
+            raise LLMProviderError("pollinations", f"Request failed: {e}") from e
 
     async def complete_stream(
         self,

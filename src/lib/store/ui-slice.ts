@@ -8,6 +8,7 @@ import type {
   Artifact, ApprovalRequest, AgentSession,
   CrystallizedSkill, AgentCapabilities,
 } from '@/types/nexus';
+import type { A2UICardData } from '@/components/nexus/a2ui-renderer';
 
 export interface UiSlice {
   activeView: ViewId;
@@ -29,6 +30,7 @@ export interface UiSlice {
 
   agentSessions: AgentSession[];
   pendingApprovals: ApprovalRequest[];
+  a2uiCards: A2UICardData[];
 
   setActiveView: (v: ViewId) => void;
   toggleContext: () => void;
@@ -55,6 +57,9 @@ export interface UiSlice {
 
   addApprovalRequest: (r: ApprovalRequest) => void;
   removeApprovalRequest: (id: string) => void;
+
+  addA2UICard: (c: A2UICardData) => void;
+  clearA2UICards: () => void;
 }
 
 export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (set) => ({
@@ -77,6 +82,7 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (set) => ({
 
   agentSessions: [],
   pendingApprovals: [],
+  a2uiCards: [],
 
   setActiveView: (v) => set({ activeView: v }),
   toggleContext: () => set((s) => ({ contextOpen: !s.contextOpen })),
@@ -87,7 +93,7 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (set) => ({
   setCommandOpen: (o) => set({ commandOpen: o }),
   setBackendConnected: (c) => set({ backendConnected: c }),
 
-  addVizEvent: (e) => set((s) => ({ vizEvents: [...s.vizEvents, e] })),
+  addVizEvent: (e) => set((s) => ({ vizEvents: [...s.vizEvents, e].slice(-200) })),
   clearVizEvents: () => set({ vizEvents: [] }),
   setActiveBuildId: (id) => set({ activeBuildId: id }),
   setFileTree: (tree) => set({ fileTree: tree }),
@@ -109,4 +115,7 @@ export const createUiSlice: StateCreator<UiSlice, [], [], UiSlice> = (set) => ({
   addApprovalRequest: (r) => set((s) => ({ pendingApprovals: [...s.pendingApprovals, r] })),
   removeApprovalRequest: (id) =>
     set((s) => ({ pendingApprovals: s.pendingApprovals.filter((r) => r.id !== id) })),
+
+  addA2UICard: (c) => set((s) => ({ a2uiCards: [...s.a2uiCards, c] })),
+  clearA2UICards: () => set({ a2uiCards: [] }),
 });

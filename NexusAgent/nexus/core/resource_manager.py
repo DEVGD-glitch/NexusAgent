@@ -90,12 +90,12 @@ class LRUCache:
 
     async def cleanup_expired(self) -> int:
         """Remove all expired entries. Returns count of removed entries."""
-        now = time.time()
-        expired_keys = [
-            k for k, v in self._cache.items()
-            if now - v.created_at > v.ttl
-        ]
         async with self._lock:
+            now = time.time()
+            expired_keys = [
+                k for k, v in self._cache.items()
+                if now - v.created_at > v.ttl
+            ]
             for key in expired_keys:
                 del self._cache[key]
         return len(expired_keys)

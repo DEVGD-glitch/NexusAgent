@@ -65,6 +65,17 @@ class OpenAIProvider:
         self._call_count = 0
         self._total_cost = 0.0
         self._last_error: Optional[str] = None
+        self._client = None
+
+    def _get_client(self):
+        """Get or create a reusable OpenAI client for connection pooling."""
+        if self._client is None:
+            from openai import AsyncOpenAI
+            api_key = self.settings.openai_api_key
+            if not api_key:
+                raise LLMProviderError(provider="openai", reason="OPENAI_API_KEY not configured", model="unknown")
+            self._client = AsyncOpenAI(api_key=api_key, timeout=self.settings.llm_timeout_seconds)
+        return self._client
 
     @property
     def name(self) -> str:
@@ -221,13 +232,7 @@ class OpenAIProvider:
         json_mode: bool,
     ) -> tuple[str, dict[str, int], str]:
         """Call OpenAI directly via the openai Python SDK."""
-        from openai import AsyncOpenAI
-
-        api_key = self.settings.openai_api_key
-        if not api_key:
-            raise LLMProviderError(provider="openai", reason="OPENAI_API_KEY not configured", model=model)
-
-        client = AsyncOpenAI(api_key=api_key, timeout=self.settings.llm_timeout_seconds)
+        client = self._get_client()
 
         params = {
             "model": model,
@@ -269,13 +274,7 @@ class OpenAIProvider:
         max_tokens: int = 4096,
     ) -> AsyncIterator[str]:
         """Stream a chat completion from OpenAI."""
-        from openai import AsyncOpenAI
-
-        api_key = self.settings.openai_api_key
-        if not api_key:
-            raise LLMProviderError(provider="openai", reason="OPENAI_API_KEY not configured", model=model)
-
-        client = AsyncOpenAI(api_key=api_key, timeout=self.settings.llm_timeout_seconds)
+        client = self._get_client()
 
         try:
             stream = await client.chat.completions.create(

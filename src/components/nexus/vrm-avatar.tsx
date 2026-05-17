@@ -557,7 +557,7 @@ export function VRMAvatar({
     if (typeof navigator === 'undefined') return false;
     
     // Check device memory (if available)
-    const deviceMemory = (navigator as any).deviceMemory || 4;
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 4;
     const isLowMemory = deviceMemory <= 4;
     
     // Check hardware concurrency (CPU cores)
@@ -588,7 +588,7 @@ export function VRMAvatar({
   return (
     <div className={`w-full h-full relative ${className}`}>
       <Canvas
-        camera={{ position: [0, 1.2, 2.5], fov: 35 }}
+        camera={{ position: [0, 1.5, 2.2], fov: 35 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
@@ -618,16 +618,16 @@ export function VRMAvatar({
           />
         )}
 
-        {/* Contact shadow */}
-        <ContactShadows position={[0, -1, 0]} opacity={0.3} scale={3} blur={2} />
+        {/* Contact shadow — raised to align with avatar feet */}
+        <ContactShadows position={[0, -0.05, 0]} opacity={0.3} scale={3} blur={2} />
 
-        {/* Controls */}
+        {/* Controls — target centered on avatar torso */}
         <OrbitControls
           enableZoom={false}
           enablePan={false}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={Math.PI / 2}
-          target={[0, 0.8, 0]}
+          minPolarAngle={Math.PI / 4}
+          maxPolarAngle={Math.PI / 2.2}
+          target={[0, 1.4, 0]}
         />
       </Canvas>
 

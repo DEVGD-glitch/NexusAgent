@@ -16,7 +16,6 @@ Design principles:
 from __future__ import annotations
 
 import asyncio
-import hmac
 import json
 import logging
 import os
@@ -31,9 +30,10 @@ from typing import Any, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, Field
 from starlette.responses import StreamingResponse
+
+from nexus.api.auth import verify_auth, verify_ws_auth
 
 logger = logging.getLogger(__name__)
 
@@ -62,8 +62,6 @@ def _get_broadcaster():
 # Security helpers
 # ═══════════════════════════════════════════════════════════════════
 
-security_scheme = HTTPBearer(auto_error=False)
-
 _WEAK_SECRET_KEYS = frozenset({
     "dev-test-key-not-for-production",
     "change-me-to-a-secure-random-string",
@@ -82,20 +80,6 @@ def _warn_default_key():
         )
 
 
-async def verify_token(credentials: HTTPAuthorizationCredentials | None = Depends(security_scheme)):
-    """Optional token verification. In production, rejects missing/invalid tokens."""
-    from nexus.core.config import get_settings
-    settings = get_settings()
-
-    if settings.nexus_env.value == "production":
-        if credentials is None:
-            raise HTTPException(status_code=401, detail="Authentication required")
-        token = credentials.credentials
-        expected = settings.nexus_secret_key
-        if not hmac.compare_digest(token.encode(), expected.encode()):
-            raise HTTPException(status_code=403, detail="Invalid authentication token")
-
-
 # ═══════════════════════════════════════════════════════════════════
 # FastAPI Application
 # ═══════════════════════════════════════════════════════════════════
@@ -109,6 +93,7 @@ app = FastAPI(
     version="0.1.0",
     docs_url=None if _is_production else "/docs",
     redoc_url=None if _is_production else "/redoc",
+    dependencies=[Depends(verify_auth)],
 )
 
 _warn_default_key()
@@ -120,6 +105,14 @@ try:
     logger.info("[Gateway] Voice API routes included (/voice/*)")
 except Exception as _voice_import_err:
     logger.warning("[Gateway] Voice API routes not available: %s", _voice_import_err)
+
+# ── Include MCP Marketplace API Routes ─────────────────────────
+try:
+    from nexus.mcp.api import router as mcp_router
+    app.include_router(mcp_router)
+    logger.info("[Gateway] MCP Marketplace API routes included (/api/mcp/*, /api/tools/*)")
+except Exception as _mcp_import_err:
+    logger.warning("[Gateway] MCP Marketplace API routes not available: %s", _mcp_import_err)
 
 # CORS middleware — allow the Next.js frontend
 app.add_middleware(
@@ -149,24 +142,12 @@ def _get_limiter():
     return _limiter
 
 
-# ── Auth Middleware (production only) ─────────────────────────────
+# ── Rate Limiter Middleware ───────────────────────────────────────
+# Auth is handled globally by the verify_auth dependency above.
 
 @app.middleware("http")
-async def auth_middleware(request: Request, call_next):
-    """Reject unauthenticated requests in production mode + rate limiting."""
-    if _is_production:
-        auth_header = request.headers.get("Authorization", "")
-        if not auth_header.startswith("Bearer "):
-            from fastapi.responses import JSONResponse
-            return JSONResponse(status_code=401, content={"detail": "Authentication required"})
-        token = auth_header.removeprefix("Bearer ")
-        from nexus.core.config import get_settings
-        expected = get_settings().nexus_secret_key
-        if not hmac.compare_digest(token.encode(), expected.encode()):
-            from fastapi.responses import JSONResponse
-            return JSONResponse(status_code=403, content={"detail": "Invalid authentication token"})
-
-    # Rate limiting for all environments
+async def rate_limit_middleware(request: Request, call_next):
+    """Enforce rate limits on all HTTP requests."""
     client_ip = request.client.host if request.client else "unknown"
     try:
         _get_limiter().check(client_ip, action="api_call", tokens=1)
@@ -176,7 +157,6 @@ async def auth_middleware(request: Request, call_next):
             status_code=429,
             content={"detail": "Rate limit exceeded. Please wait before making more requests."},
         )
-
     return await call_next(request)
 
 
@@ -506,11 +486,8 @@ async def chat_completion(request: ChatRequest):
         # Check if it's an "all providers failed" error
         error_msg = str(exc)
         if "All LLM providers failed" in error_msg:
-            raise HTTPException(
-                status_code=502,
-                detail=f"All LLM providers failed. Check your API keys in .env and try a different provider. Error: {error_msg}",
-            )
-        raise HTTPException(status_code=500, detail=f"Chat failed: {error_msg}")
+            raise HTTPException(status_code=502, detail="Les fournisseurs LLM sont indisponibles. Vérifiez vos clés API.")
+        raise HTTPException(status_code=500, detail="Erreur interne du serveur")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -583,7 +560,7 @@ async def run_task(request: RunRequest):
             "task": request.task[:200],
             "error": str(exc)[:500],
         })
-        raise HTTPException(status_code=500, detail=f"Task failed: {str(exc)}")
+        raise HTTPException(status_code=500, detail="L'exécution de la tâche a échoué")
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -2512,6 +2489,143 @@ async def get_providers():
         raise HTTPException(status_code=500, detail=f"Could not get provider status: {str(exc)}")
 
 
+# ═══════════════════════════════════════════════════════════════════
+# Config API — In-app API key management
+# ═══════════════════════════════════════════════════════════════════
+
+_PROVIDER_KEY_MAP: dict[str, tuple[str, str]] = {
+    # provider_id -> (env_var_name, display_name)
+    "openai":       ("OPENAI_API_KEY",       "OpenAI"),
+    "anthropic":    ("ANTHROPIC_API_KEY",    "Anthropic"),
+    "gemini":       ("GOOGLE_API_KEY",       "Google AI"),
+    "groq":         ("GROQ_API_KEY",         "Groq"),
+    "openrouter":   ("OPENROUTER_API_KEY",   "OpenRouter"),
+    "nvidia":       ("NVIDIA_API_KEY",       "NVIDIA"),
+    "cerebras":     ("CEREBRAS_API_KEY",     "Cerebras"),
+    "together":     ("TOGETHER_API_KEY",     "Together"),
+    "glm":          ("ZAI_API_KEY",          "ZhipuAI / GLM"),
+}
+
+_ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
+
+
+def _mask_key(key: str | None) -> str:
+    """Mask an API key for display: show first 4 and last 4 chars."""
+    if not key or len(key) < 12:
+        return "" if not key else "••••••••"
+    return f"{key[:4]}{'•' * (len(key) - 8)}{key[-4:]}"
+
+
+def _read_env_file() -> dict[str, str]:
+    """Parse .env file into a dict."""
+    env: dict[str, str] = {}
+    if not _ENV_FILE.exists():
+        return env
+    for line in _ENV_FILE.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" in line:
+            k, _, v = line.partition("=")
+            env[k.strip()] = v.strip()
+    return env
+
+
+def _write_env_file(updates: dict[str, str | None]) -> None:
+    """Update .env file with new key-value pairs. None values remove the key."""
+    lines: list[str] = []
+    existing: dict[str, int] = {}  # key -> line index
+
+    if _ENV_FILE.exists():
+        for i, line in enumerate(_ENV_FILE.read_text(encoding="utf-8").splitlines()):
+            stripped = line.strip()
+            if stripped and not stripped.startswith("#") and "=" in stripped:
+                k = stripped.split("=", 1)[0].strip()
+                existing[k] = i
+            lines.append(line)
+
+    for key, value in updates.items():
+        if key in existing:
+            if value is None:
+                lines[existing[key]] = ""  # blank out removed key
+            else:
+                lines[existing[key]] = f"{key}={value}"
+        elif value is not None:
+            # Append new key
+            if lines and lines[-1].strip():
+                lines.append("")
+            lines.append(f"{key}={value}")
+
+    _ENV_FILE.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+@app.get("/config/api-keys")
+async def get_api_keys():
+    """Get masked API key status for all providers."""
+    try:
+        env = _read_env_file()
+        from nexus.core.config import get_settings
+        settings = get_settings()
+
+        result = {}
+        for provider_id, (env_var, display_name) in _PROVIDER_KEY_MAP.items():
+            raw_key = env.get(env_var, "")
+            # Also check settings (which reads from env vars at runtime)
+            settings_key = getattr(settings, env_var.lower(), None) or raw_key
+            has_key = bool(settings_key)
+            result[provider_id] = {
+                "name": display_name,
+                "env_var": env_var,
+                "configured": has_key,
+                "masked": _mask_key(settings_key) if has_key else "",
+            }
+        return result
+    except Exception as exc:
+        logger.error("Get API keys failed: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+class ApiKeyUpdate(BaseModel):
+    provider: str = Field(..., description="Provider ID (e.g. 'openai', 'gemini')")
+    api_key: str = Field(default="", description="API key value (empty to remove)")
+
+
+@app.post("/config/api-keys")
+async def update_api_key(body: ApiKeyUpdate):
+    """Update or remove an API key. Writes to .env and reloads config."""
+    try:
+        if body.provider not in _PROVIDER_KEY_MAP:
+            raise HTTPException(status_code=400, detail=f"Unknown provider: {body.provider}")
+
+        env_var, display_name = _PROVIDER_KEY_MAP[body.provider]
+        key_value = body.api_key.strip()
+
+        # Update .env file
+        _write_env_file({env_var: key_value if key_value else None})
+
+        # Also update the current process environment so config picks it up immediately
+        if key_value:
+            os.environ[env_var] = key_value
+        else:
+            os.environ.pop(env_var, None)
+
+        # Reload cached settings
+        from nexus.core.config import reload_settings
+        reload_settings()
+
+        return {
+            "status": "ok",
+            "provider": body.provider,
+            "configured": bool(key_value),
+            "masked": _mask_key(key_value) if key_value else "",
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Update API key failed: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @app.get("/health")
 async def health_check():
     """
@@ -2762,6 +2876,9 @@ async def websocket_endpoint(websocket: WebSocket):
     Any part of the backend can broadcast events via the EventBroadcaster,
     and all connected WebSocket clients receive them instantly.
 
+    Authentication: pass ``?token=<api_key>`` query parameter.
+    In development mode (no NEXUS_API_KEY set), the token is optional.
+
     Event format (JSON):
         {
             "type": "agent_thinking",
@@ -2775,6 +2892,10 @@ async def websocket_endpoint(websocket: WebSocket):
     task_done, error, avatar_expression, stream_token
     """
     await websocket.accept()
+
+    # Authenticate via query param (accept first, then validate).
+    await verify_ws_auth(websocket)
+
     broadcaster = _get_broadcaster()
 
     subscriber_id = await broadcaster.subscribe(websocket)

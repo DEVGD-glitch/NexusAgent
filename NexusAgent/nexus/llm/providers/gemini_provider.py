@@ -127,27 +127,35 @@ class GeminiProvider:
         start = time.monotonic()
         is_gemma = model.startswith("gemma-")
 
-        try:
-            content, usage, finish_reason = await self._call_via_litellm(
-                messages=messages, model=model, temperature=temperature,
-                max_tokens=max_tokens, top_p=top_p,
-            )
-        except ImportError:
+        # Gemma models bypass LiteLLM (not supported) and call Google API directly
+        if is_gemma:
             content, usage, finish_reason = await self._call_direct(
                 messages=messages, model=model, temperature=temperature,
                 max_tokens=max_tokens, top_p=top_p, grounding=grounding,
-                is_gemma=is_gemma, thinking_level=thinking_level,
+                is_gemma=True, thinking_level=thinking_level,
             )
-        except (LLMRateLimitError, LLMProviderError):
-            raise
-        except Exception as e:
-            self._last_error = str(e)
-            logger.debug("LiteLLM failed for Gemini, trying direct: %s", e)
-            content, usage, finish_reason = await self._call_direct(
-                messages=messages, model=model, temperature=temperature,
-                max_tokens=max_tokens, top_p=top_p, grounding=grounding,
-                is_gemma=is_gemma, thinking_level=thinking_level,
-            )
+        else:
+            try:
+                content, usage, finish_reason = await self._call_via_litellm(
+                    messages=messages, model=model, temperature=temperature,
+                    max_tokens=max_tokens, top_p=top_p,
+                )
+            except ImportError:
+                content, usage, finish_reason = await self._call_direct(
+                    messages=messages, model=model, temperature=temperature,
+                    max_tokens=max_tokens, top_p=top_p, grounding=grounding,
+                    is_gemma=False, thinking_level=thinking_level,
+                )
+            except (LLMRateLimitError, LLMProviderError):
+                raise
+            except Exception as e:
+                self._last_error = str(e)
+                logger.debug("LiteLLM failed for Gemini, trying direct: %s", e)
+                content, usage, finish_reason = await self._call_direct(
+                    messages=messages, model=model, temperature=temperature,
+                    max_tokens=max_tokens, top_p=top_p, grounding=grounding,
+                    is_gemma=False, thinking_level=thinking_level,
+                )
 
         latency = (time.monotonic() - start) * 1000
         cost = self._estimate_cost(model, usage)

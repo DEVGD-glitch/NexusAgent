@@ -1,0 +1,115 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "settings": "Paramètres",
+    "send": "Envoyer",
+    "stop": "Arrêter",
+    "retry": "Réessayer"
+  },
+  "chat": {
+    "emptyTitle": "Bonjour ! Je suis NEXUS",
+    "emptyDescription": "Ton agent IA souverain. Pose-moi une question, demande-moi d'écrire du code, ou lance une tâche complexe.",
+    "suggestions": {
+      "code": "Écris un script Python",
+      "data": "Analyse ces données",
+      "web": "Crée un site web"
+    },
+    "thinking": "Réflexion en cours...",
+    "approvalRequired": "Approbation requise",
+    "approve": "Autoriser",
+    "deny": "Refuser",
+    "streaming": "En cours de génération...",
+    "sendPlaceholder": "Écris ton message ici... (Shift+Entrée pour nouvelle ligne)"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "connection": "Connexion",
+    "connected": "Backend connecté",
+    "disconnected": "Déconnecté",
+    "provider": "Fournisseur",
+    "model": "Modèle",
+    "mode": "Mode",
+    "modeBalanced": "Balancé",
+    "modeCreative": "Créatif",
+    "modePrecise": "Précis",
+    "avatar": "Avatar",
+    "avatarEnabled": "Activé",
+    "voice": "Voix",
+    "voiceEnabled": "TTS activé",
+    "memory": "Mémoire",
+    "capabilities": "Capacités"
+  },
+  "providers": {
+    "free": "gratuit",
+    "paid": "payant",
+    "local": "local",
+    "keyMissing": "clé manquante"
+  },
+  "commands": {
+    "title": "Commandes",
+    "search": "Tapez une commande...",
+    "noResults": "Aucune commande trouvée"
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "cpu": "CPU",
+    "memory": "Mémoire",
+    "tokens": "Tokens",
+    "agents": "Agents actifs",
+    "refresh": "Actualiser"
+  },
+  "mcp": {
+    "title": "Serveurs MCP",
+    "install": "Installer",
+    "installing": "Installation...",
+    "deleteConfirm": "Supprimer ce serveur ?"
+  },
+  "skills": {
+    "title": "Compétences",
+    "enabled": "activé",
+    "disabled": "désactivé",
+    "disableConfirm": "Désactiver cette compétence ?"
+  },
+  "plugins": {
+    "title": "Plugins",
+    "install": "Installer un plugin",
+    "installing": "Installation..."
+  },
+  "permissions": {
+    "title": "Permissions",
+    "grantAll": "Tout accorder",
+    "revokeAll": "Tout révoquer"
+  },
+  "voice": {
+    "recording": "Enregistrement...",
+    "transcribing": "Transcription...",
+    "record": "Enregistrer"
+  },
+  "viz": {
+    "title": "Visualisation",
+    "close": "Fermer",
+    "code": "Code",
+    "diff": "Diff"
+  },
+  "avatar": {
+    "change": "Changer",
+    "select": "Choisir avatar",
+    "gallery": "Galerie",
+    "local": "Local",
+    "url": "URL"
+  },
+  "artifacts": {
+    "open": "Ouvrir",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "fullscreen": "Plein écran",
+    "exitFullscreen": "Quitter plein écran"
+  }
+}

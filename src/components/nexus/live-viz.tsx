@@ -107,6 +107,9 @@ function FileTreeItem({
         initial={isNew ? { opacity: 0, x: -10 } : false}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.2 }}
+        role={isDir ? "treeitem" : "option"}
+        aria-expanded={isDir ? expanded : undefined}
+        aria-selected={isSelected}
         className={`flex items-center gap-1 py-1 px-2 rounded-md cursor-pointer text-xs group
           ${isSelected ? "bg-primary/15 text-primary" : "hover:bg-muted/30 text-foreground/70"}
           ${isNew ? "ring-1 ring-emerald-500/40" : ""}
@@ -260,7 +263,7 @@ export function CodePreview({
   }
 
   return (
-    <div ref={scrollRef} className="h-full overflow-y-auto font-mono text-[11px] leading-5">
+    <div ref={scrollRef} className="h-full overflow-y-auto font-mono text-[11px] leading-5" role="status" aria-live="polite" aria-atomic="false">
       {/* Line numbers + code */}
       <div className="flex">
         {/* Line numbers */}
@@ -480,10 +483,15 @@ export function LiveVizPanel() {
   const [fileContents, setFileContents] = useState<Record<string, string>>({});
   const [visibleLineCounts, setVisibleLineCounts] = useState<Record<string, number>>({});
   const [currentDiff, setCurrentDiff] = useState<{ old: string; new: string } | null>(null);
+  const lastProcessedRef = useRef(0);
 
-  // Process viz events to build up file contents incrementally
+  // Process only NEW viz events (not re-process all on every change)
   useEffect(() => {
-    vizEvents.forEach((event) => {
+    const newEvents = vizEvents.slice(lastProcessedRef.current);
+    if (newEvents.length === 0) return;
+    lastProcessedRef.current = vizEvents.length;
+
+    newEvents.forEach((event) => {
       if (event.type === "viz_file_create" && event.path && event.content) {
         setFileContents((prev) => ({ ...prev, [event.path!]: event.content! }));
         setVisibleLineCounts((prev) => ({ ...prev, [event.path!]: event.content!.split("\n").length }));
@@ -496,14 +504,12 @@ export function LiveVizPanel() {
           const updated = existing + (existing ? "\n" : "") + event.content!;
           return { ...prev, [event.path!]: updated };
         });
-        // Animate line reveal: gradually increase visible lines
         if (event.line_number !== undefined && event.total_lines !== undefined) {
           setVisibleLineCounts((prev) => ({
             ...prev,
             [event.path!]: event.line_number!,
           }));
         } else {
-          // Fallback: show all lines immediately
           setVisibleLineCounts((prev) => {
             const content = fileContents[event.path!] || "";
             return { ...prev, [event.path!]: content.split("\n").length };
@@ -568,9 +574,11 @@ export function LiveVizPanel() {
               {fileCount} file{fileCount !== 1 ? "s" : ""}
             </span>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1" role="radiogroup" aria-label="Mode d'affichage">
             <button
               onClick={() => setViewMode("code")}
+              role="radio"
+              aria-checked={effectiveViewMode === "code"}
               className={`px-2 py-0.5 rounded text-[9px] transition-colors ${
                 effectiveViewMode === "code"
                   ? "bg-primary/15 text-primary"
@@ -581,6 +589,8 @@ export function LiveVizPanel() {
             </button>
             <button
               onClick={() => setViewMode("diff")}
+              role="radio"
+              aria-checked={effectiveViewMode === "diff"}
               className={`px-2 py-0.5 rounded text-[9px] transition-colors ${
                 effectiveViewMode === "diff"
                   ? "bg-primary/15 text-primary"

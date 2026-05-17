@@ -136,10 +136,62 @@ class ProcessSupervisor:
         while self._running:
             try:
                 await asyncio.sleep(self.check_interval)
-                # Future: Implement actual health checks
-                # For now, just log that we're monitoring
-                logger.debug("Supervisor check: %d services monitored", len(self._services))
+                await self._run_health_checks()
             except asyncio.CancelledError:
                 break
             except Exception as exc:
                 logger.error("Supervisor error: %s", exc)
+
+    async def _run_health_checks(self) -> None:
+        """Run health checks on all registered services."""
+        now = time.time()
+        stale_threshold = self.check_interval * 3
+
+        for name, service in list(self._services.items()):
+            # Check if service has a recorded PID and if the process is alive
+            if service.pid is not None:
+                alive = self._is_process_alive(service.pid)
+                if not alive and service.status == ServiceStatus.RUNNING:
+                    logger.warning(
+                        "Service %s (pid=%d) is no longer alive.",
+                        name, service.pid,
+                    )
+                    service.status = ServiceStatus.FAILED
+                    service.last_error = f"Process {service.pid} exited unexpectedly"
+                    service.last_check = now
+                    self.report_service_status(
+                        name, ServiceStatus.FAILED,
+                        error=service.last_error, pid=service.pid,
+                    )
+                    continue
+
+            # Check if service is responsive (hasn't reported in too long)
+            if service.status == ServiceStatus.RUNNING and service.last_check > 0:
+                elapsed = now - service.last_check
+                if elapsed > stale_threshold:
+                    logger.warning(
+                        "Service %s has not reported in %.0fs (threshold: %.0fs). "
+                        "Marking as potentially unresponsive.",
+                        name, elapsed, stale_threshold,
+                    )
+
+            logger.debug(
+                "Health check: %s — status=%s, pid=%s, restart_count=%d",
+                name, service.status.value,
+                service.pid or "n/a", service.restart_count,
+            )
+
+    @staticmethod
+    def _is_process_alive(pid: int) -> bool:
+        """Check if a process with the given PID is still running."""
+        import os
+        import signal
+        try:
+            if os.name == "nt":
+                # Windows: use os.kill with signal 0 to check existence
+                os.kill(pid, 0)
+            else:
+                os.kill(pid, signal.SIG_DFL)
+            return True
+        except OSError:
+            return False

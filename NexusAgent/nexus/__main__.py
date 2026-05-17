@@ -2,7 +2,7 @@
 NEXUS — Point d'entrée principal.
 
 Utilisation :
-    python -m nexus serve    → Lance le serveur API (port 8080)
+    python -m nexus serve    → Lance le serveur API (port 8081)
     python -m nexus chat     → Chat interactif CLI
     python -m nexus --help   → Aide
 """
@@ -19,9 +19,10 @@ def main():
         print("NEXUS — Agent IA Souverain")
         print()
         print("Utilisation :")
+        print("  python install.py        → Installation complète")
+        print("  python start.py          → Lance backend + frontend")
         print("  python -m nexus serve    → Lance le serveur API")
         print("  python -m nexus chat     → Chat interactif")
-        print("  start_web.bat            → App web (navigateur)")
         print()
 
 

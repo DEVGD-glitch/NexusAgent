@@ -46,24 +46,24 @@ class FreeProviderRouter:
             result = await self.pollinations.complete(
                 messages, model=model or "openai", temperature=temperature, max_tokens=max_tokens
             )
-            logger.info(f"[FreeRouter] Pollinations success: {len(result.content)} chars")
+            logger.info("[FreeRouter] Pollinations success: %d chars", len(result.content))
             return result
         except Exception as e:
             errors.append(f"Pollinations: {e}")
-            logger.warning(f"[FreeRouter] Pollinations failed, trying G4F: {e}")
+            logger.warning("[FreeRouter] Pollinations failed, trying G4F: %s", e)
 
         try:
             result = await self.g4f.complete(
                 messages, model=model or "gpt-4o-mini", temperature=temperature, max_tokens=max_tokens
             )
-            logger.info(f"[FreeRouter] G4F success: {len(result.content)} chars")
+            logger.info("[FreeRouter] G4F success: %d chars", len(result.content))
             return result
         except Exception as e:
             errors.append(f"G4F: {e}")
 
         raise LLMAllProvidersFailedError(
-            f"All free providers failed: {'; '.join(errors)}",
-            provider_errors={},
+            providers_tried=["pollinations", "g4f"],
+            errors=errors,
         )
 
     async def complete_stream(
@@ -85,7 +85,7 @@ class FreeProviderRouter:
                 yield chunk
             return
         except Exception as e:
-            logger.warning(f"[FreeRouter] Pollinations stream failed, trying G4F: {e}")
+            logger.warning("[FreeRouter] Pollinations stream failed, trying G4F: %s", e)
 
         async for chunk in self.g4f.complete_stream(
             messages, model=model or "gpt-4o-mini", temperature=temperature, max_tokens=max_tokens

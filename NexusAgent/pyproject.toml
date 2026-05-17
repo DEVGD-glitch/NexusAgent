@@ -28,9 +28,10 @@ dependencies = [
     "anthropic>=0.52.0",
     "google-generativeai>=0.8.0",
     "tiktoken>=0.9.0",
-    # ── CLI ──
+    # ── CLI / TUI ──
     "typer>=0.15.0",
     "rich>=14.0.0",
+    "textual>=0.80.0",
     # ── HTTP ──
     "httpx>=0.28.0",
     # ── Memory / Vector DB ──
@@ -49,17 +50,14 @@ dependencies = [
     "aiofiles>=24.0.0",
     "python-multipart>=0.0.20",
     "watchfiles>=1.0.0",
+    # ── Rules Engine ──
+    "pyyaml>=6.0.0",
     # ── Security ──
     "cryptography>=44.0.0",
     # ── MCP Protocol ──
     "mcp>=1.9.0",
-    # ── Desktop App ──
-    "customtkinter>=5.2.0",
-    "Pillow>=11.0.0",
     # ── WebSocket / Scheduler ──
     "websockets>=15.0.0",
-    # ── Container ──
-    "docker>=7.0.0",
 ]
 
 [project.optional-dependencies]
@@ -71,6 +69,9 @@ desktop = [
     "customtkinter>=5.2.0",
     "pystray>=0.19.5",
     "Pillow>=11.0.0",
+]
+sandbox = [
+    "docker>=7.0.0",
 ]
 avatar = [
     "aiavatar>=0.8.0",

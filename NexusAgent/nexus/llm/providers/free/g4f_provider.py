@@ -120,9 +120,9 @@ class G4FProvider:
                 cost_usd=0.0,
             )
         except httpx.HTTPStatusError as e:
-            raise LLMProviderError(f"G4F API error: {e.response.status_code}") from e
+            raise LLMProviderError("g4f", f"API error: {e.response.status_code}") from e
         except httpx.RequestError as e:
-            raise LLMProviderError(f"G4F request failed: {e}") from e
+            raise LLMProviderError("g4f", f"Request failed: {e}") from e
 
     async def complete_stream(
         self,
@@ -172,7 +172,7 @@ class G4FProvider:
             data = response.json()
             return [m["id"] for m in data.get("data", [])]
         except Exception as e:
-            logger.warning(f"G4F list_models failed: {e}")
+            logger.warning("G4F list_models failed: %s", e)
             return list(G4F_MODELS.keys())
 
     async def close(self) -> None:

@@ -35,20 +35,20 @@ class TestGatewayEndpoints:
     def test_health_endpoint(self):
         """GET /health should return status OK."""
         from fastapi.testclient import TestClient
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
 
         client = TestClient(app)
         response = client.get("/health")
         assert response.status_code == 200
         data = response.json()
-        assert data["status"] == "ok"
+        assert data["status"] == "healthy"
         assert "version" in data
         assert "uptime_seconds" in data
 
     def test_status_endpoint(self):
         """GET /status should return agent info."""
         from fastapi.testclient import TestClient
-        from nexus.core.gateway import app
+        from nexus.api.gateway import app
 
         client = TestClient(app)
         response = client.get("/status")
@@ -338,8 +338,14 @@ class TestSecurity:
 
     def test_cors_configured(self):
         """CORS should be configured."""
-        from nexus.core.gateway import _frontend_origins
-        assert "http://localhost:3000" in _frontend_origins
+        from nexus.api.gateway import app
+
+        # Verify CORS middleware allows the frontend origin
+        cors_middleware = next(
+            m for m in app.user_middleware
+            if m.cls.__name__ == "CORSMiddleware"
+        )
+        assert "http://localhost:3000" in cors_middleware.kwargs.get("allow_origins", [])
 
     def test_secrets_vault_initializes(self, tmp_path):
         """SecretsVault should initialize with pepper."""

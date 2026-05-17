@@ -22,129 +22,43 @@ import {
 } from "@/components/ui/resizable";
 import { useNexusStore } from "@/lib/nexus-store";
 import { nexusApi } from "@/lib/nexus-api";
-import { VRMAvatar } from "./vrm-avatar";
+import dynamic from "next/dynamic";
+
+const VRMAvatar = dynamic(() => import("./vrm-avatar").then((m) => m.VRMAvatar), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <div className="w-16 h-16 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />
+    </div>
+  ),
+});
 import {
-  AgentActivityCard, BuildStepsCard, MemoryCard, WebResultCard,
-  CodeResultCard, KnowledgeCard,
+  AgentActivityCard, BuildStepsCard,
 } from "./gen-ui";
-import { VoiceButton, TTSPlayback } from "./voice-ui";
+import { A2UIRenderer } from "./a2ui-renderer";
+import { VoiceButton } from "./voice-ui";
 import { VRMHubModal } from "./vrm-hub";
-import { motion, AnimatePresence } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { ChatBubble } from "./chat-bubble";
+import { ThinkingPanel } from "./thinking-panel";
+import { ApprovalCard } from "./approval-card";
+import { StreamingContent } from "./streaming-content";
+import { motion } from "framer-motion";
+import {
+  Send, Sparkles, Shield, Zap,
+  Square, X, FileCode, BarChart3, Image as ImageIcon, FileText, Code2,
+  Eye, Volume2, VolumeX, User, Menu,
+} from "lucide-react";
+import { ConversationSidebar } from "./conversation-sidebar";
+import type { VizEvent, Artifact } from "@/types/nexus";
+import { createLogger } from "@/lib/logger";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import {
-  Send, Loader2, Sparkles, Shield, Zap, PanelRightOpen,
-  Square, X, FileCode, BarChart3, Image as ImageIcon, FileText, Code2,
-  Eye, Volume2, VolumeX, User,
-} from "lucide-react";
-import type { ChatMessage, BuildStep, AgentActivity, VizEvent, Artifact } from "@/types/nexus";
-import { createLogger } from "@/lib/logger";
 
 const log = createLogger("ChatView");
 
 // ── Constants ────────────────────────────────────────────────
 const STORAGE_KEY = "nexus_conversations";
-const STREAM_TOKEN_BUFFER_MS = 50;
-
-// ── Activity Type → Card Renderer ───────────────────────────
-// Maps activity types to the appropriate GenUI card
-
-function ActivityCards({ activities }: { activities: AgentActivity[] }) {
-  const memoryActivities = activities.filter((a) =>
-    a.type.includes("memory") || (a.toolName && a.toolName.includes("memory"))
-  );
-  const webActivities = activities.filter((a) =>
-    a.type.includes("web") || (a.toolName && a.toolName.includes("web_search"))
-  );
-  const codeActivities = activities.filter((a) =>
-    a.type.includes("code") || a.type.includes("execute") ||
-    (a.toolName && (a.toolName.includes("code") || a.toolName.includes("execute")))
-  );
-  const knowledgeActivities = activities.filter((a) =>
-    a.type.includes("knowledge") || (a.toolName && a.toolName.includes("knowledge"))
-  );
-
-  return (
-    <>
-      {memoryActivities.length > 0 && (
-        <MemoryCard
-          results={memoryActivities.map((a) => ({
-            text: a.content,
-            source: a.toolName || "memory",
-            distance: 0,
-          }))}
-        />
-      )}
-      {webActivities.length > 0 && (
-        <WebResultCard
-          results={webActivities.map((a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              if (Array.isArray(parsed)) {
-                return parsed.map((r: { title?: string; url?: string; snippet?: string }) => ({
-                  title: r.title || "",
-                  url: r.url || "",
-                  snippet: r.snippet || "",
-                }));
-              }
-              if (parsed.results && Array.isArray(parsed.results)) {
-                return parsed.results.map((r: { title?: string; url?: string; snippet?: string }) => ({
-                  title: r.title || "",
-                  url: r.url || "",
-                  snippet: r.snippet || "",
-                }));
-              }
-            } catch (error) { /* JSON parse expected for web results */ }
-            return [{ title: a.content.slice(0, 80), url: "", snippet: a.content.slice(0, 200) }];
-          }).flat()}
-        />
-      )}
-      {codeActivities.length > 0 && (
-        <CodeResultCard
-          stdout={codeActivities.map((a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              return parsed.stdout || parsed.output || a.content;
-            } catch (error) { return a.content; /* JSON parse expected */ }
-          }).join("\n")}
-          stderr={codeActivities.reduce((acc, a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              return acc + (parsed.stderr || "");
-            } catch (error) { return acc; /* JSON parse expected */ }
-          }, "")}
-          exitCode={codeActivities.reduce((code, a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              return parsed.exit_code ?? parsed.exitCode ?? code;
-            } catch (error) { return code; /* JSON parse expected */ }
-          }, 0)}
-          timeMs={codeActivities.reduce((ms, a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              return ms + (parsed.execution_time_ms ?? parsed.timeMs ?? 0);
-            } catch (error) { return ms; /* JSON parse expected */ }
-          }, 0)}
-        />
-      )}
-      {knowledgeActivities.length > 0 && (
-        <KnowledgeCard
-          entities={knowledgeActivities.map((a) => {
-            try {
-              const parsed = JSON.parse(a.content);
-              if (Array.isArray(parsed)) return parsed;
-              return [{ name: a.content.slice(0, 60), type: "entity" }];
-            } catch {
-              return [{ name: a.content.slice(0, 60), type: "entity" }];
-            }
-          }).flat()}
-        />
-      )}
-    </>
-  );
-}
 
 // ── Live Viz Panel ──────────────────────────────────────────
 // Shows real-time visualization events to the right of chat
@@ -175,6 +89,7 @@ function LiveVizPanel({ events, onClose }: { events: VizEvent[]; onClose: () => 
         </div>
         <button
           onClick={onClose}
+          aria-label="Fermer la visualisation"
           className="w-5 h-5 rounded hover:bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
         >
           <X size={10} />
@@ -183,7 +98,7 @@ function LiveVizPanel({ events, onClose }: { events: VizEvent[]; onClose: () => 
 
       {/* Events list */}
       <ScrollArea className="flex-1">
-        <div className="p-2 space-y-1">
+        <div className="p-2 space-y-1" role="status" aria-live="polite" aria-atomic="false">
           {events.slice(-50).map((ev, i) => (
             <motion.div
               key={ev.id || i}
@@ -241,6 +156,7 @@ function ArtifactPanel({ artifact, onClose }: { artifact: Artifact; onClose: () 
         </div>
         <button
           onClick={onClose}
+          aria-label="Fermer l'artefact"
           className="w-5 h-5 rounded hover:bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
         >
           <X size={10} />
@@ -281,108 +197,6 @@ function ArtifactPanel({ artifact, onClose }: { artifact: Artifact; onClose: () 
   );
 }
 
-// ── Chat Bubble (with Generative UI support) ────────────────
-
-function ChatBubble({ message, isLast, avatarExpression, avatarThinking, ttsEnabled }: {
-  message: ChatMessage;
-  isLast: boolean;
-  avatarExpression: string;
-  avatarThinking: boolean;
-  ttsEnabled: boolean;
-}) {
-  const isUser = message.role === "user";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.15 }}
-      className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}
-    >
-      {!isUser && (
-        <div className="shrink-0 mt-1 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
-          <Zap size={12} className="text-white" />
-        </div>
-      )}
-      <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-        isUser
-          ? "bg-primary text-primary-foreground rounded-tr-sm"
-          : "bg-muted/40 text-foreground rounded-tl-sm border border-border/15"
-      }`}>
-        {isUser ? (
-          <p>{message.content}</p>
-        ) : (
-          <div className="prose prose-sm dark:prose-invert max-w-none">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || "");
-                  const code = String(children).replace(/\n$/, "");
-                  if (match) {
-                    return (
-                      <SyntaxHighlighter
-                        style={oneDark}
-                        language={match[1]}
-                        PreTag="div"
-                        customStyle={{ fontSize: "0.78rem", borderRadius: "0.5rem", margin: "0.5rem 0" }}
-                      >
-                        {code}
-                      </SyntaxHighlighter>
-                    );
-                  }
-                  return (
-                    <code className="bg-muted-foreground/15 px-1.5 py-0.5 rounded text-xs font-mono" {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-            >
-              {message.content}
-            </ReactMarkdown>
-          </div>
-        )}
-
-        {/* Generative UI: embedded activity cards for this message */}
-        {message.activities && message.activities.length > 0 && (
-          <div className="mt-3 space-y-2">
-            {(() => {
-              // Separate activities by category for card rendering
-              const thinkingActivities = message.activities.filter((a) =>
-                ["agent_thinking", "agent_action", "task_step", "tool_call", "task_done"].includes(a.type)
-              );
-              const specialActivities = message.activities.filter((a) =>
-                !["agent_thinking", "agent_action", "task_step", "tool_call", "task_done", "stream_token"].includes(a.type)
-              );
-
-              return (
-                <>
-                  {/* Standard activity card for thinking/action types */}
-                  {thinkingActivities.length > 0 && (
-                    <AgentActivityCard activities={thinkingActivities} />
-                  )}
-                  {/* Specialized cards for memory, web, code, knowledge */}
-                  {specialActivities.length > 0 && (
-                    <ActivityCards activities={specialActivities} />
-                  )}
-                </>
-              );
-            })()}
-          </div>
-        )}
-
-        {/* TTS playback button for assistant messages */}
-        {!isUser && ttsEnabled && message.content && (
-          <div className="mt-2 flex justify-end">
-            <TTSPlayback text={message.content.slice(0, 500)} />
-          </div>
-        )}
-      </div>
-    </motion.div>
-  );
-}
-
 // ── Main Chat View ──────────────────────────────────────────
 
 export function ChatView() {
@@ -399,8 +213,12 @@ export function ChatView() {
     artifacts, activeArtifactId, setActiveArtifact,
     voiceState, voiceConfig,
     pendingApprovals, removeApprovalRequest,
+    a2uiCards,
+    settingsOpen, setSettingsOpen,
   } = useNexusStore();
 
+  const isMobile = useIsMobile();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [input, setInput] = useState("");
   const [streamingContent, setStreamingContent] = useState("");
   const [showVizPanel, setShowVizPanel] = useState(false);
@@ -685,9 +503,19 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
   // ── Keyboard Handler ──────────────────────────────────────────
 
   function handleKeyDown(e: React.KeyboardEvent) {
+    // Enter to send (without shift)
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+    // Escape to clear input
+    if (e.key === "Escape") {
+      setInput("");
+    }
+    // Cmd/Ctrl + / to toggle settings
+    if ((e.metaKey || e.ctrlKey) && e.key === "/") {
+      e.preventDefault();
+      setSettingsOpen(!settingsOpen);
     }
   }
 
@@ -698,8 +526,14 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
 
   return (
     <div className="flex h-full">
+      {/* Conversation Sidebar */}
+      <ConversationSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
       {/* Avatar Zone (left) — only if enabled */}
-      {avatarEnabled && (
+      {avatarEnabled && !isMobile && (
         <div className="w-64 xl:w-80 h-full shrink-0 border-r border-border/10 relative overflow-hidden">
           <VRMAvatar
             expression={avatarExpression}
@@ -710,8 +544,8 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
           />
           {/* Avatar status overlay */}
           <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm border border-border/20">
-              <div className={`w-2 h-2 rounded-full ${isWorking ? "bg-cyan-500 animate-pulse" : backendConnected ? "bg-emerald-500" : "bg-red-400"}`} />
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm border border-border/20" role="status" aria-live="polite">
+              <div className={`w-2 h-2 rounded-full ${isWorking ? "bg-cyan-500 animate-pulse" : backendConnected ? "bg-emerald-500" : "bg-red-400"}`} aria-hidden="true" />
               <span className="text-[10px] text-foreground/60">
                 {isWorking ? "En reflexion..." : backendConnected ? "Pret" : "Deconnecte"}
               </span>
@@ -719,6 +553,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
             {/* VRM Hub button */}
             <button
               onClick={() => setVrmHubOpen(true)}
+              aria-label="Changer d'avatar"
               className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-background/60 backdrop-blur-sm border border-border/15 hover:border-primary/30 hover:bg-primary/5 transition-colors"
               title="Changer d'avatar"
             >
@@ -737,9 +572,25 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
           {/* Chat Zone */}
           <ResizablePanel defaultSize={hasSidePanel || hasArtifactPanel ? 60 : 100} minSize={40}>
             <div className="flex flex-col h-full">
+              {/* Chat Header */}
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-border/10 shrink-0">
+                <button
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  aria-label={sidebarOpen ? "Fermer l'historique" : "Ouvrir l'historique"}
+                  aria-expanded={sidebarOpen}
+                  className="w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                  title="Historique des conversations"
+                >
+                  <Menu size={16} />
+                </button>
+                <span className="text-[12px] text-foreground/60 truncate flex-1">
+                  {activeConv?.title || "Nouvelle conversation"}
+                </span>
+              </div>
+
               {/* Messages */}
               <div ref={scrollRef} className="flex-1 overflow-y-auto">
-                <div className="px-6 py-6 space-y-4 max-w-3xl mx-auto">
+                <div className="px-4 py-4 md:px-6 md:py-6 space-y-4 max-w-3xl mx-auto">
                   {messages.map((msg, i) => (
                     <ChatBubble
                       key={msg.id}
@@ -751,20 +602,13 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                     />
                   ))}
 
-                  {/* Streaming content */}
-                  {streamingContent && (
-                    <div className="flex gap-3">
-                      <div className="shrink-0 mt-1 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
-                        <Zap size={12} className="text-white" />
-                      </div>
-                      <div className="max-w-[85%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed bg-muted/40 border border-border/15">
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{streamingContent}</ReactMarkdown>
-                        </div>
-                        <span className="inline-block w-1.5 h-4 bg-primary/70 animate-pulse rounded-sm ml-0.5" />
-                      </div>
-                    </div>
+                  {/* Thinking Panel — shows agent reasoning in real-time */}
+                  {isWorking && (
+                    <ThinkingPanel activities={agentActivity} />
                   )}
+
+                  {/* Streaming content */}
+                  <StreamingContent content={streamingContent} />
 
                   {/* Generative UI: Build steps in chat */}
                   {buildSteps.length > 0 && <BuildStepsCard steps={buildSteps} />}
@@ -774,51 +618,23 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                     <AgentActivityCard activities={agentActivity.filter((a) => a.type !== "stream_token").slice(-8)} />
                   )}
 
+                  {/* A2UI Generative Cards (forms, charts, tables) */}
+                  {a2uiCards.map((card) => (
+                    <A2UIRenderer key={card.card_id} card={card} onAction={(action) => {
+                      log.info("A2UI action", { card: card.card_id, action: action.id });
+                    }} />
+                  ))}
+
                   {/* HITL Approval Requests */}
-                  {pendingApprovals.length > 0 && (
-                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Shield size={12} className="text-amber-500" />
-                        <span className="text-[11px] font-medium text-amber-500">Approbation requise</span>
-                      </div>
-                      {pendingApprovals.slice(-3).map((req) => (
-                        <div key={req.id} className="flex items-center gap-2 p-2 rounded-lg bg-background/50 mb-1">
-                          <span className="text-[10px] text-foreground/80 flex-1">
-                            {req.toolName}: {JSON.stringify(req.args).slice(0, 80)}
-                          </span>
-                          <div className="flex gap-1">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-5 text-[9px] text-emerald-500 hover:text-emerald-400"
-                              onClick={async () => {
-                                await nexusApi.approveAction(req.id);
-                                removeApprovalRequest(req.id);
-                              }}
-                            >
-                              Autoriser
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-5 text-[9px] text-red-500 hover:text-red-400"
-                              onClick={async () => {
-                                await nexusApi.denyAction(req.id);
-                                removeApprovalRequest(req.id);
-                              }}
-                            >
-                              Refuser
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <ApprovalCard
+                    approvals={pendingApprovals}
+                    onRemove={removeApprovalRequest}
+                  />
                 </div>
               </div>
 
               {/* Input Area */}
-              <div className="px-6 py-3 border-t border-border/15 shrink-0">
+              <div className="px-4 py-3 md:px-6 border-t border-border/15 shrink-0">
                 <div className="flex gap-2 max-w-3xl mx-auto items-end">
                   {/* Voice Button */}
                   <VoiceButton onTranscription={handleVoiceTranscription} />
@@ -830,6 +646,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder="Parlez a NEXUS... (Enter = envoyer)"
+                      data-chat-input
                       className="min-h-[44px] max-h-[140px] resize-none text-sm bg-muted/15 border-border/25 focus-visible:border-primary/50 focus-visible:ring-primary/20 pr-24"
                       rows={1}
                       disabled={isWorking}
@@ -838,6 +655,8 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                       {/* TTS Toggle */}
                       <button
                         onClick={() => setTtsEnabled(!ttsEnabled)}
+                        aria-label={ttsEnabled ? "Desactiver TTS" : "Activer TTS"}
+                        aria-pressed={ttsEnabled}
                         className={`h-7 w-7 flex items-center justify-center rounded-md transition-colors ${
                           ttsEnabled
                             ? "text-emerald-500 hover:bg-emerald-500/10"
@@ -855,6 +674,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                         variant="ghost"
                         size="sm"
                         className="h-7 px-2 text-[11px] gap-1 text-amber-500 hover:text-amber-400"
+                        aria-label="Executer comme tache agent"
                         title="Executer comme tache agent"
                       >
                         <Sparkles size={12} />
@@ -868,6 +688,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                           size="sm"
                           variant="destructive"
                           className="h-7 w-7 p-0 rounded-lg"
+                          aria-label="Arreter la generation"
                           title="Arreter"
                         >
                           <Square size={12} />
@@ -878,6 +699,7 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                           disabled={!input.trim()}
                           size="sm"
                           className="h-7 w-7 p-0 rounded-lg"
+                          aria-label="Envoyer le message"
                           title="Envoyer"
                         >
                           <Send size={13} />
@@ -892,6 +714,8 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
                     <button
                       onClick={() => setAgentMode(agentMode === "plan" ? "build" : "plan")}
+                      aria-label={`Basculer en mode ${agentMode === "build" ? "Plan" : "Build"}`}
+                      aria-pressed={agentMode === "build"}
                       className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors ${
                         agentMode === "build" ? "text-amber-500 hover:bg-amber-500/10" : "text-blue-500 hover:bg-blue-500/10"
                       }`}
@@ -907,6 +731,8 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                     {vizEvents.length > 0 && (
                       <button
                         onClick={() => setShowVizPanel(!showVizPanel)}
+                        aria-label={showVizPanel ? "Masquer la visualisation" : "Afficher la visualisation"}
+                        aria-pressed={showVizPanel}
                         className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors text-[10px] ${
                           showVizPanel
                             ? "text-cyan-500 bg-cyan-500/10"
@@ -917,15 +743,15 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
                         Viz ({vizEvents.length})
                       </button>
                     )}
-                    <span className="text-[9px] text-muted-foreground/40">⌘K commandes · ⌘, parametres</span>
+                    <span className="hidden md:inline text-[9px] text-muted-foreground/40">⌘K commandes · ⌘, parametres</span>
                   </div>
                 </div>
               </div>
             </div>
           </ResizablePanel>
 
-          {/* Viz Panel */}
-          {hasSidePanel && (
+          {/* Viz Panel (desktop: side panel, mobile: overlay) */}
+          {hasSidePanel && !isMobile && (
             <>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
@@ -940,8 +766,8 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
             </>
           )}
 
-          {/* Artifact Panel */}
-          {hasArtifactPanel && activeArtifact && !hasSidePanel && (
+          {/* Artifact Panel (desktop: side panel, mobile: overlay) */}
+          {hasArtifactPanel && activeArtifact && !hasSidePanel && !isMobile && (
             <>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={30} minSize={15} maxSize={50}>
@@ -954,6 +780,29 @@ Je suis un agent IA complet qui fonctionne **localement**, sans dépendance clou
           )}
         </ResizablePanelGroup>
       </div>
+
+      {/* Mobile viz panel overlay */}
+      {hasSidePanel && isMobile && (
+        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
+          <LiveVizPanel
+            events={vizEvents}
+            onClose={() => {
+              setShowVizPanel(false);
+              clearVizEvents();
+            }}
+          />
+        </div>
+      )}
+
+      {/* Mobile artifact overlay */}
+      {hasArtifactPanel && activeArtifact && isMobile && (
+        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col">
+          <ArtifactPanel
+            artifact={activeArtifact}
+            onClose={() => setActiveArtifact(null)}
+          />
+        </div>
+      )}
 
       {/* VRM Hub Modal */}
       <VRMHubModal

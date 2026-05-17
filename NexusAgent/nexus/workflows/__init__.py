@@ -1,8 +1,8 @@
 """
-NEXUS Workflow Templates — Predefined and user-created workflow templates.
+NEXUS Workflow Engine — Triggers, conditions, actions, and execution.
 
-Workflows are sequences of actions that can be saved and reused.
-Each workflow is a JSON-serializable list of steps.
+Extends the basic WorkflowManager with a full event-driven workflow engine
+supporting triggers, conditional logic, and multi-step execution.
 """
 
 from __future__ import annotations
@@ -164,3 +164,85 @@ class WorkflowManager:
             filepath.unlink()
             return True
         return False
+
+
+# ── Re-export new engine modules ─────────────────────────────────
+
+from nexus.workflows.triggers import (
+    Trigger,
+    TriggerType,
+    TriggerContext,
+    TriggerFactory,
+    TimerTrigger,
+    FileChangeTrigger,
+    WebhookTrigger,
+    EventTrigger,
+    ManualTrigger,
+)
+from nexus.workflows.conditions import (
+    Condition,
+    SimpleCondition,
+    AndCondition,
+    OrCondition,
+    NotCondition,
+    ConditionCompiler,
+)
+from nexus.workflows.actions import (
+    Action,
+    ActionType,
+    ActionResult,
+    ActionFactory,
+    ToolCallAction,
+    LLMCallAction,
+    AgentSpawnAction,
+    NotifyAction,
+    DelayAction,
+    SetVariableAction,
+    HTTPRequestAction,
+    ParallelAction,
+)
+from nexus.workflows.engine import (
+    WorkflowEngine,
+    WorkflowDefinition,
+    WorkflowExecution,
+    WorkflowStatus,
+    ExecutionStatus,
+    get_workflow_engine,
+)
+from nexus.workflows.validation import validate_workflow, ValidationResult
+from nexus.workflows.storage import WorkflowStorage
+
+__all__ = [
+    # Legacy
+    "WorkflowStep",
+    "Workflow",
+    "WorkflowManager",
+    # Engine
+    "WorkflowEngine",
+    "WorkflowDefinition",
+    "WorkflowExecution",
+    "WorkflowStatus",
+    "ExecutionStatus",
+    "get_workflow_engine",
+    # Triggers
+    "Trigger",
+    "TriggerType",
+    "TriggerContext",
+    "TriggerFactory",
+    # Conditions
+    "Condition",
+    "SimpleCondition",
+    "AndCondition",
+    "OrCondition",
+    "NotCondition",
+    "ConditionCompiler",
+    # Actions
+    "Action",
+    "ActionType",
+    "ActionResult",
+    "ActionFactory",
+    # Validation & Storage
+    "validate_workflow",
+    "ValidationResult",
+    "WorkflowStorage",
+]

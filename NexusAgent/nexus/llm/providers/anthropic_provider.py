@@ -239,6 +239,10 @@ class AnthropicProvider:
             m for m in messages if m["role"] != "system"
         ]
 
+        # Extract system prompt separately
+        system_messages = [m for m in messages if m["role"] == "system"]
+        system_prompt = system_messages[-1]["content"] if system_messages else None
+
         payload = {
             "model": model,
             "messages": anthropic_messages,
@@ -246,6 +250,8 @@ class AnthropicProvider:
             "max_tokens": max_tokens,
             "stream": True,
         }
+        if system_prompt:
+            payload["system"] = system_prompt
 
         async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds) as client:
             async with client.stream("POST", url, json=payload, headers=headers) as response:

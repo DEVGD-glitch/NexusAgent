@@ -7,6 +7,7 @@ each line of code being written, step by step.
 """
 from __future__ import annotations
 import asyncio
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -229,9 +230,18 @@ class VizEventEmitter:
 
 # Global singleton
 _viz_emitter: VizEventEmitter | None = None
+_viz_emitter_lock = threading.Lock()
+
 
 def get_viz_emitter() -> VizEventEmitter:
+    """Get the global VizEventEmitter singleton.
+
+    Thread-safe: uses double-checked locking to ensure
+    the singleton is created exactly once under concurrent access.
+    """
     global _viz_emitter
     if _viz_emitter is None:
-        _viz_emitter = VizEventEmitter()
+        with _viz_emitter_lock:
+            if _viz_emitter is None:
+                _viz_emitter = VizEventEmitter()
     return _viz_emitter

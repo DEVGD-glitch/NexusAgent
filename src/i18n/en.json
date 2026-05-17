@@ -1,0 +1,115 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "search": "Search",
+    "settings": "Settings",
+    "send": "Send",
+    "stop": "Stop",
+    "retry": "Retry"
+  },
+  "chat": {
+    "emptyTitle": "Hello! I'm NEXUS",
+    "emptyDescription": "Your sovereign AI agent. Ask me a question, request code, or launch a complex task.",
+    "suggestions": {
+      "code": "Write a Python script",
+      "data": "Analyze this data",
+      "web": "Create a website"
+    },
+    "thinking": "Thinking...",
+    "approvalRequired": "Approval required",
+    "approve": "Allow",
+    "deny": "Deny",
+    "streaming": "Generating...",
+    "sendPlaceholder": "Type your message here... (Shift+Enter for new line)"
+  },
+  "settings": {
+    "title": "Settings",
+    "connection": "Connection",
+    "connected": "Backend connected",
+    "disconnected": "Disconnected",
+    "provider": "Provider",
+    "model": "Model",
+    "mode": "Mode",
+    "modeBalanced": "Balanced",
+    "modeCreative": "Creative",
+    "modePrecise": "Precise",
+    "avatar": "Avatar",
+    "avatarEnabled": "Enabled",
+    "voice": "Voice",
+    "voiceEnabled": "TTS enabled",
+    "memory": "Memory",
+    "capabilities": "Capabilities"
+  },
+  "providers": {
+    "free": "free",
+    "paid": "paid",
+    "local": "local",
+    "keyMissing": "key missing"
+  },
+  "commands": {
+    "title": "Commands",
+    "search": "Type a command...",
+    "noResults": "No commands found"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "cpu": "CPU",
+    "memory": "Memory",
+    "tokens": "Tokens",
+    "agents": "Active agents",
+    "refresh": "Refresh"
+  },
+  "mcp": {
+    "title": "MCP Servers",
+    "install": "Install",
+    "installing": "Installing...",
+    "deleteConfirm": "Delete this server?"
+  },
+  "skills": {
+    "title": "Skills",
+    "enabled": "enabled",
+    "disabled": "disabled",
+    "disableConfirm": "Disable this skill?"
+  },
+  "plugins": {
+    "title": "Plugins",
+    "install": "Install plugin",
+    "installing": "Installing..."
+  },
+  "permissions": {
+    "title": "Permissions",
+    "grantAll": "Grant all",
+    "revokeAll": "Revoke all"
+  },
+  "voice": {
+    "recording": "Recording...",
+    "transcribing": "Transcribing...",
+    "record": "Record"
+  },
+  "viz": {
+    "title": "Visualization",
+    "close": "Close",
+    "code": "Code",
+    "diff": "Diff"
+  },
+  "avatar": {
+    "change": "Change",
+    "select": "Select avatar",
+    "gallery": "Gallery",
+    "local": "Local",
+    "url": "URL"
+  },
+  "artifacts": {
+    "open": "Open",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen"
+  }
+}

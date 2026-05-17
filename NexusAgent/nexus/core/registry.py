@@ -9,6 +9,7 @@ custom agent types.
 from __future__ import annotations
 
 import logging
+import threading
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -272,14 +273,21 @@ class AgentRegistry:
 
 # Global registry singleton
 _registry: Optional[AgentRegistry] = None
+_registry_lock = threading.Lock()
 
 
 def get_registry() -> AgentRegistry:
-    """Get the global AgentRegistry singleton."""
+    """Get the global AgentRegistry singleton.
+
+    Thread-safe: uses double-checked locking to ensure
+    the singleton is created exactly once under concurrent access.
+    """
     global _registry
     if _registry is None:
-        _registry = AgentRegistry()
-        _register_default_types(_registry)
+        with _registry_lock:
+            if _registry is None:
+                _registry = AgentRegistry()
+                _register_default_types(_registry)
     return _registry
 
 

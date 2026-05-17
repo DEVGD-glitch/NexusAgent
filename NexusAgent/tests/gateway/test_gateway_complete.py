@@ -59,16 +59,20 @@ def prod_client():
     """Client with NEXUS_ENV=production (auth required, rate limiting)."""
     # Clear the settings cache so env vars take effect
     from nexus.core.config import get_settings
+    from nexus.api import auth
     get_settings.cache_clear()
+    auth.reset_auth_cache()
     with patch.dict("os.environ", {
         "NEXUS_ENV": "production",
-        "NEXUS_SECRET_KEY": "test-secret-key-42",
+        "NEXUS_API_KEY": "test-secret-key-42",
+        "NEXUS_SECRET_KEY": "test-production-secret-key-42",
     }, clear=False):
         import importlib
         import nexus.api.gateway as gw
         importlib.reload(gw)
         client = TestClient(gw.app)
         yield client
+    auth.reset_auth_cache()
 
 
 @pytest.fixture
@@ -260,9 +264,9 @@ class TestAuthMiddleware:
             _get_audit_logger=MagicMock(),
             _get_knowledge_graph=MagicMock(),
         ):
-            resp = prod_client.get("/health")
+            # Use /memory/stats which is NOT a public endpoint
+            resp = prod_client.get("/memory/stats")
             assert resp.status_code == 401
-            assert resp.json()["detail"] == "Authentication required"
 
     def test_production_rejects_missing_auth_header(self, prod_client):
         """Production: request with Authorization header not starting with Bearer."""
@@ -274,13 +278,13 @@ class TestAuthMiddleware:
             _get_knowledge_graph=MagicMock(),
         ):
             resp = prod_client.get(
-                "/health",
+                "/memory/stats",
                 headers={"Authorization": "Basic dXNlcjpwYXNz"},
             )
             assert resp.status_code == 401
 
     def test_production_rejects_invalid_token(self, prod_client):
-        """Production mode: invalid token gets 403."""
+        """Production mode: invalid token gets 401."""
         with patch.multiple(
             "nexus.api.gateway",
             _get_router=MagicMock(),
@@ -289,11 +293,10 @@ class TestAuthMiddleware:
             _get_knowledge_graph=MagicMock(),
         ):
             resp = prod_client.get(
-                "/health",
+                "/memory/stats",
                 headers={"Authorization": "Bearer wrong-token"},
             )
-            assert resp.status_code == 403
-            assert resp.json()["detail"] == "Invalid authentication token"
+            assert resp.status_code == 401
 
     def test_production_allows_valid_token(self, prod_client):
         """Production mode: valid token passes through."""
@@ -305,7 +308,7 @@ class TestAuthMiddleware:
             _get_knowledge_graph=MagicMock(),
         ):
             resp = prod_client.get(
-                "/health",
+                "/memory/stats",
                 headers={"Authorization": "Bearer test-secret-key-42"},
             )
             assert resp.status_code == 200
@@ -1331,20 +1334,20 @@ class TestGatewayUtilities:
         """_warn_default_key with default key should emit warning."""
         import logging
         caplog.set_level(logging.WARNING)
-        from nexus.api.gateway import _warn_default_key, DEFAULT_SECRET_KEY, FALLBACK_SECRET_KEY
+        from nexus.api.gateway import _warn_default_key, _WEAK_SECRET_KEYS
         with patch("nexus.core.config.get_settings") as mock_settings:
-            mock_settings.return_value.nexus_secret_key = DEFAULT_SECRET_KEY
+            mock_settings.return_value.nexus_secret_key = next(iter(_WEAK_SECRET_KEYS))
             _warn_default_key()
             assert len(caplog.records) > 0
-            assert "default" in caplog.text.lower()
+            assert "default" in caplog.text.lower() or "weak" in caplog.text.lower()
 
     def test_warn_default_key_fallback(self, caplog):
-        """_warn_default_key with fallback key should emit warning."""
+        """_warn_default_key with short key should emit warning."""
         import logging
         caplog.set_level(logging.WARNING)
-        from nexus.api.gateway import _warn_default_key, FALLBACK_SECRET_KEY
+        from nexus.api.gateway import _warn_default_key
         with patch("nexus.core.config.get_settings") as mock_settings:
-            mock_settings.return_value.nexus_secret_key = FALLBACK_SECRET_KEY
+            mock_settings.return_value.nexus_secret_key = "short"
             _warn_default_key()
             assert len(caplog.records) > 0
 

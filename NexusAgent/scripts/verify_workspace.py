@@ -143,8 +143,8 @@ def main():
         print(f"  FAIL  nexus.mcp_server: {e}")
 
     try:
-        from nexus.core.gateway import app
-        print(f"  OK  nexus.core.gateway")
+        from nexus.api.gateway import app
+        print(f"  OK  nexus.api.gateway")
     except Exception as e:
         errors.append(f"GATEWAY IMPORT FAILED: {e}")
         print(f"  FAIL  nexus.core.gateway: {e}")

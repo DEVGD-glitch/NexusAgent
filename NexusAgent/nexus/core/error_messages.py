@@ -95,11 +95,19 @@ def get_human_error(exc: Exception) -> HumanError:
     Returns:
         HumanError with clear message and suggested action.
     """
+    # Try exact match first, then MRO-based match
     exc_type = type(exc).__name__
+    if exc_type not in ERROR_MAP:
+        # Walk the MRO to find a parent class match
+        for cls in type(exc).__mro__[1:]:
+            if cls.__name__ in ERROR_MAP:
+                exc_type = cls.__name__
+                break
 
     # Direct mapping
     if exc_type in ERROR_MAP:
-        human = ERROR_MAP[exc_type]
+        import copy
+        human = copy.deepcopy(ERROR_MAP[exc_type])
         human.technical = str(exc)
         return human
 

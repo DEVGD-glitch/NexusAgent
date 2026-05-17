@@ -270,8 +270,8 @@ class BaseAgent(ABC):
         build_id = self._context.agent_id
         try:
             await self.viz_emitter.emit_build_start(build_id, description=f"{self.agent_type}: {task[:100]}")
-        except Exception:
-            pass  # Viz events should never break agent execution
+        except Exception as exc:
+            logger.debug("Viz emit_build_start failed (non-fatal): %s", exc)
 
         try:
             # ── Phase 1: Planning ──
@@ -304,8 +304,8 @@ class BaseAgent(ABC):
                         step=step_desc,
                         progress=steps_completed / max(total_steps, 1),
                     )
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.debug("Viz emit_build_progress failed (non-fatal): %s", exc)
 
                 # Track tools used
                 if step_result.get("tool_used"):
@@ -348,8 +348,8 @@ class BaseAgent(ABC):
                     build_id,
                     summary=f"Completed in {steps_completed} steps, {len(self._tools_used)} tools used",
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Viz emit_build_complete failed (non-fatal): %s", exc)
 
             return AgentResult(
                 agent_id=self._context.agent_id,
@@ -373,8 +373,8 @@ class BaseAgent(ABC):
             # Viz: emit error
             try:
                 await self.viz_emitter.emit_error(str(e), build_id=build_id)
-            except Exception:
-                pass
+            except Exception as viz_err:
+                logger.debug("Viz emit_error failed (non-fatal): %s", viz_err)
 
             return AgentResult(
                 agent_id=self._context.agent_id if self._context else "unknown",
@@ -688,8 +688,8 @@ class BaseAgent(ABC):
                     status="running",
                     metadata={"build_id": build_id},
                 ))
-        except Exception:
-            pass  # Viz events should never break tool execution
+        except Exception as exc:
+            logger.debug("Viz event in _use_tool failed (non-fatal): %s", exc)
 
         if tool_name in self._FALLBACK_TOOLS:
             return await self._fallback_tool_execution(tool_name, params)
@@ -952,27 +952,39 @@ class BaseAgent(ABC):
             return {"error": str(e)}
 
     async def _tool_file_read(self, params: dict[str, Any]) -> dict[str, Any]:
-        """Read a file from disk."""
+        """Read a file from disk (sandboxed to working directory)."""
         import aiofiles
+        from pathlib import Path
         path = params.get("path", "")
         try:
-            async with aiofiles.open(path, "r") as f:
+            # Path traversal protection
+            resolved = Path(path).resolve()
+            working = Path(self.settings.nexus_working_dir).resolve()
+            if not str(resolved).startswith(str(working)):
+                return {"error": "Accès refusé: chemin en dehors du répertoire de travail"}
+            async with aiofiles.open(resolved, "r") as f:
                 content = await f.read()
-            return {"content": content, "path": path}
+            return {"content": content, "path": str(resolved)}
         except Exception as e:
-            return {"error": str(e)}
+            return {"error": "Impossible de lire le fichier"}
 
     async def _tool_file_write(self, params: dict[str, Any]) -> dict[str, Any]:
-        """Write content to a file on disk."""
+        """Write content to a file on disk (sandboxed to working directory)."""
         import aiofiles
+        from pathlib import Path
         path = params.get("path", "")
         content = params.get("content", "")
         try:
-            async with aiofiles.open(path, "w") as f:
+            # Path traversal protection
+            resolved = Path(path).resolve()
+            working = Path(self.settings.nexus_working_dir).resolve()
+            if not str(resolved).startswith(str(working)):
+                return {"error": "Accès refusé: chemin en dehors du répertoire de travail"}
+            async with aiofiles.open(resolved, "w") as f:
                 await f.write(content)
-            return {"success": True, "path": path, "bytes_written": len(content)}
+            return {"success": True, "path": str(resolved), "bytes_written": len(content)}
         except Exception as e:
-            return {"error": str(e)}
+            return {"error": "Impossible d'écrire le fichier"}
 
     async def _tool_memory_store(self, params: dict[str, Any]) -> dict[str, Any]:
         """Store information in memory."""
@@ -1059,8 +1071,8 @@ class BaseAgent(ABC):
                 action=action,
                 details=details,
             )
-        except Exception:
-            pass  # Audit logging should never break the agent
+        except Exception as exc:
+            logger.debug("Audit log_action '%s' failed (non-fatal): %s", action, exc)
 
     @property
     def phase(self) -> AgentPhase:

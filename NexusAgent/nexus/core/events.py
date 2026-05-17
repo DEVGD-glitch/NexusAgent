@@ -205,9 +205,14 @@ class EventBroadcaster:
             loop = asyncio.get_running_loop()
             loop.create_task(self.broadcast(event_type, data))
         except RuntimeError:
-            # No running loop — run in a new loop
+            # No running loop — use a dedicated background loop
             try:
-                asyncio.run(self.broadcast(event_type, data))
+                # Create a new loop in a background thread if needed
+                if not hasattr(self, '_bg_loop'):
+                    import threading
+                    self._bg_loop = asyncio.new_event_loop()
+                    threading.Thread(target=self._bg_loop.run_forever, daemon=True).start()
+                asyncio.run_coroutine_threadsafe(self.broadcast(event_type, data), self._bg_loop)
             except Exception as exc:
                 logger.debug("broadcast_sync failed: %s", exc)
 
@@ -290,15 +295,19 @@ class EventBroadcaster:
 # ═══════════════════════════════════════════════════════════════════
 
 _broadcaster: Optional[EventBroadcaster] = None
+_broadcaster_lock = threading.Lock()
 
 
 def get_broadcaster() -> EventBroadcaster:
     """
     Get the global EventBroadcaster singleton.
 
-    Thread-safe: the singleton is created on first call.
+    Thread-safe: uses double-checked locking to ensure
+    the singleton is created exactly once under concurrent access.
     """
     global _broadcaster
     if _broadcaster is None:
-        _broadcaster = EventBroadcaster()
+        with _broadcaster_lock:
+            if _broadcaster is None:
+                _broadcaster = EventBroadcaster()
     return _broadcaster

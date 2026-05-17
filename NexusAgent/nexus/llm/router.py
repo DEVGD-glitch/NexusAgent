@@ -66,7 +66,7 @@ class TaskComplexity(str, Enum):
 PROVIDER_DEFAULT_MODELS = {
     Provider.OPENAI: "gpt-4o",
     Provider.ANTHROPIC: "claude-3-5-sonnet-20241022",
-    Provider.GEMINI: "gemma-4-31b-it",
+    Provider.GEMINI: "gemini-2.0-flash",
     Provider.GLM: "glm-4-flash",  # Free model as default
     Provider.OLLAMA: "llama3.1:8b",
     Provider.POLLINATIONS: "openai",
@@ -148,7 +148,7 @@ class LLMRouter:
             Provider.OPENAI: self.settings.openai_api_key,
             Provider.ANTHROPIC: self.settings.anthropic_api_key,
             Provider.GEMINI: self.settings.google_api_key,
-            Provider.GLM: self.settings.zai_api_key,
+            Provider.GLM: self.settings.zai_api_key or self.settings.openbig_model_api_key,
             Provider.GROQ: self.settings.groq_api_key,
             Provider.OPENROUTER: self.settings.openrouter_api_key,
             Provider.NVIDIA: self.settings.nvidia_api_key,
@@ -396,7 +396,7 @@ class LLMRouter:
 
         # Fallback to direct API
         direct_config = {
-            Provider.GLM: (self.settings.zai_base_url, self.settings.zai_api_key),
+            Provider.GLM: (self.settings.zai_base_url, self.settings.zai_api_key or self.settings.openbig_model_api_key),
             Provider.OLLAMA: (self.settings.ollama_base_url + "/v1", "ollama"),
             Provider.GROQ: ("https://api.groq.com/openai/v1", self.settings.groq_api_key),
             Provider.OPENROUTER: ("https://openrouter.ai/api/v1", self.settings.openrouter_api_key),
@@ -716,13 +716,59 @@ class LLMRouter:
         temperature: float,
         max_tokens: int,
     ) -> str:
-        """Handle streaming response (returns accumulated content for MVP)."""
-        # For MVP, just do a regular call
-        content, usage, finish_reason, tool_calls = await self._call_provider(
-            provider=provider, model=model, messages=messages,
-            temperature=temperature, max_tokens=max_tokens,
-        )
-        return content
+        """Handle streaming response via litellm.acompletion(stream=True)."""
+        import litellm
+
+        litellm_model_map = {
+            Provider.OPENAI: f"openai/{model}",
+            Provider.ANTHROPIC: f"anthropic/{model}",
+            Provider.GEMINI: f"gemini/{model}",
+            Provider.GROQ: f"groq/{model}",
+            Provider.OPENROUTER: f"openrouter/{model}",
+            Provider.NVIDIA: f"nvidia/{model}",
+            Provider.CEREBRAS: f"cerebras/{model}",
+            Provider.TOGETHER: f"together_ai/{model}",
+        }
+        litellm_model = litellm_model_map.get(provider, model)
+
+        call_kwargs: dict[str, Any] = {
+            "model": litellm_model,
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+            "stream": True,
+            "timeout": self.settings.llm_timeout_seconds,
+        }
+
+        api_key_passthrough = {
+            Provider.GEMINI: self.settings.google_api_key,
+            Provider.GROQ: self.settings.groq_api_key,
+            Provider.OPENROUTER: self.settings.openrouter_api_key,
+            Provider.NVIDIA: self.settings.nvidia_api_key,
+            Provider.CEREBRAS: self.settings.cerebras_api_key,
+            Provider.TOGETHER: self.settings.together_api_key,
+        }
+        if provider in api_key_passthrough and api_key_passthrough[provider]:
+            call_kwargs["api_key"] = api_key_passthrough[provider]
+
+        accumulated = ""
+        try:
+            response = await litellm.acompletion(**call_kwargs)
+            async for chunk in response:
+                delta = chunk.choices[0].delta
+                if delta and delta.content:
+                    accumulated += delta.content
+                    # Yield to event loop between chunks
+                    await asyncio.sleep(0)
+        except Exception as exc:
+            logger.warning("Streaming failed for %s: %s, falling back to non-streaming", provider.value, exc)
+            content, _, _, _ = await self._call_provider(
+                provider=provider, model=model, messages=messages,
+                temperature=temperature, max_tokens=max_tokens,
+            )
+            return content
+
+        return accumulated
 
     def _record_provider_status(
         self,

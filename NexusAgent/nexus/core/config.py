@@ -62,6 +62,7 @@ class NexusConfig(BaseSettings):
     google_api_key: Optional[str] = None
     zai_api_key: Optional[str] = None
     zai_base_url: str = "https://open.bigmodel.cn/api/paas/v4"
+    openbig_model_api_key: Optional[str] = None
     groq_api_key: Optional[str] = None
     openrouter_api_key: Optional[str] = None
     nvidia_api_key: Optional[str] = None
@@ -170,7 +171,7 @@ class NexusConfig(BaseSettings):
             providers.append("anthropic")
         if self.google_api_key:
             providers.append("gemini")
-        if self.zai_api_key:
+        if self.zai_api_key or self.openbig_model_api_key:
             providers.append("glm")
         if self.groq_api_key:
             providers.append("groq")

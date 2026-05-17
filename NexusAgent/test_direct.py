@@ -9,7 +9,7 @@ import sys
 import os
 import time
 
-os.environ["GOOGLE_API_KEY"] = "AIzaSyBsSncv48GkSZMHDVhPcud3wTaalGXvVyU"
+os.environ["GOOGLE_API_KEY"] = "AIzaSyBQFGI7p1qtPHe2yRa_Sgr51uUoDRQHkDs"
 
 GREEN = "\033[92m"
 RED = "\033[91m"

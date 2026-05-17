@@ -94,13 +94,12 @@ class TelemetryManager:
     def _sanitize(self, text: str) -> str:
         """Remove potential PII from text."""
         import re
-        # Remove file paths
-        text = re.sub(r'/[^\s]+/', '[PATH]/', text)
+        # Remove file paths (Windows and Unix)
+        text = re.sub(r'(?:[A-Z]:)?[/\\][^\s]+[/\\]', '[PATH]/', text)
         # Remove email addresses
-        text = re.sub(r'[\w.]+@[\w.]+', '[EMAIL]', text)
-        # Remove API keys patterns
-        text = re.sub(r'sk-[a-zA-Z0-9]{20,}', '[API_KEY]', text)
-        text = re.sub(r'key-[a-zA-Z0-9]{20,}', '[API_KEY]', text)
+        text = re.sub(r'[\w.+-]+@[\w.-]+', '[EMAIL]', text)
+        # Remove API keys patterns (multiple prefixes)
+        text = re.sub(r'(?:sk|key|token|bearer|api)[_-][a-zA-Z0-9]{20,}', '[API_KEY]', text, flags=re.IGNORECASE)
         return text
 
     def get_pending_reports(self) -> list[dict]:

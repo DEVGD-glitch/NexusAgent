@@ -1,0 +1,75 @@
+# =============================================================================
+# NEXUS Rules Engine — System-level rules
+# Scope: SYSTEM — these rules always apply and cannot be overridden
+# =============================================================================
+rules:
+  - id: system_no_destructive_without_confirm
+    description: >
+      Never allow file deletion without explicit user confirmation.
+      This rule fires on BEFORE_FILE_DELETE and unconditionally BLOCKs
+      the operation, forcing the caller to obtain consent first.
+    scope: system
+    trigger: before_file_delete
+    action: block
+    on_fail: block
+    priority: 100
+    enabled: true
+
+  - id: system_always_log_tool_calls
+    description: >
+      Every tool invocation must be recorded in the audit log.
+      This is an ALLOW rule with a logging side-effect.
+    scope: system
+    trigger: before_tool
+    action: allow
+    on_fail: warn
+    priority: 1
+    enabled: true
+
+  - id: system_block_unknown_tools
+    description: >
+      Block execution of tools that are not in the allowed list.
+      The allowed list must be provided in context as 'allowed_tools'.
+    scope: system
+    trigger: before_tool
+    conditions:
+      - field: tool_name
+        operator: eq
+        value: "__unknown__"
+    action: block
+    on_fail: block
+    priority: 90
+    enabled: false  # opt-in; enable explicitly in production
+
+  - id: system_no_dangerous_commands
+    description: >
+      Block shell commands that are known to be dangerous
+      (rm -rf /, dd, mkfs, etc.) unless explicitly permitted.
+    scope: system
+    trigger: before_tool
+    conditions:
+      - field: tool_name
+        operator: eq
+        value: "bash"
+      - field: args.command
+        operator: matches
+        value: "(?i)(rm\\s+-rf\\s+/|dd\\s+if=|mkfs\\.|fdisk|format\\s+[c-z]:)"
+    action: block
+    on_fail: block
+    priority: 95
+    enabled: true
+
+  - id: system_max_concurrent_agents
+    description: >
+      Limit the number of concurrent sub-agents that can be spawned
+      in a single session. The limit is read from context.max_agents.
+    scope: system
+    trigger: before_agent_spawn
+    conditions:
+      - field: current_agent_count
+        operator: gte
+        value: 10
+    action: block
+    on_fail: warn
+    priority: 80
+    enabled: true

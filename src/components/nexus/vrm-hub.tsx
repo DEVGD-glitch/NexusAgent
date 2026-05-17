@@ -55,6 +55,8 @@ function TabButton({
   return (
     <button
       onClick={onClick}
+      role="tab"
+      aria-selected={active}
       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-colors ${
         active
           ? "bg-primary/15 text-primary border border-primary/30"
@@ -134,6 +136,15 @@ export function VRMHubModal({ open, onClose, onSelect, currentModelUrl }: VRMHub
       setUrlInput("");
     }
   }, [open, currentModelUrl]);
+
+  // Cleanup blob URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (selectedUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(selectedUrl);
+      }
+    };
+  }, [selectedUrl]);
 
   // ── Handle gallery selection ──────────────────────────────
 
@@ -249,6 +260,7 @@ export function VRMHubModal({ open, onClose, onSelect, currentModelUrl }: VRMHub
               </div>
               <button
                 onClick={onClose}
+                aria-label="Fermer le selecteur d'avatar"
                 className="w-6 h-6 rounded-md hover:bg-muted/30 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X size={14} />

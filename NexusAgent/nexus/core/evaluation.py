@@ -109,7 +109,9 @@ class SWEBenchEval(BaseEval):
             result.error = f"Task {task_id} not found in dataset"
             return result
 
-        agent = BaseAgent()
+        # BaseAgent is abstract; use a concrete implementation
+        from nexus.agents.developer import DeveloperAgent
+        agent = DeveloperAgent()
         code_engine = CodeEngine()
 
         problem = instance.get("problem_statement", "")
@@ -142,8 +144,7 @@ class SWEBenchEval(BaseEval):
         logger.info("[Eval] Running %d SWE-bench tasks...", len(tasks))
 
         for instance in tasks:
-            result = await self.run(instance.get("instance_id", "unknown"))
-            self._results.append(result)
+            await self.run(instance.get("instance_id", "unknown"))
 
         return self._results
 

@@ -29,8 +29,8 @@ export interface AgentSlice {
 }
 
 export const createAgentSlice: StateCreator<AgentSlice, [], [], AgentSlice> = (set) => ({
-  provider: 'zhipuai',
-  model: 'glm-4-flash',
+  provider: 'gemini',
+  model: 'gemma-4-31b-it',
   agentMode: 'plan',
   agentStatus: 'idle',
   agentActivity: [],

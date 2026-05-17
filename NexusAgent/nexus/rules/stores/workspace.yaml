@@ -1,0 +1,31 @@
+# =============================================================================
+# NEXUS Rules Engine — Workspace-level rules
+# Scope: WORKSPACE — per-project or per-directory overrides
+# =============================================================================
+# Usage: Place workspace-specific rules here. They are evaluated after
+# SYSTEM rules but before AGENT and SESSION rules.
+#
+# Example:
+#
+# rules:
+#   - id: workspace_block_network_tools
+#     description: Block all network-related tools in this workspace
+#     scope: workspace
+#     trigger: before_tool
+#     conditions:
+#       - field: tool_category
+#         operator: eq
+#         value: "network"
+#     action: block
+#     on_fail: block
+#     priority: 50
+#
+#   - id: workspace_require_review
+#     description: Require code review approval before git commit
+#     scope: workspace
+#     trigger: before_commit
+#     action: block
+#     on_fail: block
+#     priority: 60
+
+rules: []

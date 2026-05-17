@@ -103,11 +103,16 @@ function ImageRenderer({ content }: { content: string }) {
 function ChartRenderer({ content }: { content: string }) {
   // If the content is SVG, render in a sandboxed iframe to prevent XSS
   if (content.trim().startsWith("<svg") || content.trim().startsWith("<?xml")) {
+    // Sanitize SVG: strip <script> tags and event handlers
+    const sanitized = content
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/\s+on\w+\s*=\s*[^\s>]*/gi, "");
     return (
       <div className="flex items-center justify-center h-full p-4">
         <iframe
-          srcDoc={`<!DOCTYPE html><html><body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:transparent">${content}</body></html>`}
-          sandbox="allow-same-origin"
+          srcDoc={`<!DOCTYPE html><html><body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:transparent">${sanitized}</body></html>`}
+          sandbox="allow-scripts"
           className="w-full h-full border-0"
           title="SVG Chart"
         />
@@ -275,6 +280,7 @@ export function ArtifactCard({ artifact }: { artifact: Artifact }) {
             size="sm"
             className="h-6 px-2 text-[10px] gap-1 text-primary hover:text-primary/80"
             onClick={() => setActiveArtifact(artifact.id)}
+            aria-label={`Ouvrir l'artefact ${artifact.title}`}
           >
             <Maximize2 size={10} />
             Open
@@ -284,6 +290,7 @@ export function ArtifactCard({ artifact }: { artifact: Artifact }) {
             size="sm"
             className="h-6 px-2 text-[10px] gap-1 text-muted-foreground hover:text-foreground/80"
             onClick={handleCopy}
+            aria-label={copied ? "Copie confirmee" : `Copier le contenu de ${artifact.title}`}
           >
             {copied ? <Check size={10} className="text-emerald-500" /> : <Copy size={10} />}
             {copied ? "Copied" : "Copy"}
@@ -346,6 +353,7 @@ export function ArtifactPanel() {
               size="sm"
               className="h-7 w-7 p-0"
               onClick={() => setIsFullscreen(!isFullscreen)}
+              aria-label={isFullscreen ? "Quitter le plein ecran" : "Plein ecran"}
               title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
             >
               {isFullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
@@ -355,6 +363,7 @@ export function ArtifactPanel() {
               size="sm"
               className="h-7 w-7 p-0"
               onClick={handleCopy}
+              aria-label={copied ? "Copie confirmee" : "Copier le contenu"}
               title="Copy content"
             >
               {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
@@ -364,6 +373,7 @@ export function ArtifactPanel() {
               size="sm"
               className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
               onClick={() => setActiveArtifact(null)}
+              aria-label="Fermer le panneau d'artefact"
               title="Close"
             >
               <X size={14} />

@@ -67,3 +67,9 @@ out/
 *.db
 *.sqlite
 *.sqlite3
+
+# Runtime artifacts
+MagicMock/
+nexus_data/
+*.err
+nexus_*.log

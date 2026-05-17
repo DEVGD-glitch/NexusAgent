@@ -1,0 +1,2402 @@
+{
+  "C:\\Users\\seydi\\NexusAgent\\eslint.config.mjs": {
+    "mtime": 1778787841.8631184,
+    "hash": "25649aa1d946d89d7d167716f9c2906d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\next-env.d.ts": {
+    "mtime": 1778759588.1443925,
+    "hash": "b698cdd97fe8e3bd16dcd74899ad7cef"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\next.config.ts": {
+    "mtime": 1778787798.0008407,
+    "hash": "6747b27756651ec24e391b851ffceab2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\postcss.config.mjs": {
+    "mtime": 1778759588.1461499,
+    "hash": "0a8c5fa8885965eb3d71ee945ff2e9be"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\tailwind.config.ts": {
+    "mtime": 1778759589.1656308,
+    "hash": "773b4b51ff9df772577cfa25e1e9ee8e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\examples\\websocket\\frontend.tsx": {
+    "mtime": 1778759588.1403675,
+    "hash": "32699c6f458f25f99a438b7bf5724c28"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\examples\\websocket\\server.ts": {
+    "mtime": 1778759588.14238,
+    "hash": "fba07f902fc84ec947184a099739c2e4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\deploy.ps1": {
+    "mtime": 1778759587.8470445,
+    "hash": "edb58dfef2e426df34f08911c195aefb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\fix_production_issues.py": {
+    "mtime": 1778759587.8626952,
+    "hash": "5c0fc7fea894d4a697ef4f0301699d2b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\INSTALL.ps1": {
+    "mtime": 1778759587.8313816,
+    "hash": "65cc9ba268396c1dea6a67de4ace0e56"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\run_nexus.py": {
+    "mtime": 1778759588.0412748,
+    "hash": "66f17cd5f5e9ce37af69c7c40d4e7750"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\test_agent_live.py": {
+    "mtime": 1778759588.0473151,
+    "hash": "30fa005f1af9684336fc84f2b6e5bdb6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\test_direct.py": {
+    "mtime": 1778759588.0493279,
+    "hash": "a2dc47e51cc60db57113f72aeb297ac7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\test_glm_flash.py": {
+    "mtime": 1778759588.0493279,
+    "hash": "fd064d7f01b11186dd8fa55eb276815c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\verify_install.py": {
+    "mtime": 1778759588.1245284,
+    "hash": "90758dab321aedea94231514a59a188a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docker\\browser_service.py": {
+    "mtime": 1778759587.8470445,
+    "hash": "725b8886e05f5905909eaac24615813e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_server.py": {
+    "mtime": 1778759587.9808662,
+    "hash": "4b1abfb4b260af7c157088f57db904e7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\__init__.py": {
+    "mtime": 1778759587.8626952,
+    "hash": "f987b2bd75f7f5c076572c1ac3506f8c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\__main__.py": {
+    "mtime": 1778759587.8626952,
+    "hash": "e16661cae43807e4c9acdfdb393e9997"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\a2a\\__init__.py": {
+    "mtime": 1778759587.8626952,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\analyst.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "cc3232395797939321be3e258221b9a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\base.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "e7035f18a61c09e946c4b5ac948198c8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\developer.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "31ca8990f06cbdda4e7e040e349c7f1b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\openai_layer.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "c3d9c7d60fbd542fc8ed226b5ff10832"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\operator.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "81764b0f8db79d1d5978db14830a96b7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\researcher.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "3bf3b1fe22c63f44b1e2cbcca3d8362f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\agents\\__init__.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "d0ef4bdf494e06c701cb5d4d2a3a09f6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\api\\gateway.py": {
+    "mtime": 1778787881.0950508,
+    "hash": "07bc371148049693bd249954ad5f34ad"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\api\\puter_proxy.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "3a8fd05c255f7dadd8771e407e884b2c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\api\\voice_routes.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "637845d6d2dcb77a2064e234d2b186b2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\api\\__init__.py": {
+    "mtime": 1778759587.8783803,
+    "hash": "9d72e4ea42e2c2e7e981b21f2b50f544"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\browser\\browser_service.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "9dc07cbb5d687878d802ac0ad1c89d29"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\browser\\playwright_ext.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "bdc847f443d18ace8e0267604da569bf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\browser\\__init__.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "74d0026c83780f6526772e64c59e8d54"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\cli\\app.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "c19871f36f62d9a32ca566f25273822f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\cli\\__init__.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "5431eb9d8fe6021cc4c36af1bc4a5513"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\channels.py": {
+    "mtime": 1778759587.9129329,
+    "hash": "b487225a5f3506a421cbf705c6649bc6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\email_calendar.py": {
+    "mtime": 1778759587.9146,
+    "hash": "0b58fac13c44f495c6fa6d1666438f9c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\telegram_bot.py": {
+    "mtime": 1778759587.915718,
+    "hash": "fe0b0e1ad38457e9c6c92596bc3e1be3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\voice_io.py": {
+    "mtime": 1778759587.916822,
+    "hash": "f8f73717a8250a4b051c612b39439ccd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\voice_pipeline.py": {
+    "mtime": 1778788695.7949235,
+    "hash": "01342549224922ee1c739286f002f2c6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\__init__.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "daf50f28bb2cfe752f31f5ac4dc0e344"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\avatar_manager.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "23d0e61efd4e134594dc2f73a4fa56f5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\face_controller.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "410d9b3189673ae8114846f82d56b510"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\lip_sync.py": {
+    "mtime": 1778788518.2761471,
+    "hash": "7fe7e815d69fb7db932403a3602f2e9b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\voicevox_bridge.py": {
+    "mtime": 1778788536.7830307,
+    "hash": "50786c370d3023a5a3ea0dbe1a0bf5d9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\vrm_renderer.py": {
+    "mtime": 1778759587.9118025,
+    "hash": "f309a70bfc2736039e7bec476b36aa68"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\comms\\avatar\\__init__.py": {
+    "mtime": 1778759587.8941658,
+    "hash": "199046934452b87fe46630b542e819e3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\computer\\computer_use.py": {
+    "mtime": 1778759587.919571,
+    "hash": "eacc3c45cecbc56a94aabc1515431d02"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\computer\\gui_control.py": {
+    "mtime": 1778759587.919571,
+    "hash": "2bfdc73096ff95158c14bf7287f082d7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\computer\\process_manager.py": {
+    "mtime": 1778759587.919571,
+    "hash": "b6651de92d987f4a019778121bdfa5e6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\computer\\screen_understanding.py": {
+    "mtime": 1778759587.9259207,
+    "hash": "26374a8682f2cd9d1eb0fe36c9108ddd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\computer\\__init__.py": {
+    "mtime": 1778759587.919571,
+    "hash": "a009d77c7e24a37c1e5bacc0c9b68381"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\a2a.py": {
+    "mtime": 1778759587.9259207,
+    "hash": "0a4dc8ba91c432d79e164f161cdeba6b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\config.py": {
+    "mtime": 1778759587.929307,
+    "hash": "15f97634ccad46636714ef96bf868e40"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\di.py": {
+    "mtime": 1778759587.929307,
+    "hash": "6bf0f37a4cc73d09d7a7ee54e04f9b57"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\error_messages.py": {
+    "mtime": 1778759587.929307,
+    "hash": "d661fcb2039b7b1672bf261915689cd4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\evaluation.py": {
+    "mtime": 1778777734.3494966,
+    "hash": "c7d452f711f65effd9fcd17a0bc8c762"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\events.py": {
+    "mtime": 1778759587.929307,
+    "hash": "c470a09e4f40e8473aa554628fe8213d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\exceptions.py": {
+    "mtime": 1778759587.929307,
+    "hash": "bc927ea3c540976be707eb188db2d1c2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\gateway.py": {
+    "mtime": 1778759587.9362571,
+    "hash": "c0765ba77d25df376f6ca6af964e4d56"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\observability.py": {
+    "mtime": 1778759587.9362571,
+    "hash": "5eb7a8e320e51af226d48b3b28e62d39"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\prometheus_metrics.py": {
+    "mtime": 1778759587.9385235,
+    "hash": "6d79c40b80a003fe376cec71f551ea56"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\registry.py": {
+    "mtime": 1778759587.9385235,
+    "hash": "c5528c2fec6289a53578f996f489a190"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\resource_manager.py": {
+    "mtime": 1778759587.940876,
+    "hash": "ab9f274db2f1611f5384564bbb0bbf0b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\supervisor.py": {
+    "mtime": 1778759587.940876,
+    "hash": "54adf5b85a011748907e6a7984e40ec0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\telemetry.py": {
+    "mtime": 1778759587.9429877,
+    "hash": "a0ba1de9da31446fbfce6924e4a9d5be"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\viz_events.py": {
+    "mtime": 1778759587.9429877,
+    "hash": "9d7a1034816f7906f3bd444f27f1ba8c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\core\\__init__.py": {
+    "mtime": 1778759587.9259207,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\code_engine.py": {
+    "mtime": 1778759587.9470696,
+    "hash": "659a8ac9ff45e9b301d1689d8487618c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\code_executor.py": {
+    "mtime": 1778759587.9470696,
+    "hash": "2c585b55448af88fd398a15d95bac0aa"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\deploy.py": {
+    "mtime": 1778787941.5108464,
+    "hash": "01917d90460b192d5ddd17f3b84108d0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\git_integration.py": {
+    "mtime": 1778759587.9500315,
+    "hash": "3664e179a867b84370ad4730887e0a57"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\terminal.py": {
+    "mtime": 1778787875.0472665,
+    "hash": "6e7a38f9460c0cd8104ba3a81e3307ae"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\dev\\__init__.py": {
+    "mtime": 1778759587.9450676,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\deep_research.py": {
+    "mtime": 1778759587.9500315,
+    "hash": "a2b5b82b3389c3ab6c2666d19a4406cb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\knowledge_graph.py": {
+    "mtime": 1778759587.9557815,
+    "hash": "3090c07ee0d06662a54f95a97f09d513"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\rag_pipeline.py": {
+    "mtime": 1778759587.9567955,
+    "hash": "bc4a0df6c1a77757a930b00e18a07c51"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\watchdog.py": {
+    "mtime": 1778759587.9567955,
+    "hash": "e931f50d319728d8210d31b9b057dd66"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\web_search.py": {
+    "mtime": 1778759587.9567955,
+    "hash": "b13ecba383947232575c473f77b5acb7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\knowledge\\__init__.py": {
+    "mtime": 1778759587.9500315,
+    "hash": "e8b439a0f46beb679ba02e01e381ce15"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\fallback.py": {
+    "mtime": 1778759587.963453,
+    "hash": "48c270d87f00b1341c347aa3e2521d59"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\router.py": {
+    "mtime": 1778788088.267303,
+    "hash": "61dcc2f0c5ab004c366a7045b52c4728"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\__init__.py": {
+    "mtime": 1778759587.9613442,
+    "hash": "dd048d17e21d73aa388a0f5e7b9df572"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\anthropic_provider.py": {
+    "mtime": 1778759587.9663417,
+    "hash": "a0a56445d75879602dcb167ddd238deb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\base.py": {
+    "mtime": 1778788070.9763892,
+    "hash": "d5aec7fddeae544283436b59533567cf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\gemini_provider.py": {
+    "mtime": 1778787914.7548556,
+    "hash": "98a6e31201065474fc48ace165722e4a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\glm_provider.py": {
+    "mtime": 1778759587.9739106,
+    "hash": "16284e59d973727cb2c6fe5f1eedf030"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\ollama_provider.py": {
+    "mtime": 1778759587.9763415,
+    "hash": "63ae4722b5e40bf75d1c8df27baa318f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\openai_provider.py": {
+    "mtime": 1778759587.9763415,
+    "hash": "902862bf5e9267172fb0f90db2601e57"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\__init__.py": {
+    "mtime": 1778788079.1031594,
+    "hash": "fe42ad41b9f8823032e0fd4cf89057dd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\free\\deepinfra_provider.py": {
+    "mtime": 1778759587.9663417,
+    "hash": "1d8145d4217250e3e66ff0e334b76b76"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\free\\free_router.py": {
+    "mtime": 1778759587.9663417,
+    "hash": "6bddf3e89711bb0d2cd687cc02a39862"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\free\\g4f_provider.py": {
+    "mtime": 1778759587.9663417,
+    "hash": "abe936276bb9d02bc076a426a8af4f77"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\free\\pollinations_provider.py": {
+    "mtime": 1778759587.9727957,
+    "hash": "1133e31811b95b0f7998f8a0af0b170f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\llm\\providers\\free\\__init__.py": {
+    "mtime": 1778759587.9663417,
+    "hash": "700e050ad31aaaf1359a718e98d9ef5d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\agent_tools.py": {
+    "mtime": 1778759587.9834635,
+    "hash": "55a730692f34fe072b20c12ca27f0a2e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\avatar_tools.py": {
+    "mtime": 1778759587.9834635,
+    "hash": "f88f297d8126b397ea6c9e7095da848b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\bonus_tools.py": {
+    "mtime": 1778759587.9834635,
+    "hash": "c46044653dfaf918f8c8e804ec888df6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\code_tools.py": {
+    "mtime": 1778759587.9834635,
+    "hash": "47704f6b4d5520e58941cfc81bf71dff"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\context7.py": {
+    "mtime": 1778759587.9873815,
+    "hash": "49186d55887e3c630e5f2921770c1752"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\file_tools.py": {
+    "mtime": 1778759587.9888937,
+    "hash": "97312a83585d10b13ce693b8263355da"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\knowledge_tools.py": {
+    "mtime": 1778759587.9888937,
+    "hash": "fcd22f24468e13406ebf6f89eb94754f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\llm_tools.py": {
+    "mtime": 1778759587.9888937,
+    "hash": "9459014f7b1b6803b6429cce8ab6c34b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\memory_tools.py": {
+    "mtime": 1778759587.9921567,
+    "hash": "72269545c18800abe9b84585164a60c6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\orchestration_tools.py": {
+    "mtime": 1778759587.9921567,
+    "hash": "c93b900c1eecfa03423157285242c9e8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\reasoning_tools.py": {
+    "mtime": 1778759587.9921567,
+    "hash": "1b6fbc3ce0701e5135ee57f705c6d26b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\system_tools.py": {
+    "mtime": 1778759587.9954233,
+    "hash": "99cc0f259957b93cf199545cefbb4ae4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\web_tools.py": {
+    "mtime": 1778759587.9974377,
+    "hash": "0aa6b18032544dc06d82c82db6020086"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\mcp_tools\\__init__.py": {
+    "mtime": 1778759587.9808662,
+    "hash": "b9ca5da8410325cac61867effead5229"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\chroma_service.py": {
+    "mtime": 1778785164.0156636,
+    "hash": "ebcdc3315a68ad2a973917e99a783557"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\compactor.py": {
+    "mtime": 1778759588.0013988,
+    "hash": "dae7c0bc17953c939b1d8140861cf726"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\episodic.py": {
+    "mtime": 1778759588.0013988,
+    "hash": "3ea364d005e05a0bdb473481dee4e418"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\identity.py": {
+    "mtime": 1778759588.0013988,
+    "hash": "6acdcd394a967ae854d99b0f2c277269"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\orchestrator.py": {
+    "mtime": 1778785165.19318,
+    "hash": "25e61b85c2c1b377ab75676be6e50d1f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\procedural.py": {
+    "mtime": 1778759588.0047052,
+    "hash": "cb334d2d61e0c49aa195a4ad7608585f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\semantic.py": {
+    "mtime": 1778759588.0047052,
+    "hash": "d34ffaa1a311a23e38d82671a131fc91"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\working.py": {
+    "mtime": 1778777710.0917215,
+    "hash": "4e8ed58eee1e143d7ed9a93c6c1d80ea"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\memory\\__init__.py": {
+    "mtime": 1778759587.9994526,
+    "hash": "9b3f813d6171c860f64b841a05284986"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\adk_engine.py": {
+    "mtime": 1778759588.0086627,
+    "hash": "7bffdc3b40c71301cab0b4ba93b7466f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\crewai_engine.py": {
+    "mtime": 1778759588.0086627,
+    "hash": "b18b0356cd849b4f34bbd96f977ce272"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\langgraph_engine.py": {
+    "mtime": 1778759588.01365,
+    "hash": "d60fecc8d37be976d882dcb04cd45e60"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\patterns.py": {
+    "mtime": 1778759588.01365,
+    "hash": "f9bed00ae8ce0f321db353d973f2f3ec"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\router.py": {
+    "mtime": 1778759588.0163665,
+    "hash": "c9aaa2bf0dc6d2cd5a11da4a3c3a2672"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\skill_lifecycle.py": {
+    "mtime": 1778777717.385944,
+    "hash": "4e1e10fec67f6dd472cc8fad04dd57bc"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\orchestrator\\__init__.py": {
+    "mtime": 1778759588.0086627,
+    "hash": "5c9e05093c3cc4a693043fbe6f633ef9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\patterns\\__init__.py": {
+    "mtime": 1778759588.0192175,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\reasoning\\lats.py": {
+    "mtime": 1778759588.0227416,
+    "hash": "d6b149d602b69841f4b9510a742f31b0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\reasoning\\react.py": {
+    "mtime": 1778759588.0227416,
+    "hash": "57954f95f22009d4691663796eb2d981"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\reasoning\\selector.py": {
+    "mtime": 1778759588.0227416,
+    "hash": "7689ef3d0b5cc46290d316a73ea66aee"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\reasoning\\tot.py": {
+    "mtime": 1778759588.025723,
+    "hash": "b9fcfc34ddb98896ab645caf2e6ece6f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\reasoning\\__init__.py": {
+    "mtime": 1778759588.0207293,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\audit.py": {
+    "mtime": 1778759588.027736,
+    "hash": "219e96e94a48ee29da6bdf4602fc2e1b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\guardrails.py": {
+    "mtime": 1778759588.0297477,
+    "hash": "7a087a55b76fe742b409fd631104a157"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\permissions.py": {
+    "mtime": 1778759588.0317595,
+    "hash": "e38c18cc2ae031f79139f773dcc2a11b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\rate_limiter.py": {
+    "mtime": 1778759588.0317595,
+    "hash": "e6f2d028a89ad3ee06b14b74a5f04750"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\sandbox.py": {
+    "mtime": 1778759588.0341878,
+    "hash": "b8babfcd9e8f17ec7ac64185d5e87737"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\vault.py": {
+    "mtime": 1778759588.036201,
+    "hash": "d3c4a12e639ae23fb1ad2196462873b5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\__init__.py": {
+    "mtime": 1778759588.027736,
+    "hash": "fafd976e3a614439a7803f55dcec4a4f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\security\\docker\\per_action_sandbox.py": {
+    "mtime": 1778759588.0297477,
+    "hash": "6eaba5054ae17f0eb2ba8a46e496d276"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\nexus\\workflows\\__init__.py": {
+    "mtime": 1778759588.038215,
+    "hash": "4c55a79258adaed6716102c8549da49d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\scripts\\verify_workspace.py": {
+    "mtime": 1778759588.0412748,
+    "hash": "5f983f979b2b9799aa7a9d8f22a8713c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\test_all_new.py": {
+    "mtime": 1778786222.711161,
+    "hash": "71f4911b2e2881919f711697417d9881"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\test_knowledge_graph.py": {
+    "mtime": 1778759588.1225166,
+    "hash": "1f26876310c85286e4d1aa84c50162ed"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\test_user_acceptance.py": {
+    "mtime": 1778786299.081256,
+    "hash": "96d018a542619577c597eed2e3a4b96c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\__init__.py": {
+    "mtime": 1778759588.0514874,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\agents\\test_agents.py": {
+    "mtime": 1778759588.0535004,
+    "hash": "608fc5d884e029598b3cb0c2af1a0082"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\agents\\test_agents_complete.py": {
+    "mtime": 1778759588.0555155,
+    "hash": "c70d978cce432ac4e6896c4050d3381f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\agents\\test_base_agent.py": {
+    "mtime": 1778765444.5520825,
+    "hash": "7fc4d891fef25ff7e10761a58452c5ff"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\agents\\__init__.py": {
+    "mtime": 1778759588.0535004,
+    "hash": "e15e4349fc0e53252c889832b2552114"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\cli\\test_cli.py": {
+    "mtime": 1778765486.3732526,
+    "hash": "742d0f3a15759c130752de34b32d7c84"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\cli\\__init__.py": {
+    "mtime": 1778759588.057529,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_config.py": {
+    "mtime": 1778765463.5957048,
+    "hash": "0ed657ce340dfa9ed0f1031776ad877d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_core_complete.py": {
+    "mtime": 1778765711.6113434,
+    "hash": "28678aded344a45cb233e7c0513743c2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_di.py": {
+    "mtime": 1778759588.0667133,
+    "hash": "571caac4c02c141effcb9f13793e7254"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_di_complete.py": {
+    "mtime": 1778759588.0667133,
+    "hash": "235da4821bc9b92b9faf94bb4887baf9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_exceptions.py": {
+    "mtime": 1778759588.0667133,
+    "hash": "f141a1cc32a469fe6a0dc78005a743af"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\test_registry.py": {
+    "mtime": 1778759588.0696623,
+    "hash": "667640fdb13d2157de182f3a2c0ad625"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\core\\__init__.py": {
+    "mtime": 1778759588.06269,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\gateway\\test_gateway.py": {
+    "mtime": 1778759588.0716758,
+    "hash": "b9c338e917ba49de29eca17dcad2576d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\gateway\\test_gateway_complete.py": {
+    "mtime": 1778765572.373,
+    "hash": "ff98d5fef4c525fed5d7bcfb8e6f47d1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\gateway\\__init__.py": {
+    "mtime": 1778759588.0696623,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\integration\\__init__.py": {
+    "mtime": 1778759588.0736873,
+    "hash": "d879e3b1cf666302f7f0cf755667ae1b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\knowledge\\test_knowledge_complete.py": {
+    "mtime": 1778773541.8474302,
+    "hash": "62432d9cbb85ab9da443f18f4686f30c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\knowledge\\__init__.py": {
+    "mtime": 1778759588.0765584,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\llm\\conftest.py": {
+    "mtime": 1778759588.0805807,
+    "hash": "3fc168eebd0662f4b32866594fa9e37c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\llm\\test_fallback.py": {
+    "mtime": 1778759588.0805807,
+    "hash": "a2b7a9e1d99bd1426f579e137e1a3c10"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\llm\\test_providers.py": {
+    "mtime": 1778759588.0825934,
+    "hash": "a42db6967535c8839d590c9f2e793490"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\llm\\test_router.py": {
+    "mtime": 1778786188.7409532,
+    "hash": "6e27a895c79e1167a82fe9630b5e9261"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\llm\\__init__.py": {
+    "mtime": 1778759588.078569,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\mcp\\test_mcp_server.py": {
+    "mtime": 1778759588.0876195,
+    "hash": "67c6c75ecdc86de62789ca05b944705a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\mcp\\__init__.py": {
+    "mtime": 1778759588.0846078,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\mcp_tools\\test_mcp_tools.py": {
+    "mtime": 1778765667.4278474,
+    "hash": "33bfaa286a1ab7ff854b722cc1677589"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\mcp_tools\\__init__.py": {
+    "mtime": 1778759588.089632,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\memory\\test_memory.py": {
+    "mtime": 1778759588.0936553,
+    "hash": "ff29f9fcb43a96d75a8b8b740792ec81"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\memory\\test_memory_complete.py": {
+    "mtime": 1778774177.531395,
+    "hash": "20ca2fb40c1087f7e6e57f2d6803635c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\memory\\test_orchestrator.py": {
+    "mtime": 1778759588.0956676,
+    "hash": "05f6cb48f307005abc74f2af0344f3a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\memory\\__init__.py": {
+    "mtime": 1778759588.0916443,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\nexus_integration\\test_nexus_complete.py": {
+    "mtime": 1778782372.4043417,
+    "hash": "9ecded01d6aaeea2e00ae8fd48bde61b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\nexus_integration\\test_nexus_simple.py": {
+    "mtime": 1778781211.5446444,
+    "hash": "34e386db594806ca2fe54cdb489f96a8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\nexus_integration\\test_real_world.py": {
+    "mtime": 1778785185.2503378,
+    "hash": "f66d8bbcf0128e432ecb73cde1e8c995"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\test_langgraph_engine.py": {
+    "mtime": 1778759588.0985367,
+    "hash": "dcfa2170c61e924b451fea97bacd6af4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\test_orchestrator_complete.py": {
+    "mtime": 1778776102.6518211,
+    "hash": "ea2ef80432acb4eea7a27d578c99c524"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\test_patterns.py": {
+    "mtime": 1778759588.1005504,
+    "hash": "8a30e91c40ef0158c5ae46717b45b7f9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\test_router.py": {
+    "mtime": 1778759588.1030579,
+    "hash": "ee555dd7aa7ccfc7a1e6d1a685125f79"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\test_skill_lifecycle.py": {
+    "mtime": 1778759588.1030579,
+    "hash": "da8d86f4ceff7aabb2a90e22ce262f8e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\orchestrator\\__init__.py": {
+    "mtime": 1778759588.0956676,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\reasoning\\test_lats.py": {
+    "mtime": 1778759588.1050706,
+    "hash": "fa799e00c8f8408f0c1789daf385e7ac"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\reasoning\\test_react.py": {
+    "mtime": 1778770334.4997225,
+    "hash": "87c1527e4719d56123ac1df159491254"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\reasoning\\test_reasoning_complete.py": {
+    "mtime": 1778770359.6886003,
+    "hash": "e73de0638ac0f271ab7c3befce7b13e5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\reasoning\\test_tot.py": {
+    "mtime": 1778759588.1070838,
+    "hash": "35ab72f045dfeaf202636cd002f11130"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_audit.py": {
+    "mtime": 1778759588.1099334,
+    "hash": "39e5c8f49dfc7b41a8d09807c3c09551"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_guardrails.py": {
+    "mtime": 1778759588.111946,
+    "hash": "46a31711872c222beab20401bbd38085"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_permissions.py": {
+    "mtime": 1778759588.111946,
+    "hash": "77ea2e8ca1307b3ceb62ab50f602784f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_rate_limiter.py": {
+    "mtime": 1778759588.1144571,
+    "hash": "6650fe948169b4b9c567aed8ebd0be5c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_rate_limiter_complete.py": {
+    "mtime": 1778759588.1144571,
+    "hash": "2ac2d435a3daffb8e63ac8f327c1543f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_sandbox.py": {
+    "mtime": 1778759588.1164725,
+    "hash": "f633bf1f2f5468fa0affd2b7335d589f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_sandbox_complete.py": {
+    "mtime": 1778770499.4490843,
+    "hash": "fbd6d19e058121770d8457f4d6f7636a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_secrets.py": {
+    "mtime": 1778759588.1184864,
+    "hash": "bb6214dd0d26de1a4d55198e86ae1ede"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_security_complete.py": {
+    "mtime": 1778759588.1205027,
+    "hash": "5fad6ed94f07183e4b547c3a2d9932fa"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\test_vault.py": {
+    "mtime": 1778759588.1205027,
+    "hash": "50fd6b5c830aaa5f6414d4d8e71d7be5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\tests\\security\\__init__.py": {
+    "mtime": 1778759588.1099334,
+    "hash": "0c6602b91803da67f76e520c2f95cc18"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-academic-search\\scripts\\aminer.py": {
+    "mtime": 1778759588.1781034,
+    "hash": "ed62c4d9e5eb7a91349f09545a09bed9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-daily-paper\\scripts\\recommend.py": {
+    "mtime": 1778759588.1781034,
+    "hash": "00a29332537daba6d0deab8639e3038f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ASR\\scripts\\asr.ts": {
+    "mtime": 1778759588.1542041,
+    "hash": "303d64bf41a58af9468f58ac847ceef6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\manage_examples.py": {
+    "mtime": 1778759588.1939795,
+    "hash": "b0295e89ef11bd4296e449a5dcbe37f8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scripts\\add_toc_placeholders.py": {
+    "mtime": 1778759588.267525,
+    "hash": "86847a0e1506e0b7d7ac73d3f9b46d90"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scripts\\document.py": {
+    "mtime": 1778759588.2695365,
+    "hash": "839648ec68bc211ce725f68b35aa7e24"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scripts\\postcheck.py": {
+    "mtime": 1778759588.2695365,
+    "hash": "e286f258815c4db009ee2d43acffa3d6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scripts\\utilities.py": {
+    "mtime": 1778759588.2761428,
+    "hash": "04be0b9530b77e6393700594f082e147"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scripts\\__init__.py": {
+    "mtime": 1778759588.2639418,
+    "hash": "353ad4528fba5ca5e866363de971978c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\scripts\\example.py": {
+    "mtime": 1778759588.2865539,
+    "hash": "8fea78dbee6f40b9bacd5a53689730dc"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\get-fortune-analysis\\lunar_python.py": {
+    "mtime": 1778759588.2973132,
+    "hash": "9501676109c8b15c3e23b9b9e43a47aa"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\gift-evaluator\\html_tools.py": {
+    "mtime": 1778759588.2973132,
+    "hash": "ef0106aa4f3a38d36225154e093c9821"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-edit\\scripts\\image-edit.ts": {
+    "mtime": 1778759588.3050573,
+    "hash": "dcca779214f8af71fc572e847595bb25"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-generation\\scripts\\image-generation.ts": {
+    "mtime": 1778759588.3090463,
+    "hash": "b56b79dfac026e9458345f7a56754963"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-understand\\scripts\\image-understand.ts": {
+    "mtime": 1778759588.3090463,
+    "hash": "4901d7fe894b0cff34540b10702fa44d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\LLM\\scripts\\chat.ts": {
+    "mtime": 1778759588.1602423,
+    "hash": "dd707f55b90effc771e7aa2fc900d015"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\scripts\\generate_market_visuals.py": {
+    "mtime": 1778759588.3371472,
+    "hash": "d357fde68b01a6c016487667eadd48e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\cover_validate.js": {
+    "mtime": 1778759588.3777404,
+    "hash": "fed9196fbd79a166f3aab9dd00e8f968"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\design_engine.py": {
+    "mtime": 1778759588.3866282,
+    "hash": "37d96e0046dcd9219720031b86e99068"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\html2pdf-next.js": {
+    "mtime": 1778759588.3866282,
+    "hash": "62bbe8e84b69a8fe1219602cff607717"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\html2poster.js": {
+    "mtime": 1778759588.3866282,
+    "hash": "c2aac48ff9e072aa8ab2ab99c93f2e2e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\pdf.py": {
+    "mtime": 1778759588.3914812,
+    "hash": "f7603eb905128f9e38aedb9772ca9873"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\pdf_qa.py": {
+    "mtime": 1778759588.393493,
+    "hash": "c0f5e829ce3bbd6c11e29f916b20b026"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\poster_validate.py": {
+    "mtime": 1778759588.3957863,
+    "hash": "484c11df48e8b7fe8126bdaf12493c58"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\scripts\\toc_validate.py": {
+    "mtime": 1778759588.3977983,
+    "hash": "bcb428da3a4e554684055fb95e9fbd60"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\podcast-generate\\generate.ts": {
+    "mtime": 1778759588.4160216,
+    "hash": "719336595c10be0e2b1d9fc2bf8552df"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\pack.py": {
+    "mtime": 1778759588.4957166,
+    "hash": "6bc94e0995e368f4c847eb0fb2e99e77"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\unpack.py": {
+    "mtime": 1778759588.4957166,
+    "hash": "f5e52747f54dac2c2425d01f10647de4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validate.py": {
+    "mtime": 1778759588.4957166,
+    "hash": "018cb0c2790adfd341a2a7453053fc27"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validation\\base.py": {
+    "mtime": 1778759588.5115535,
+    "hash": "51b0d693c2925158cda54964e63f3abe"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validation\\docx.py": {
+    "mtime": 1778759588.5115535,
+    "hash": "ff513eb21ba8693b824daa445d6f7969"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validation\\pptx.py": {
+    "mtime": 1778759588.5115535,
+    "hash": "8ff54ee6f96ac095a7dc82004cd65ecf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validation\\redlining.py": {
+    "mtime": 1778759588.5115535,
+    "hash": "c362b30d329cbb1cdfffee7d238a5a10"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml\\scripts\\validation\\__init__.py": {
+    "mtime": 1778759588.4957166,
+    "hash": "6ae13697412ab8c9b99b3268b717970b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\html2pptx.js": {
+    "mtime": 1778759588.5274537,
+    "hash": "d229899fdfea34508e185485535753cf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\inventory.py": {
+    "mtime": 1778759588.5274537,
+    "hash": "01832751825ccda59bf87896cd3b82e3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\pdf.py": {
+    "mtime": 1778759588.5274537,
+    "hash": "69f9db532fd2817da783d980ff88b981"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\rearrange.py": {
+    "mtime": 1778759588.5274537,
+    "hash": "97d75cb5a99d33ea35eaa5b992d751a9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\replace.py": {
+    "mtime": 1778759588.5274537,
+    "hash": "8e96552474789be7e4204ea17e937cff"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\scripts\\thumbnail.py": {
+    "mtime": 1778759588.7662742,
+    "hash": "b88ec5b4e73cae1b35bd42d0a93ad362"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\qingyan-research\\generate_html.py": {
+    "mtime": 1778759588.7823844,
+    "hash": "80b25004bfc1f0730c57c6ea7154070f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\eval-viewer\\generate_review.py": {
+    "mtime": 1778759588.798299,
+    "hash": "3ec67448bf48beb2ce336e8a050e4618"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\aggregate_benchmark.py": {
+    "mtime": 1778759588.798299,
+    "hash": "341cc9da943bb8515f22774f3fb1f151"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\generate_report.py": {
+    "mtime": 1778759588.798299,
+    "hash": "a0649d4809f1874c354f9d4512251414"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\improve_description.py": {
+    "mtime": 1778759588.798299,
+    "hash": "488433598321ca4a99920fae62ceae71"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\package_skill.py": {
+    "mtime": 1778759588.798299,
+    "hash": "b3e2d0f02bd130c6865edaeb13042f71"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\quick_validate.py": {
+    "mtime": 1778759588.8141625,
+    "hash": "1c14726b2f21750beffe0bef97c7f8d9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\run_eval.py": {
+    "mtime": 1778759588.8141625,
+    "hash": "45e7ced7d115def4d05f91a28e5899a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\run_loop.py": {
+    "mtime": 1778759588.8141625,
+    "hash": "8d7f8fc75b5b06df80837f05dcd33445"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\utils.py": {
+    "mtime": 1778759588.8141625,
+    "hash": "77d0ec8142dfb2f06f5d150c4beaf333"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\scripts\\__init__.py": {
+    "mtime": 1778759588.798299,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\analyzer.ts": {
+    "mtime": 1778759588.8299024,
+    "hash": "66dd3c2a460a6d9614d99f9963ac5d47"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\dataFetcher.ts": {
+    "mtime": 1778759588.8299024,
+    "hash": "c23e818485288e96b156036bb1cb322b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\dividend.ts": {
+    "mtime": 1778759588.8299024,
+    "hash": "d7161d8c45e7acfef193f8437093b9af"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\index.ts": {
+    "mtime": 1778759588.8299024,
+    "hash": "6faf8bc9722206ce6c4af78293fbecaf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\rumorScanner.ts": {
+    "mtime": 1778759588.8299024,
+    "hash": "b582fec16a3b261fcba6294129b8b893"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\types.ts": {
+    "mtime": 1778759588.839951,
+    "hash": "3070bbc6da365368b697797b9b7bc6f4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\src\\watchlist.ts": {
+    "mtime": 1778759588.839951,
+    "hash": "c9b01e3e4bd06ef4ef6e922fbf0558c8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\index.js": {
+    "mtime": 1778759588.8441384,
+    "hash": "04815087453b6c5ef8a7abdbefd2d33a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\scripts\\consistency_checker.py": {
+    "mtime": 1778759588.8458774,
+    "hash": "cb81276751d8c84034c2f2944b7cd3e3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\scripts\\timeline_tracker.py": {
+    "mtime": 1778759588.8458774,
+    "hash": "5fb26dcf2067d33240543e32f4f860ce"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\TTS\\tts.ts": {
+    "mtime": 1778759588.164012,
+    "hash": "266f995b7ff7e49e4c1b92a8b92bb86d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\scripts\\core.py": {
+    "mtime": 1778759588.9349034,
+    "hash": "50e4dec705c13cc69d328c15dfbed37b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\scripts\\design_system.py": {
+    "mtime": 1778759588.937538,
+    "hash": "820856912122b34f265d181d0b24b02b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\scripts\\search.py": {
+    "mtime": 1778759588.937538,
+    "hash": "978df5e77258f7502d3226cd4f71a9a9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\scripts\\__init__.py": {
+    "mtime": 1778759588.9323351,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-generation\\scripts\\video.ts": {
+    "mtime": 1778759588.9424767,
+    "hash": "f437099a99ac153d0f53b6b583df341a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-understand\\scripts\\video-understand.ts": {
+    "mtime": 1778759588.9496975,
+    "hash": "26160a6de72b199c9c99a4d7e681b578"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\VLM\\scripts\\vlm.ts": {
+    "mtime": 1778759588.168038,
+    "hash": "79af2fc1b2c1b5e2891cf974a20a09aa"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-reader\\scripts\\web-reader.ts": {
+    "mtime": 1778759588.9639812,
+    "hash": "aba97de5c74727d2f2d1869f01455071"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-search\\scripts\\web_search.ts": {
+    "mtime": 1778759588.968952,
+    "hash": "6a2e0d23660126f404582b0b9a22d1f4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\scripts\\fetch-rendered-dom.mjs": {
+    "mtime": 1778759588.985149,
+    "hash": "bd50d10f820b6beacd2c491b6fe8473a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\xlsx.py": {
+    "mtime": 1778759589.026461,
+    "hash": "3347a6b00321253ff2ac15e640047e53"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\templates\\base.py": {
+    "mtime": 1778759589.0186994,
+    "hash": "c05fb6bf85abe9612c14432cfe2a6883"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\templates\\palettes.py": {
+    "mtime": 1778759589.0228431,
+    "hash": "56ea4a6730f759bd61c069407ee25eaf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\app\\layout.tsx": {
+    "mtime": 1778759589.0783894,
+    "hash": "c030a0ba7d88c51b18559c590b2c6973"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\app\\page.tsx": {
+    "mtime": 1778759589.0783894,
+    "hash": "cabf6e85d379e6f63ffa7b6cffc7645c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\app\\api\\route.ts": {
+    "mtime": 1778759589.074363,
+    "hash": "7757df45634fbc4e3ef174d7a895573b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\app\\api\\nexus\\[...path]\\route.ts": {
+    "mtime": 1778759589.074363,
+    "hash": "d9d08ccdba430e9f723328471b0d3183"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\artifact-renderer.tsx": {
+    "mtime": 1778787829.7178934,
+    "hash": "fc79d6812b257615fcd71f78a9323525"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\chat-view.tsx": {
+    "mtime": 1778788793.3307586,
+    "hash": "19d1aec93749b7a1eef68439b459470c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\command-palette.tsx": {
+    "mtime": 1778759589.0861804,
+    "hash": "8a3121769848ce7a109bd45b4abae8f1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\gen-ui.tsx": {
+    "mtime": 1778759589.0861804,
+    "hash": "30bcaa1f0a0a0c6f2757d202fd3ac6a8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\live-viz.tsx": {
+    "mtime": 1778759589.0861804,
+    "hash": "d0277047ce6426876a758669c3a57ce0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\settings-popover.tsx": {
+    "mtime": 1778788802.381814,
+    "hash": "01225f8a8da346600f9c1e4b2e70efea"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\voice-ui.tsx": {
+    "mtime": 1778759589.0909674,
+    "hash": "19e7d8875893e877065fc031074a744d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\vrm-avatar.tsx": {
+    "mtime": 1778788831.536883,
+    "hash": "32cc50ac766f63d56c7c51a2804aeaaf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\nexus\\vrm-hub.tsx": {
+    "mtime": 1778759589.0909674,
+    "hash": "ab3c447c2b2c561c77cca70e92993de6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\accordion.tsx": {
+    "mtime": 1778759589.096351,
+    "hash": "9acd8f651844143bd32aa3f4ebdd8498"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\alert-dialog.tsx": {
+    "mtime": 1778759589.098091,
+    "hash": "96289b446b05be92f5fa68a99489c908"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\alert.tsx": {
+    "mtime": 1778759589.098091,
+    "hash": "60a1358bb82344b005cea0eca2cbf275"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\aspect-ratio.tsx": {
+    "mtime": 1778759589.098091,
+    "hash": "dcb189013ec808fefffceed9f15bcc3b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\avatar.tsx": {
+    "mtime": 1778759589.098091,
+    "hash": "dfe8c1ef8f73aa7f91230c14a4a21b71"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\badge.tsx": {
+    "mtime": 1778759589.098091,
+    "hash": "b18d5e3e077aac3937008f6f09eb12d9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\breadcrumb.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "908958673b534e7ab8af02a47d450bf3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\button.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "ec47dd35a37fd626e7911239dedf5f18"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\calendar.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "4be1da833b44c7bbe86a3538d2bd0b9e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\card.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "486b4175c685923e8ace5592259f93c4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\carousel.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "61511ca1762ddf6b333c382a4e921c52"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\chart.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "08b75566d66e68af949d1cfbc3a9a632"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\checkbox.tsx": {
+    "mtime": 1778759589.1053023,
+    "hash": "d2a583d1dcaf06dcf1ef6d83430f620f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\collapsible.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "6dc9bbf54b5bdb11466bfa79966c2755"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\command.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "c1db40a6f8892dba4122046b4b448484"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\context-menu.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "87a6fe9d4a224f1750dd6e83dfee98ea"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\dialog.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "8735cc509ecf04f07f2e611bb03c3d6f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\drawer.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "d013d8a10c5205e0436e0a0aceeb943e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\dropdown-menu.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "1f52d5f575d66293a8a16de5261e5064"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\form.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "99de6156a685803cbd5e1f044694502d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\hover-card.tsx": {
+    "mtime": 1778759589.1141193,
+    "hash": "f681899e530942801ad3d2a98fa868d4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\input-otp.tsx": {
+    "mtime": 1778759589.123841,
+    "hash": "7943a8f7c2ccb786bf71682042e7ec00"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\input.tsx": {
+    "mtime": 1778759589.123841,
+    "hash": "e26a9d621d7015887b408d4428a6c869"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\label.tsx": {
+    "mtime": 1778759589.125855,
+    "hash": "54182f15eaa11b2f35bc2ff903e2557b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\menubar.tsx": {
+    "mtime": 1778759589.125855,
+    "hash": "5ba9104f5c8183c72a6c9ec4f2643c4e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\navigation-menu.tsx": {
+    "mtime": 1778759589.125855,
+    "hash": "74d588ba6187fb0c5620fcc3e5bfd19a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\pagination.tsx": {
+    "mtime": 1778759589.1288342,
+    "hash": "c4a1175870e223fe4af7cf5e89eb410d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\popover.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "6a3f7b8119ecbf80cad8bbe2848266ba"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\progress.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "9c90dcb71b3ebb4af52e5b5bab7c4492"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\radio-group.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "0f087070684fb1f5ca5eb2c1a263ad5f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\resizable.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "4ad1d7d1dba79f66fee0f602394ba62e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\scroll-area.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "bcfa838c604a2e1b3cba179c2c174989"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\select.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "e2968fe993602c0f40c7884a15682f25"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\separator.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "981488d95a2e21d07ed8acfd3963d7e9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\sheet.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "edbeb83948a72bc767f0052a40bc0dca"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\sidebar.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "341bbb5b6d1852ca38bbd7de13fb4c2c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\skeleton.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "cbb09a6a9e8a6f87d3bbe20567e22c6e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\slider.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "5fdb371d39dedd5962bbfae6e7282ead"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\sonner.tsx": {
+    "mtime": 1778759589.1298463,
+    "hash": "c94f3201849c1d1f3e679a631106c7a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\switch.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "881e0aadc25f61839d2e97dd646f3ae3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\table.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "1b339aeaa78100603808436dd1ae9fe2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\tabs.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "c40b57c831b57166ae18690a41e5d5b3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\textarea.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "16e5d792f0aed75752e902fa141a1f18"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\toast.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "15bd047aca7fa00a0e13cf76d70e724d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\toaster.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "f2e6f8929cb1d83cfc7ab4ec4e3f5f03"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\toggle-group.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "b351a550a05e42fb26146c4d79e326f3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\toggle.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "dd6df1b1c6551cff6a71aed52ece9236"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\components\\ui\\tooltip.tsx": {
+    "mtime": 1778759589.1456902,
+    "hash": "c660b43af1749d010755b523f12d4d96"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\hooks\\use-mobile.ts": {
+    "mtime": 1778759589.1456902,
+    "hash": "654e2ca2e9fddc27eb7e3954900dc48e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\hooks\\use-nexus-ws.ts": {
+    "mtime": 1778788862.3907187,
+    "hash": "5d03a80a09fd061122bb9179b4c38cc8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\hooks\\use-toast.ts": {
+    "mtime": 1778759589.1456902,
+    "hash": "7b28c570f5c22615bb4d91c30130e061"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\db.ts": {
+    "mtime": 1778759589.1615553,
+    "hash": "c083539b3e6fd753bb01f2eb6d888017"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\logger.ts": {
+    "mtime": 1778788748.6955466,
+    "hash": "9610548237d0ad294f7e29f766ae2689"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\nexus-api.ts": {
+    "mtime": 1778788332.4188056,
+    "hash": "42474be4cb18bfe95a57c55a596c230d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\nexus-store.ts": {
+    "mtime": 1778788987.1064239,
+    "hash": "da8a9f3771eb1e34957822c5d9cf22c6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\utils.ts": {
+    "mtime": 1778759589.1656308,
+    "hash": "1d8011eb18769078bf77502b220daa5e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\agent-slice.ts": {
+    "mtime": 1778788963.5407357,
+    "hash": "ee379dd0e25be131810053c4a270c568"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\avatar-slice.ts": {
+    "mtime": 1778788963.754811,
+    "hash": "5da0c588e379f75ed7e1f15438856e75"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\chat-slice.ts": {
+    "mtime": 1778788569.3980792,
+    "hash": "11aa53faba128a29cbb30ba799713f58"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\index.ts": {
+    "mtime": 1778788975.2316139,
+    "hash": "7fa9f9362262f30621a75fc3f454fc28"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\ui-slice.ts": {
+    "mtime": 1778788964.1169915,
+    "hash": "f47ca523d06773884a74b0bea3e6c2c8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\utils.ts": {
+    "mtime": 1778788560.1240344,
+    "hash": "35ffae2f12254401ad573455f42b42f9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\lib\\store\\voice-slice.ts": {
+    "mtime": 1778788963.9348714,
+    "hash": "a31a4f6f48c269e4d210c07b12e4837f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src\\types\\nexus.ts": {
+    "mtime": 1778759589.1656308,
+    "hash": "800a7417b0c7464403779840cbd7776e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\build.rs": {
+    "mtime": 1778759589.026461,
+    "hash": "8e6c89bd412b755ef41bd9bb191f2e31"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\src\\lib.rs": {
+    "mtime": 1778759589.0611415,
+    "hash": "a84628321b4b61431b9e094072d7d32a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\src\\main.rs": {
+    "mtime": 1778759589.0662818,
+    "hash": "a8e64e9b6bd150703cbc12bc0d188f24"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\README.md": {
+    "mtime": 1778759588.130309,
+    "hash": "416f3ad216f62fc5b1215146c6ea08b9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\docs\\RAPPORT_CORRECTIONS_FRONTEND.md": {
+    "mtime": 1778759588.126541,
+    "hash": "a7ce9c1e0fe23ea55a4fb80b6882a652"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\docs\\RAPPORT_FRONTEND_COMPLETE.md": {
+    "mtime": 1778759588.1285534,
+    "hash": "829ba68752cd4a9ae278d017bc8189ed"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\download\\INSTALL.md": {
+    "mtime": 1778759588.138356,
+    "hash": "c7f61b26c1521c5a092209b5ecec13e4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\CHANGELOG.md": {
+    "mtime": 1778759587.8313816,
+    "hash": "dfa5c1346e795288f7285a48a2221e4e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\CODE_OF_CONDUCT.md": {
+    "mtime": 1778759587.8313816,
+    "hash": "1077ed169ef4120161e9f62f8143bbd8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\CONTRIBUTING.md": {
+    "mtime": 1778759587.8313816,
+    "hash": "2117bea4e8af51c9cfd7d3bf2d6b1b0b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docker-compose.yml": {
+    "mtime": 1778787993.7348654,
+    "hash": "42dde210b7fe500849e0aaf10e9f7eea"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\INSTALL.md": {
+    "mtime": 1778759587.8313816,
+    "hash": "5f04010b006af3ca754c11167c33b8b8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\PLAN.md": {
+    "mtime": 1778759587.8313816,
+    "hash": "0591067b34fcd3c4ecb959e83f7766a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\README.md": {
+    "mtime": 1778759587.8470445,
+    "hash": "a745bec6945fb2fa4ff73c3f703e07c5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\README_PRODUCTION.md": {
+    "mtime": 1778759587.8470445,
+    "hash": "7f80774828d484bbec31995a77d27bc9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\requirements.txt": {
+    "mtime": 1778759588.038215,
+    "hash": "4c9f9896c1edb22d76ff51d7c28c676b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\SECURITY.md": {
+    "mtime": 1778759587.8470445,
+    "hash": "48fe5f70f019bf1095d61276ac7eb74d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\API_REFERENCE.md": {
+    "mtime": 1778759587.8470445,
+    "hash": "1c2dff82ca9e44c03d03056e9d1e00eb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\ARCHITECTURE.md": {
+    "mtime": 1778759587.8470445,
+    "hash": "20af5b9af0f967791170a4ebac4e6d75"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\CONFIGURATION.md": {
+    "mtime": 1778759587.8603413,
+    "hash": "037ba5441071bd32edd255d820f1263a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\GUIDE_INSTALLATION.md": {
+    "mtime": 1778759587.8603413,
+    "hash": "6ff29dd25f0042776e3be5c621ee2a64"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\INSTALLATION.md": {
+    "mtime": 1778759587.8626952,
+    "hash": "09860fa5edf202ea155703c807e5431c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\PHASE_1_APP_WEB.md": {
+    "mtime": 1778759587.8626952,
+    "hash": "11ed06db09d5999fc42f9c1175346c2f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\PHASE_2_BACKEND.md": {
+    "mtime": 1778759587.8626952,
+    "hash": "778994e65cdd9330efd6b4a11e633967"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\PHASE_3_SECURITY.md": {
+    "mtime": 1778759587.8626952,
+    "hash": "c601afa2ee8c6060571903a7a4b24d4f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\NexusAgent\\docs\\PHASE_4_POLISH.md": {
+    "mtime": 1778759587.8626952,
+    "hash": "b49cd2b41340070e01524d44e21d6765"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\public\\robots.txt": {
+    "mtime": 1778759588.1501772,
+    "hash": "a9b03494151fe90e5decd2405400e106"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\agent-browser\\SKILL.md": {
+    "mtime": 1778759588.1700532,
+    "hash": "881a136c98dba286d1546ce538dc0660"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ai-news-collectors\\SKILL.md": {
+    "mtime": 1778759588.1720705,
+    "hash": "15d5fe8a341bc8179688cbe68ed02cf2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ai-news-collectors\\references\\sources.md": {
+    "mtime": 1778759588.1720705,
+    "hash": "59360d9fd399143254240d9f6d863046"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-academic-search\\SKILL.md": {
+    "mtime": 1778759588.1720705,
+    "hash": "d365e5a30169b0df7e4d1e2fcd70792c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-daily-paper\\README.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "2e81a00e387fc4c7fc74d66032557b35"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-daily-paper\\SKILL.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "f428aeaa8d4c6e7c34cc60bce26c1162"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-free-academic\\SKILL.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "b7e5d95f1589d86d92f04792a8259d56"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\aminer-free-academic\\references\\api-catalog.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "6b73a2f8555f3ebba2d5b7d533be5c49"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\anti-pua\\SKILL.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "1c51c456efa4df4cd6ffa1e784337e4f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ASR\\LICENSE.txt": {
+    "mtime": 1778759588.1521912,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ASR\\SKILL.md": {
+    "mtime": 1778759588.1542041,
+    "hash": "1e890b5ab6de4f620ab2aa88b61aa1fe"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\auto-target-tracker\\SKILL.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "5e196e83647e3b1fb3464a5bf0f092ca"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-02-17-radical-transparency-sales.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "626e1927347124dab27e8642d70b6deb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-02-17-raycast-spotlight-superpowers.md": {
+    "mtime": 1778759588.1781034,
+    "hash": "b54781481698adef653a0cd37799b27c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-02-17-short-form-content-marketing.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "8d43e752aebd3271d26e9b3be8234ae2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-02-17-typing-speed-benefits.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "d20274d52d9d067887ab2d733be1c6f3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-03-14-effective-ai-prompts.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "2617268830d688271b8328da96b5e3d9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2024-11-08-ai-revolutionizing-entry-level-sales.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "dd5f3802d67da964f0fde57c1f220f47"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\2025-11-12-why-ai-art-is-useless.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "c5a1f15a281994555fd1af43936506d6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\README.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "0856333386c301b4f630e8317c51a74c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\SKILL.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "217e756d0fb3440b29c6f1b02bc9746e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\blog-writer\\style-guide.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "81999ce5c292a97e8fc184a2f4a48a10"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\LICENSE.txt": {
+    "mtime": 1778759588.1939795,
+    "hash": "6cf4d79c9e9adc89a4eae74b867859e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\SKILL.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "84890fe22b3f0e44a65c15333ef48896"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\d3.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "91e548cc2d1d408d6e39a9df07d4946b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\echarts.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "06d16202a42efbb43476925bd5ccd746"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\matplotlib.md": {
+    "mtime": 1778759588.2098534,
+    "hash": "e7ee4df06730f6c1d7e1a86ad5c8392c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\mermaid.md": {
+    "mtime": 1778759588.2098534,
+    "hash": "7680e116f09c2a674380c0156cbe95a2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\mindmap-css.md": {
+    "mtime": 1778759588.2135496,
+    "hash": "5fae50a71f1e77a3c263d1401e0ae712"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\playwright-css.md": {
+    "mtime": 1778759588.2135496,
+    "hash": "feeb3d852ee6d720cc7181484aacbcaf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\radial-grid.md": {
+    "mtime": 1778759588.2155626,
+    "hash": "42f26d70c4f53ffba3c123dd6c2b5518"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\seaborn.md": {
+    "mtime": 1778759588.2155626,
+    "hash": "2bdb05e7cb1440ed9fe60a9d80d1506b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\charts\\references\\_rules.md": {
+    "mtime": 1778759588.1939795,
+    "hash": "b978a65fd69eaac881f9a9a2394f67be"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\criteria.md": {
+    "mtime": 1778759588.2216,
+    "hash": "dd75797142792cefbd11d6c897a67cde"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\execution.md": {
+    "mtime": 1778759588.2216,
+    "hash": "dd7ec4a5c1307bef220e7cf0fb87e4b3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\memory-template.md": {
+    "mtime": 1778759588.2216,
+    "hash": "eae16e246414c7969ff7ae5b8d81dbfe"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\planning.md": {
+    "mtime": 1778759588.224247,
+    "hash": "795d8f4efb5e826b7a022f48075e0166"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\SKILL.md": {
+    "mtime": 1778759588.2195868,
+    "hash": "cef036a333c848b26b722f3958b1da9d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\state.md": {
+    "mtime": 1778759588.224247,
+    "hash": "c76c0dbd0065e3a1885cba0508e9524f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\coding-agent\\verification.md": {
+    "mtime": 1778759588.2257626,
+    "hash": "98b4e0133fba2f8959becb29a3ee870d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\content-strategy\\SKILL.md": {
+    "mtime": 1778759588.227779,
+    "hash": "cb5c0cd3f4bd8ec703afe93ee00a4ff6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\contentanalysis\\SKILL.md": {
+    "mtime": 1778759588.233818,
+    "hash": "11371169f27ae0df290bcee295125582"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\contentanalysis\\ExtractWisdom\\SKILL.md": {
+    "mtime": 1778759588.231806,
+    "hash": "184a577a0e5aea8ef1e3d1873c21bdb5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\contentanalysis\\ExtractWisdom\\Workflows\\Extract.md": {
+    "mtime": 1778759588.231806,
+    "hash": "77145cefd9ad40a5d5f815272e1940b7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\LICENSE.txt": {
+    "mtime": 1778759588.233818,
+    "hash": "6cf4d79c9e9adc89a4eae74b867859e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\SKILL.md": {
+    "mtime": 1778759588.2358296,
+    "hash": "40e7d0f05e9f3d9d60e8c7cdc07d7e87"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\chart-templates.md": {
+    "mtime": 1778759588.237842,
+    "hash": "bc531cfbeb7205de14b62e07e21304f1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\common-rules.md": {
+    "mtime": 1778759588.237842,
+    "hash": "2fe856a67d196ad77817e3446c761272"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\decorations.md": {
+    "mtime": 1778759588.2399843,
+    "hash": "ce67f195ff99bc9575c9b921d68691a9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\design-system.md": {
+    "mtime": 1778759588.2417245,
+    "hash": "445082b727296a9e2f05b52472488c47"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\docx-js-advanced.md": {
+    "mtime": 1778759588.243737,
+    "hash": "af41b1dfb7dec73c391bcb14ac1e572f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\docx-js-core.md": {
+    "mtime": 1778759588.2457495,
+    "hash": "5bd16358299f1a88972940e747bc3096"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\faq.md": {
+    "mtime": 1778759588.2457495,
+    "hash": "677bb14c5568e54154bf1c2250852d01"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\math-formulas.md": {
+    "mtime": 1778759588.2477615,
+    "hash": "21a0f228eff6e480906055afd2b50175"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\ooxml.md": {
+    "mtime": 1778759588.2477615,
+    "hash": "12be84b9777e9b5d109a19458a78fc5c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\references\\toc.md": {
+    "mtime": 1778759588.2497747,
+    "hash": "8a4eed5ddeec25de3fde08079537bd8b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\routes\\comment.md": {
+    "mtime": 1778759588.2497747,
+    "hash": "8ef4871adf3ac710bfdc4af3ca4f76f1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\routes\\create.md": {
+    "mtime": 1778759588.2517874,
+    "hash": "53d55b2022e1354dd882f0766406626e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\routes\\edit.md": {
+    "mtime": 1778759588.2517874,
+    "hash": "d2dbed145ca554f568fd991e30170a33"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\routes\\format.md": {
+    "mtime": 1778759588.2537997,
+    "hash": "2c6c29213621b2210e7dd1b36444b497"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\routes\\read.md": {
+    "mtime": 1778759588.2537997,
+    "hash": "aaa4a587f8d0588e7539afb3d04c5694"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\academic.md": {
+    "mtime": 1778759588.2558143,
+    "hash": "9a6883ee28dbc9a1863193401e6d443d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\contract.md": {
+    "mtime": 1778759588.2575698,
+    "hash": "1791f05b33b361060383b54afda5f823"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\copywriting.md": {
+    "mtime": 1778759588.2595832,
+    "hash": "82fb8c98a4a301e87b466b6ca90ddb73"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\exam.md": {
+    "mtime": 1778759588.2595832,
+    "hash": "39d3d7bb936adc95404b9785a7d104d0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\official-doc.md": {
+    "mtime": 1778759588.2615962,
+    "hash": "78e0f75dbe6e2689045e04564bdc15ff"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\report.md": {
+    "mtime": 1778759588.2615962,
+    "hash": "c06207a22e54f169ab036adcfd081d6f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\docx\\scenes\\resume.md": {
+    "mtime": 1778759588.2639418,
+    "hash": "67556d225bfb308bd6a407bfc1686794"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\SKILL.md": {
+    "mtime": 1778759588.278156,
+    "hash": "ff6d915c4f0150a6f332d250e0e898b3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\assets\\example_asset.txt": {
+    "mtime": 1778759588.2801685,
+    "hash": "a739819af8017f0eee85358729217783"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\references\\api_reference.md": {
+    "mtime": 1778759588.2821808,
+    "hash": "1d17365b43a4010a816077a8dd7b7ffc"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\references\\interpretation-guide.md": {
+    "mtime": 1778759588.2821808,
+    "hash": "1d5ee72a6cd6c536da7cad2cdf85674c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\references\\output-schema.md": {
+    "mtime": 1778759588.2841928,
+    "hash": "7652416a4bb5b3135eeb04075336f4cd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\references\\questioning-strategy.md": {
+    "mtime": 1778759588.2841928,
+    "hash": "96f68db9500fe7744520a6dde807a558"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\dream-interpreter\\references\\visual-mapping.md": {
+    "mtime": 1778759588.2865539,
+    "hash": "a8906a8c8658cc7a5c5f3b8cf9f739c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\finance\\Finance_API_Doc.md": {
+    "mtime": 1778759588.291442,
+    "hash": "70335245b8d577045c89470465ed46a4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\finance\\SKILL.md": {
+    "mtime": 1778759588.291442,
+    "hash": "d38114915ff0e4161de7139b82d8f629"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\fullstack-dev\\SKILL.md": {
+    "mtime": 1778759588.2936058,
+    "hash": "11934b9702b77a47e44f3e957b44fa8d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\get-fortune-analysis\\SKILL.md": {
+    "mtime": 1778759588.2936058,
+    "hash": "331a3f6f8a763c4351f338024c910963"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\gift-evaluator\\SKILL.md": {
+    "mtime": 1778759588.2973132,
+    "hash": "e4fe2a548dd63240b06ce525c0bc0098"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-edit\\LICENSE.txt": {
+    "mtime": 1778759588.3010204,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-edit\\SKILL.md": {
+    "mtime": 1778759588.3033187,
+    "hash": "97f0631f522c5518a94c6f45dd78b8a6"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-generation\\LICENSE.txt": {
+    "mtime": 1778759588.30707,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-generation\\SKILL.md": {
+    "mtime": 1778759588.30707,
+    "hash": "f115a9055eaaacaeecedf2c9c5e6334c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-understand\\LICENSE.txt": {
+    "mtime": 1778759588.3090463,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\image-understand\\SKILL.md": {
+    "mtime": 1778759588.3090463,
+    "hash": "0afcbb928b65333fcdc0fa2a617ee292"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\interview-designer\\README.md": {
+    "mtime": 1778759588.3090463,
+    "hash": "3583bfe13d6988ef4ed638edfb5c012a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\interview-designer\\SKILL.md": {
+    "mtime": 1778759588.3090463,
+    "hash": "5700a756bf42fd44e32a2994456aca30"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\interview-designer\\references\\design_rationale.md": {
+    "mtime": 1778759588.3211644,
+    "hash": "b6aa609a9c8d82812f163b29d1f7b8d8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\interview-designer\\templates\\interview_guide_template.md": {
+    "mtime": 1778759588.3211644,
+    "hash": "9ebad55556ea785abb9c2a5d3d158c32"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\LLM\\LICENSE.txt": {
+    "mtime": 1778759588.1562157,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\LLM\\SKILL.md": {
+    "mtime": 1778759588.1582294,
+    "hash": "1043cecba72a6d74348877ff5c2ba9fd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\SKILL.md": {
+    "mtime": 1778759588.3246348,
+    "hash": "a67f827a5c30b4fafffdfe94c84f0499"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\assets\\FORMATTING_GUIDE.md": {
+    "mtime": 1778759588.3268888,
+    "hash": "a3142338aac1a1ab65431b4f61ab616b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\references\\data_analysis_patterns.md": {
+    "mtime": 1778759588.3288596,
+    "hash": "4c62f32e95c6ebbe23685e20d3c75f52"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\references\\report_structure_guide.md": {
+    "mtime": 1778759588.3288596,
+    "hash": "d2f9db3ab4c9a52b6ec94767391c9712"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\market-research-reports\\references\\visual_generation_guide.md": {
+    "mtime": 1778759588.3344786,
+    "hash": "87e0694afc45720125b182ca91283703"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\marketing-mode\\mode-prompt.md": {
+    "mtime": 1778759588.342319,
+    "hash": "d58310a3bb3b544cc5421cb1fdc8b635"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\marketing-mode\\README.md": {
+    "mtime": 1778759588.340132,
+    "hash": "04804e368d790a4d92f136c6daf3bd29"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\marketing-mode\\SKILL.md": {
+    "mtime": 1778759588.342319,
+    "hash": "2910248f1867fa87552e5212d5e4552d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\mindfulness-meditation\\SKILL.md": {
+    "mtime": 1778759588.3459542,
+    "hash": "f9bbf273377fe45ac7a657fed4e8ff58"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\multi-search-engine\\CHANGELOG.md": {
+    "mtime": 1778759588.3482094,
+    "hash": "54390a545555554634f094d86c83080a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\multi-search-engine\\CHANNELLOG.md": {
+    "mtime": 1778759588.3482094,
+    "hash": "82972a55ced8392caf0d0f4f7b62a384"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\multi-search-engine\\SKILL.md": {
+    "mtime": 1778759588.3515449,
+    "hash": "964e51f71c5b3bf794f384a72b255c2f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\multi-search-engine\\references\\international-search.md": {
+    "mtime": 1778759588.3530579,
+    "hash": "cd73f3bfa4a677cff8c87d266e3d30bc"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\LICENSE.txt": {
+    "mtime": 1778759588.3530579,
+    "hash": "6cf4d79c9e9adc89a4eae74b867859e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\SKILL.md": {
+    "mtime": 1778759588.3619187,
+    "hash": "383a1c25bd979aa60590d05ebb58f6c4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\academic.md": {
+    "mtime": 1778759588.3651774,
+    "hash": "6fc4a9bed019eb6f9200c763eadfea41"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\creative.md": {
+    "mtime": 1778759588.3651774,
+    "hash": "74ca0ae954d2ca0c848142d1f04a987f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\poster.md": {
+    "mtime": 1778759588.3671894,
+    "hash": "d91f44fb0888bc680ef0631fee57a8cf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\process-advanced.md": {
+    "mtime": 1778759588.3689446,
+    "hash": "52b36975ffc13b2506a2a652f4aef561"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\process.md": {
+    "mtime": 1778759588.3689446,
+    "hash": "eca740def95c5097d15f79bf04c6a0f2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\briefs\\report.md": {
+    "mtime": 1778759588.3726108,
+    "hash": "7de95d3e9582a1a46f367d53b8bb532a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\configs\\components.md": {
+    "mtime": 1778759588.3726108,
+    "hash": "46ac4baae32440cc7af48e776f69461d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\configs\\fonts.md": {
+    "mtime": 1778759588.3726108,
+    "hash": "5b4bf415159afc92b11d2742ee1fcd57"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\configs\\visual_framework.md": {
+    "mtime": 1778759588.3777404,
+    "hash": "5038d630e59472354f9d27a3837f3eff"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\charts.md": {
+    "mtime": 1778759588.4006221,
+    "hash": "c8ce83cc5bc3d97784a1cbfac3111009"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\cover-backgrounds.md": {
+    "mtime": 1778759588.4006221,
+    "hash": "492f59f34e1803010df8850af7c0db88"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\cover.md": {
+    "mtime": 1778759588.404881,
+    "hash": "fec74937a98e1fa63877107cf2659c79"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\fill-engine.md": {
+    "mtime": 1778759588.404881,
+    "hash": "d6c216123eeaefe6151d3b650b5aefe4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\geometry.md": {
+    "mtime": 1778759588.404881,
+    "hash": "521de966f143992b480657cd2f9572d0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\overflow.md": {
+    "mtime": 1778759588.404881,
+    "hash": "441f133372137cd8abe46a396a742e9a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\pagination.md": {
+    "mtime": 1778759588.4095428,
+    "hash": "41d848b57e3d69a3d792ad766a0b900a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\palette.md": {
+    "mtime": 1778759588.4095428,
+    "hash": "215260ad916cf8a9a9a30b7b84bb0fa0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\pdf\\typesetting\\typography.md": {
+    "mtime": 1778759588.4095428,
+    "hash": "63573b4a61509fcf1a70ca6160eba712"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\podcast-generate\\LICENSE.txt": {
+    "mtime": 1778759588.4095428,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\podcast-generate\\readme.md": {
+    "mtime": 1778759588.418035,
+    "hash": "42ca40ca2030fe6c0dfef0873647ba4b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\podcast-generate\\SKILL.md": {
+    "mtime": 1778759588.4095428,
+    "hash": "8864e977d8ec157e5e83c0e548c19515"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\beamer.md": {
+    "mtime": 1778759588.4284396,
+    "hash": "aec4245bf331a624a523735f63a838ed"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\components.md": {
+    "mtime": 1778759588.4316704,
+    "hash": "fad34b8f43bcbeb3b60c5ef39f2a090d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\data-viz-components.md": {
+    "mtime": 1778759588.4336836,
+    "hash": "c2173a034c70e9b6d1fda36b483e9420"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\design-system.md": {
+    "mtime": 1778759588.4336836,
+    "hash": "a167077fac9b38b6b90cfb0ceef13a12"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\html2pptx.md": {
+    "mtime": 1778759588.4336836,
+    "hash": "49ab7b2b41ff52a9207facc96f8df7be"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\LICENSE.txt": {
+    "mtime": 1778759588.4225974,
+    "hash": "6cf4d79c9e9adc89a4eae74b867859e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\ooxml.md": {
+    "mtime": 1778759588.4336836,
+    "hash": "b3d54a8060e470274b1d453395789fac"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\SKILL.md": {
+    "mtime": 1778759588.4225974,
+    "hash": "3e936d7d6b2814a57a7a9ce577fdf88e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\themes.md": {
+    "mtime": 1778759588.7662742,
+    "hash": "266ec33e2e6534074cfd11452a338724"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\references\\beamer.md": {
+    "mtime": 1778759588.5184145,
+    "hash": "9b830e7fdb37e57d12e28d3f2925fb6d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ppt\\references\\latex.md": {
+    "mtime": 1778759588.5184145,
+    "hash": "b7a10b2d85000aadb289c716507a0d29"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\qingyan-research\\SKILL.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "96e2fa39b8dc023297d667accbc6f3e3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\seo-content-writer\\SKILL.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "e273df7d330ad98f0f60fdc8714b7bca"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\seo-content-writer\\references\\content-structure-templates.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "b0babf3ba67b83d88dbc1baa12ca9442"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\seo-content-writer\\references\\title-formulas.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "a47976aaa9608e547df1e80ff60b48a8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\LICENSE.txt": {
+    "mtime": 1778759588.7823844,
+    "hash": "0ba5044c64ef53cb0189c9546081e228"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\SKILL.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "e1af4573a3d56a378e0aeee55690935c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\agents\\analyzer.md": {
+    "mtime": 1778759588.7823844,
+    "hash": "60ccb8eaf4baa1284f3d5833ae0992bb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\agents\\comparator.md": {
+    "mtime": 1778759588.798299,
+    "hash": "142cb6a33c43956ad89e328a6a0bcc24"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\agents\\grader.md": {
+    "mtime": 1778759588.798299,
+    "hash": "a20d81caedc41baa552eee0dedfad071"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\assets\\eval_review.html": {
+    "mtime": 1778759588.798299,
+    "hash": "b4ec70f8062506594d13a550e9128205"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\eval-viewer\\viewer.html": {
+    "mtime": 1778759588.798299,
+    "hash": "7f12a58d73df7603460693d227b2cf0a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-creator\\references\\schemas.md": {
+    "mtime": 1778759588.798299,
+    "hash": "94fe1a76b74a2a8cdf7961a7d822a411"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-finder-cn\\SKILL.md": {
+    "mtime": 1778759588.8141625,
+    "hash": "d99b5423f4081909dea395a4e96cb07d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\skill-vetter\\SKILL.md": {
+    "mtime": 1778759588.8141625,
+    "hash": "f974f391d6839614bdfd32823741371d"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\stock-analysis-skill\\SKILL.md": {
+    "mtime": 1778759588.8141625,
+    "hash": "d200127d544965c8db6111cb16e49d67"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\SKILL.md": {
+    "mtime": 1778759588.8441384,
+    "hash": "d79cff8833c6fcfad40af27c35cc939b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\references\\character_development.md": {
+    "mtime": 1778759588.8458774,
+    "hash": "4c640a51b5ba3a223198cfe7f20808ee"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\storyboard-manager\\references\\story_structures.md": {
+    "mtime": 1778759588.8458774,
+    "hash": "81942700017c593a4f89e283b221d8b9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\TTS\\LICENSE.txt": {
+    "mtime": 1778759588.161999,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\TTS\\SKILL.md": {
+    "mtime": 1778759588.164012,
+    "hash": "0f038d83dc73b3935c655b7cafd426e4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\SKILL.md": {
+    "mtime": 1778759588.8458774,
+    "hash": "8e870c7f06a027f943bdfc06dce6d2cd"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\references\\upstream-README.md": {
+    "mtime": 1778759588.927014,
+    "hash": "0bc47ff94405a3ee4c24c2ebdac4a0a1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\ui-ux-pro-max\\references\\upstream-skill-content.md": {
+    "mtime": 1778759588.9323351,
+    "hash": "267bb8eb878f2089ff4f5404f09729e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-generation\\LICENSE.txt": {
+    "mtime": 1778759588.9404607,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-generation\\SKILL.md": {
+    "mtime": 1778759588.9424767,
+    "hash": "4e5a4168450932ea501179b595b7dab8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-understand\\LICENSE.txt": {
+    "mtime": 1778759588.9466734,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\video-understand\\SKILL.md": {
+    "mtime": 1778759588.9466734,
+    "hash": "bd25b65ce33be635a6bc7acbe424be62"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\visual-design-foundations\\SKILL.md": {
+    "mtime": 1778759588.9496975,
+    "hash": "4f66c94186b655a376d96500aed67da2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\visual-design-foundations\\references\\color-systems.md": {
+    "mtime": 1778759588.9533713,
+    "hash": "c12ad07edefe96ee78203f02bdb5bab3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\visual-design-foundations\\references\\spacing-iconography.md": {
+    "mtime": 1778759588.9561913,
+    "hash": "72012919e1967f5156662f45931294ea"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\visual-design-foundations\\references\\typography-systems.md": {
+    "mtime": 1778759588.9561913,
+    "hash": "a9e018b23f6b7e368d25a060171185ed"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\VLM\\LICENSE.txt": {
+    "mtime": 1778759588.1660252,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\VLM\\SKILL.md": {
+    "mtime": 1778759588.168038,
+    "hash": "c9c3a8e7c259e28fbd605a74b03c98b7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-reader\\LICENSE.txt": {
+    "mtime": 1778759588.9621646,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-reader\\SKILL.md": {
+    "mtime": 1778759588.9639812,
+    "hash": "f2512aa7df5b48c42145e99d72f1ad80"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-search\\LICENSE.txt": {
+    "mtime": 1778759588.965993,
+    "hash": "7db8d9291b1aa74755e6974ab49d88c3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-search\\SKILL.md": {
+    "mtime": 1778759588.965993,
+    "hash": "5fa66c559cc594f908647340dd60233b"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\SKILL.md": {
+    "mtime": 1778759588.9719067,
+    "hash": "0409ba5ec1e8529f4cf6f598add098a3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\config-extraction.md": {
+    "mtime": 1778759588.9747381,
+    "hash": "46e8b1eff0c8d2a14a854b2c1ea6d414"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\encoded-definitions.md": {
+    "mtime": 1778759588.9747381,
+    "hash": "6f43854b3e457c9c073fbf8f0df4f757"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\extraction-workflow.md": {
+    "mtime": 1778759588.9747381,
+    "hash": "7cbae55c6e75984a73c4d2527fccc4e9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\porting-strategy.md": {
+    "mtime": 1778759588.9747381,
+    "hash": "79e0676e89f2de0df741fe80772a09d1"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\shader-injection.md": {
+    "mtime": 1778759588.979386,
+    "hash": "fcabe8b93bed2bd49bd0a5426ab66674"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\shaders-com.md": {
+    "mtime": 1778759588.979386,
+    "hash": "84ebb8d1fa9569894fe5277d57de44b3"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\tech-signatures.md": {
+    "mtime": 1778759588.979386,
+    "hash": "fef7767be2ab70e5f8ca50105e9a9170"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\tsl-extraction.md": {
+    "mtime": 1778759588.979386,
+    "hash": "ced7644b9e84eceddbf51e076ac88eb9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\web-shader-extractor\\references\\unicorn-studio.md": {
+    "mtime": 1778759588.979386,
+    "hash": "cb9b8e72f03f4c5fcccd0add8f403a3f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\writing-plans\\SKILL.md": {
+    "mtime": 1778759588.9913683,
+    "hash": "b9c2264c56e2856c1b136e97080ce3be"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\LICENSE.txt": {
+    "mtime": 1778759588.9942267,
+    "hash": "6cf4d79c9e9adc89a4eae74b867859e0"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\SKILL.md": {
+    "mtime": 1778759588.9959004,
+    "hash": "330fa01ba54902cc300e8140e251b98a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\engines\\chart-templates.md": {
+    "mtime": 1778759588.9981034,
+    "hash": "34f7a6b147c4dae0994283572eccf06a"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\engines\\chart.md": {
+    "mtime": 1778759588.9992104,
+    "hash": "9b10bd65bd0deac36bc9f116b5528b28"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\engines\\design.md": {
+    "mtime": 1778759588.9992104,
+    "hash": "17930384e42751d865fb7323d140239f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\engines\\vba-templates.md": {
+    "mtime": 1778759589.0009904,
+    "hash": "3e126ca3dd2e639b8f9450509ce80153"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\quality\\pipeline.md": {
+    "mtime": 1778759589.0035212,
+    "hash": "789b8e82f1c832d153df6cec058b6dcf"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\advanced.md": {
+    "mtime": 1778759589.0035212,
+    "hash": "ed004ab61b59338239d49e40027545f7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\analyze-recipes.md": {
+    "mtime": 1778759589.0076177,
+    "hash": "e855ca7bcc32e06e4a217d4d70dcf9a4"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\analyze.md": {
+    "mtime": 1778759589.0076177,
+    "hash": "feb8317f3d079b70803a3d868285a5c5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\convert.md": {
+    "mtime": 1778759589.0076177,
+    "hash": "9d7e95a177026eb7fa6e6b7bda7bc5c9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\create.md": {
+    "mtime": 1778759589.011279,
+    "hash": "8d522baf91a0983f8e9da8d5dceb1733"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\edit-patterns.md": {
+    "mtime": 1778759589.011279,
+    "hash": "9e9486acc3a6a98e23ce9223670dbc5c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\edit.md": {
+    "mtime": 1778759589.011279,
+    "hash": "a1b28c3f07122ed67b4ba13fefde09fb"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\finance.md": {
+    "mtime": 1778759589.011279,
+    "hash": "82c035a7ed23b6230f1192ba0efb1065"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\finance_lite.md": {
+    "mtime": 1778759589.016686,
+    "hash": "2dedef640ab52c305c314518e394d201"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\skills\\xlsx\\scenes\\vba.md": {
+    "mtime": 1778759589.016686,
+    "hash": "123f3a3a9ec3bcde918d049072672a6e"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\public\\logo.svg": {
+    "mtime": 1778759588.1501772,
+    "hash": "018c9d41fac1aec570870db154693656"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\128x128.png": {
+    "mtime": 1778759589.0343518,
+    "hash": "3a0071e4ad670fad0329d3a5e83d0bf9"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\128x128@2x.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "eab2be12c5f8aeaf104a4695dd9171df"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\32x32.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "faf8ee6541b945b98db35239b8a75715"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\icon.png": {
+    "mtime": 1778759589.0611415,
+    "hash": "9fdc4367276aafdd2c05ac214e9553c7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square107x107Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "d4bc38359e2c01daa08354c55fa4df7c"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square142x142Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "1e9c0358705085439e5c989fcbd6e988"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square150x150Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "084d20bce8096367fc694dfdf72c8ac5"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square284x284Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "6a936fe84398f24b7a63a36bddfd58d7"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square30x30Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "011e9cb456309157a9fc78c978248e00"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square310x310Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "832231852e8e683e6aa2b690d194bdd2"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square44x44Logo.png": {
+    "mtime": 1778759589.0366955,
+    "hash": "a06297a35014e770cc33756fafa3b3a8"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square71x71Logo.png": {
+    "mtime": 1778759589.0503795,
+    "hash": "a3c80a0af688359094aa685881570eed"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\Square89x89Logo.png": {
+    "mtime": 1778759589.0503795,
+    "hash": "9f91ee8e1c1232ebde61c64d7923038f"
+  },
+  "C:\\Users\\seydi\\NexusAgent\\src-tauri\\icons\\StoreLogo.png": {
+    "mtime": 1778759589.0503795,
+    "hash": "387b412d411bbd532dd3302d3948bf0e"
+  }
+}

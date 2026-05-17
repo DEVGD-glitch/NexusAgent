@@ -101,8 +101,8 @@ export const nexusApi = {
     get<{ entries: unknown[]; count: number }>("/security/audit", { limit }),
 
   // ── Generic Tool ──────────────────────────────────────────
-  genericTool: (toolName: string, params: Record<string, unknown> = {}) =>
-    post<unknown>(`/tools/${toolName}`, params),
+  genericTool: <T = Record<string, unknown>>(toolName: string, params: Record<string, unknown> = {}) =>
+    post<T>(`/tools/${toolName}`, params),
 
   // ── Memory (5-layer) ──
   memoryRecall: (query: string, layers?: string[]) =>

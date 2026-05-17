@@ -30,9 +30,14 @@ function uid(): string {
   return crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
 }
 
+// Exponential backoff: 3s → 6s → 12s → 24s → 30s (max)
+const RECONNECT_BASE_MS = 3000;
+const RECONNECT_MAX_MS = 30000;
+
 export function useNexusWebSocket() {
   const wsRef = useRef<WebSocket | null>(null);
   const reconnectRef = useRef<ReturnType<typeof setTimeout>>();
+  const reconnectDelayRef = useRef(RECONNECT_BASE_MS);
   const storeRef = useRef(useNexusStore.getState());
   // Ref for accumulating streaming tokens keyed by message/assistant turn
   const streamingRef = useRef<Map<string, string>>(new Map());
@@ -146,6 +151,18 @@ export function useNexusWebSocket() {
         });
         break;
 
+      // ── A2UI Cards (Generative UI) ─────────────────────────────
+      case "a2ui_card":
+        store.addA2UICard({
+          card_id: String(data.card_id || uid()),
+          card_type: String(data.card_type || "markdown"),
+          title: String(data.title || ""),
+          data: (data.data ?? data) as Record<string, unknown>,
+          actions: Array.isArray(data.actions) ? data.actions : [],
+          metadata: (data.metadata ?? {}) as Record<string, unknown>,
+        });
+        break;
+
       // ── Voice Audio ────────────────────────────────────────────
       case "voice_audio": {
         // Play audio if TTS enabled
@@ -232,7 +249,7 @@ export function useNexusWebSocket() {
         break;
 
       default:
-        // Unknown event type — ignore
+        log.debug('Unknown event type', { type, data });
         break;
     }
   }, []);
@@ -241,13 +258,13 @@ export function useNexusWebSocket() {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
 
     try {
-      // Get auth token from localStorage if available
-      const token = typeof window !== 'undefined' ? localStorage.getItem('nexus_token') : null;
-      // Append token to WS URL for authentication
-      const wsUrl = token ? `${WS_URL}?token=${encodeURIComponent(token)}` : WS_URL;
-      const ws = new WebSocket(wsUrl);
+      // Connect without token in URL (security: tokens in URLs are logged)
+      const ws = new WebSocket(WS_URL);
 
-      ws.onopen = () => { storeRef.current.setBackendConnected(true); };
+      ws.onopen = () => {
+        storeRef.current.setBackendConnected(true);
+        reconnectDelayRef.current = RECONNECT_BASE_MS; // Reset backoff on success
+      };
 
       ws.onmessage = (event) => {
         try {
@@ -259,7 +276,9 @@ export function useNexusWebSocket() {
 
       ws.onclose = () => {
         storeRef.current.setBackendConnected(false);
-        reconnectRef.current = setTimeout(connect, 3000);
+        const delay = reconnectDelayRef.current;
+        reconnectDelayRef.current = Math.min(delay * 2, RECONNECT_MAX_MS);
+        reconnectRef.current = setTimeout(connect, delay);
       };
 
       ws.onerror = (error) => {
@@ -271,7 +290,9 @@ export function useNexusWebSocket() {
     } catch (error) {
       log.error('Connection error', error);
       storeRef.current.setBackendConnected(false);
-      reconnectRef.current = setTimeout(connect, 5000);
+      const delay = reconnectDelayRef.current;
+      reconnectDelayRef.current = Math.min(delay * 2, RECONNECT_MAX_MS);
+      reconnectRef.current = setTimeout(connect, delay);
     }
   }, [handleEvent]);
 

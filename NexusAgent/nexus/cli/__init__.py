@@ -12,8 +12,6 @@ Commands:
 from __future__ import annotations
 
 import asyncio
-import json
-import sys
 from typing import Optional
 
 import typer
@@ -52,8 +50,8 @@ app.add_typer(memory_app, name="memory")
 @agents_app.command("list")
 def agents_list():
     """List all active NEXUS agents."""
-    from nexus.core.registry import AgentRegistry
-    registry = AgentRegistry()
+    from nexus.core.registry import get_registry
+    registry = get_registry()
     instances = registry.list_instances()
 
     if not instances:
@@ -473,6 +471,20 @@ def memory_search(
             ))
     except Exception as e:
         console.print(f"[red]Error: {e}[/]")
+
+
+@app.command()
+def tui(
+    path: str = typer.Option(".", "--path", "-P", help="Root directory for file browser"),
+):
+    """Launch the NEXUS interactive TUI (Text User Interface)."""
+    from nexus.cli.tui.app import run_tui
+    console.print(Panel(
+        "[bold cyan]NEXUS TUI[/]\n"
+        "F1-7: Switch panels | Ctrl+L: Next tab | /help: Commands | Ctrl+Q: Quit",
+        title="Launching",
+    ))
+    run_tui(root_path=path)
 
 
 @app.command()

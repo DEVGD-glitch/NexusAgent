@@ -246,7 +246,7 @@ class FallbackChain:
             "openai": self.settings.openai_api_key,
             "anthropic": self.settings.anthropic_api_key,
             "gemini": self.settings.google_api_key,
-            "glm": self.settings.zai_api_key,
+            "glm": self.settings.zai_api_key or self.settings.openbig_model_api_key,
             "groq": self.settings.groq_api_key,
             "openrouter": self.settings.openrouter_api_key,
             "nvidia": self.settings.nvidia_api_key,

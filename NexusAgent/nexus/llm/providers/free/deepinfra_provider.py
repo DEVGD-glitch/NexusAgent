@@ -97,9 +97,9 @@ class DeepInfraProvider:
                 cost_usd=0.0,
             )
         except httpx.HTTPStatusError as e:
-            raise LLMProviderError(f"DeepInfra error: {e.response.status_code}") from e
+            raise LLMProviderError("deepinfra", f"API error: {e.response.status_code}") from e
         except httpx.RequestError as e:
-            raise LLMProviderError(f"DeepInfra request failed: {e}") from e
+            raise LLMProviderError("deepinfra", f"Request failed: {e}") from e
 
     async def close(self) -> None:
         if self.http_client:

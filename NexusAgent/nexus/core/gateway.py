@@ -29,6 +29,7 @@ import logging
 import os
 import time
 import uuid
+import warnings
 from typing import Any, Optional
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
@@ -38,6 +39,13 @@ from pydantic import BaseModel, Field
 from nexus.core.config import get_settings
 
 logger = logging.getLogger(__name__)
+
+warnings.warn(
+    "nexus.core.gateway is deprecated and will be removed in a future release. "
+    "Use nexus.api.gateway instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 logger.warning(
     "nexus.core.gateway is DEPRECATED. Use nexus.api.gateway instead. "
     "This module will be removed in a future release."

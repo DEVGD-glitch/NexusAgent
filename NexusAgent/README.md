@@ -229,21 +229,12 @@ cp .env.example .env
 # Éditer .env avec vos clés API (au moins un provider)
 ```
 
-### Méthode 2 : Script automatique (Windows)
+### Méthode 2 : Script universel (Windows / macOS / Linux)
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/NexusAgent.git
 cd NexusAgent
-install.bat
-```
-
-### Méthode 3 : Script automatique (Linux/macOS)
-
-```bash
-git clone https://github.com/YOUR_USERNAME/NexusAgent.git
-cd NexusAgent
-chmod +x install.sh
-./install.sh
+python install.py
 ```
 
 > 💡 **Astuce** : Les 3 providers gratuits (Pollinations, G4F, DeepInfra) fonctionnent immédiatement sans clé API !
@@ -253,20 +244,16 @@ chmod +x install.sh
 ## 🚀 Démarrage Rapide
 
 ```bash
+# Lance tout (backend + frontend) en une commande
+python start.py
+# → http://localhost:3000
+
+# Ou manuellement :
+python -m nexus serve    # Backend seul
+npm run dev              # Frontend seul
+
 # Mode CLI interactif
 python -m nexus chat
-
-# Mode serveur API (backend seul)
-python -m nexus serve
-
-# Mode web complet (frontend + backend)
-start_web.bat        # Windows
-./start_web.sh       # Linux/macOS
-# Ouvre http://localhost:3000
-
-# Mode bureau (Electron)
-cd nexus-desktop
-npm install
 npm start
 ```
 

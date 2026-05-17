@@ -23,6 +23,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import threading
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -43,7 +44,7 @@ logger = logging.getLogger(__name__)
 # ── Connection Pooling ────────────────────────────────────────────
 
 _client_cache: dict[str, chromadb.ClientAPI] = {}
-_cache_lock = asyncio.Lock()
+_cache_lock = threading.Lock()
 
 
 def _get_cached_client(persist_dir: str) -> chromadb.ClientAPI:
@@ -55,27 +56,30 @@ def _get_cached_client(persist_dir: str) -> chromadb.ClientAPI:
     global _client_cache
 
     if persist_dir not in _client_cache:
-        Path(persist_dir).mkdir(parents=True, exist_ok=True)
-        try:
-            _client_cache[persist_dir] = chromadb.PersistentClient(
-                path=persist_dir,
-                settings=ChromaSettings(
-                    anonymized_telemetry=False,
-                    allow_reset=True,
-                ),
-            )
-            # Force a quick operation to verify the client works
-            _client_cache[persist_dir].heartbeat()
-            logger.debug("Created new ChromaDB persistent client for: %s", persist_dir)
-        except Exception as exc:
-            logger.warning("ChromaDB persistent client failed (%s), falling back to ephemeral client", exc)
-            _client_cache[persist_dir] = chromadb.EphemeralClient(
-                settings=ChromaSettings(
-                    anonymized_telemetry=False,
-                    allow_reset=True,
-                ),
-            )
-            logger.debug("Created fallback ChromaDB ephemeral client")
+        with _cache_lock:
+            if persist_dir in _client_cache:
+                return _client_cache[persist_dir]
+            Path(persist_dir).mkdir(parents=True, exist_ok=True)
+            try:
+                _client_cache[persist_dir] = chromadb.PersistentClient(
+                    path=persist_dir,
+                    settings=ChromaSettings(
+                        anonymized_telemetry=False,
+                        allow_reset=True,
+                    ),
+                )
+                # Force a quick operation to verify the client works
+                _client_cache[persist_dir].heartbeat()
+                logger.debug("Created new ChromaDB persistent client for: %s", persist_dir)
+            except Exception as exc:
+                logger.warning("ChromaDB persistent client failed (%s), falling back to ephemeral client", exc)
+                _client_cache[persist_dir] = chromadb.EphemeralClient(
+                    settings=ChromaSettings(
+                        anonymized_telemetry=False,
+                        allow_reset=True,
+                    ),
+                )
+                logger.debug("Created fallback ChromaDB ephemeral client")
 
     return _client_cache[persist_dir]
 
